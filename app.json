@@ -37,6 +37,13 @@
     ],
     "experiments": {
       "typedRoutes": true
-    }
+    },
+    "extra": {
+      "router": {},
+      "eas": {
+        "projectId": "c3064d08-3e1b-4645-8c4e-5258bd32144c"
+      }
+    },
+    "owner": "niskan516.dev"
   }
 }

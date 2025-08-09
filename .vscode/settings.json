@@ -3,5 +3,12 @@
     "source.fixAll": "explicit",
     "source.organizeImports": "explicit",
     "source.sortMembers": "explicit"
-  }
+  },
+  "debug.javascript.defaultRuntimeExecutable": {
+    "pwa-node": "c:\\users\\niskan516\\scoop\\apps\\mise\\current\\mise\\shims\\node"
+  },
+  "python.defaultInterpreterPath": "/home/niskan516/.local/share/mise/installs/python/3.13.5/bin/python",
+  "biome.enabled": true,
+  "editor.formatOnSave": true,
+  "editor.defaultFormatter": "biomejs.biome"
 }

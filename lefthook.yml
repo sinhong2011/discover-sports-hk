@@ -1,0 +1,58 @@
+# Lefthook configuration for LCSD Facilities Checker
+# https://github.com/evilmartians/lefthook
+
+# Global settings
+colors: true
+no_tty: false
+
+# Pre-commit hooks
+pre-commit:
+  parallel: true
+  commands:
+    # Format code with Biome
+    format:
+      glob: "*.{js,jsx,ts,tsx,json,css}"
+      run: npx biome format --write {staged_files}
+      stage_fixed: true
+
+    # Lint code with Biome
+    lint:
+      glob: "*.{js,jsx,ts,tsx}"
+      run: npx biome lint --write {staged_files}
+      stage_fixed: true
+
+    # Check code with Biome (combines linting and formatting checks)
+    check:
+      glob: "*.{js,jsx,ts,tsx,json,css}"
+      run: npx biome check --write {staged_files}
+      stage_fixed: true
+
+# Pre-push hooks
+pre-push:
+  commands:
+    # Run full Biome check on all files before pushing
+    biome-check-all:
+      run: npx biome check .
+
+    # Type check with TypeScript
+    type-check:
+      run: npx tsc --noEmit
+
+# Commit message hooks
+commit-msg:
+  commands:
+    # Validate commit message format (optional)
+    # You can customize this based on your team's conventions
+    # commitlint:
+    #   run: npx commitlint --edit {1}
+
+# Skip hooks for specific scenarios
+skip_output:
+  - meta
+  - summary
+# Remote configuration (optional)
+# You can specify remote configs if needed
+# remote:
+#   git_url: https://github.com/your-org/lefthook-configs
+#   ref: main
+#   config: lefthook.yml
