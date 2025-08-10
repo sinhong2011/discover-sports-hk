@@ -5,10 +5,16 @@
     "source.sortMembers": "explicit"
   },
   "debug.javascript.defaultRuntimeExecutable": {
-    "pwa-node": "c:\\users\\niskan516\\scoop\\apps\\mise\\current\\mise\\shims\\node"
+    "pwa-node": "/Users/niskan516/.local/share/mise/shims/node"
   },
-  "python.defaultInterpreterPath": "/home/niskan516/.local/share/mise/installs/python/3.13.5/bin/python",
+  "python.defaultInterpreterPath": "/Users/niskan516/.local/share/mise/installs/python/3.13.5/bin/python",
   "biome.enabled": true,
   "editor.formatOnSave": true,
-  "editor.defaultFormatter": "biomejs.biome"
+  "editor.defaultFormatter": "biomejs.biome",
+  "go.goroot": "/Users/niskan516/.local/share/mise/installs/go/1.24.3",
+  "go.alternateTools": {
+    "go": "/Users/niskan516/.local/share/mise/shims/go",
+    "gopls": "/Users/niskan516/.local/share/mise/shims/gopls"
+  },
+  "prettier.enable": false
 }
