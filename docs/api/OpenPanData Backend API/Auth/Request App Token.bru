@@ -1,0 +1,32 @@
+meta {
+  name: Request App Token
+  type: http
+  seq: 1
+}
+
+post {
+  url: {{baseUrl}}/auth/app-token
+  body: json
+  auth: bearer
+}
+
+auth:bearer {
+  token: {{token}}
+}
+
+body:json {
+  {
+    "deviceInfo": {
+      "deviceId": "",
+      "platform": "",
+      "appVersion": "",
+      "osVersion": "",
+      "deviceModel": ""
+    },
+    "credentials": {
+      "apiKey": "",
+      "bundleId": "",
+      "appSignature": ""
+    }
+  }
+}

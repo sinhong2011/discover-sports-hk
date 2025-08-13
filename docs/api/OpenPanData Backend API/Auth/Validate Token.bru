@@ -1,0 +1,21 @@
+meta {
+  name: Validate Token
+  type: http
+  seq: 2
+}
+
+post {
+  url: {{baseUrl}}/auth/validate-token
+  body: json
+  auth: bearer
+}
+
+auth:bearer {
+  token: {{token}}
+}
+
+body:json {
+  {
+    "token": ""
+  }
+}
