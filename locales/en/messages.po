@@ -1,0 +1,442 @@
+msgid ""
+msgstr ""
+"POT-Creation-Date: 2025-01-13 12:00+0000\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Generator: @lingui/cli\n"
+"Language: en\n"
+"Project-Id-Version: \n"
+"Report-Msgid-Bugs-To: \n"
+"PO-Revision-Date: \n"
+"Last-Translator: \n"
+"Language-Team: \n"
+"Plural-Forms: \n"
+
+#~ msgid "Facilities"
+#~ msgstr "Facilities"
+
+#~ msgid "Remove Bookmark"
+#~ msgstr "Remove Bookmark"
+
+#~ msgid "Remove this venue from bookmarks?"
+#~ msgstr "Remove this venue from bookmarks?"
+
+#~ msgid "Popular Venues"
+#~ msgstr "Popular Venues"
+
+#~ msgid "History"
+#~ msgstr "History"
+
+msgid "Day Time"
+msgstr "Day Time"
+
+#~ msgid "Bookmarked"
+#~ msgstr "Bookmarked"
+
+msgid "slots"
+msgstr "slots"
+
+#~ msgid "Light"
+#~ msgstr "Light"
+
+#~ msgid "Request timeout"
+#~ msgstr "Request timeout"
+
+#~ msgid "No bookmarks yet"
+#~ msgstr "No bookmarks yet"
+
+msgid "Available Dates"
+msgstr "Available Dates"
+
+#~ msgid "Recent Searches"
+#~ msgstr "Recent Searches"
+
+# Search
+#~ msgid "Search Venues"
+#~ msgstr "Search Venues"
+
+msgid "Failed to fetch sports list"
+msgstr "Failed to fetch sports list"
+
+msgid "Total Time Slots"
+msgstr "Total Time Slots"
+
+#~ msgid "Try refreshing or check your connection"
+#~ msgstr "Try refreshing or check your connection"
+
+#~ msgid "Retry"
+#~ msgstr "Retry"
+
+#~ msgid "Bookmarks"
+#~ msgstr "Bookmarks"
+
+#~ msgid "Confirm"
+#~ msgstr "Confirm"
+
+#~ msgid "Reminder Time"
+#~ msgstr "Reminder Time"
+
+#~ msgid "Evening"
+#~ msgstr "Evening"
+
+# Bookmarks
+#~ msgid "Bookmarked Venues"
+#~ msgstr "Bookmarked Venues"
+
+#~ msgid "Search"
+#~ msgstr "Search"
+
+#~ msgid "API connection lost"
+#~ msgstr "API connection lost"
+
+#~ msgid "Tomorrow"
+#~ msgstr "Tomorrow"
+
+#~ msgid "Sport Types"
+#~ msgstr "Sport Types"
+
+msgid "Low Availability"
+msgstr "Low Availability"
+
+#~ msgid "Last updated"
+#~ msgstr "Last updated"
+
+#~ msgid "Facility"
+#~ msgstr "Facility"
+
+msgid "No time slots available"
+msgstr "No time slots available"
+
+msgid "Done"
+msgstr "Done"
+
+#~ msgid "Address"
+#~ msgstr "Address"
+
+msgid "Badminton"
+msgstr "Badminton"
+
+msgid "Tennis"
+msgstr "Tennis"
+
+#~ msgid "Select Sport Type"
+#~ msgstr "Select Sport Type"
+
+msgid "Unknown"
+msgstr "Unknown"
+
+msgid "Failed to refresh data"
+msgstr "Failed to refresh data"
+
+#~ msgid "Time Range"
+#~ msgstr "Time Range"
+
+#~ msgid "Theme"
+#~ msgstr "Theme"
+
+#~ msgid "This Week"
+#~ msgstr "This Week"
+
+#~ msgid "LCSD Facilities"
+#~ msgstr "LCSD Facilities"
+
+#~ msgid "Bookmark your favorite venues for quick access"
+#~ msgstr "Bookmark your favorite venues for quick access"
+
+#~ msgid "No Venues Found"
+#~ msgstr "No Venues Found"
+
+msgid "Push Notifications"
+msgstr "Push Notifications"
+
+#~ msgid "minutes"
+#~ msgstr "minutes"
+
+# Time
+#~ msgid "Morning"
+#~ msgstr "Morning"
+
+msgid "High Availability"
+msgstr "High Availability"
+
+#~ msgid "No venues available for this sport type"
+#~ msgstr "No venues available for this sport type"
+
+#~ msgid "days"
+#~ msgstr "days"
+
+#~ msgid "Clear Filters"
+#~ msgstr "Clear Filters"
+
+msgid "total courts"
+msgstr "total courts"
+
+msgid "Privacy Policy"
+msgstr "Privacy Policy"
+
+msgid "Choose your preferred language for the app interface."
+msgstr "Choose your preferred language for the app interface."
+
+#~ msgid "No venues found"
+#~ msgstr "No venues found"
+
+msgid "Medium Availability"
+msgstr "Medium Availability"
+
+msgid "View Booking"
+msgstr "View Booking"
+
+msgid "Districts"
+msgstr "Districts"
+
+#~ msgid "Bookmark"
+#~ msgstr "Bookmark"
+
+#~ msgid "Auto"
+#~ msgstr "Auto"
+
+#~ msgid "Unauthorized access"
+#~ msgstr "Unauthorized access"
+
+msgid "Save Venue"
+msgstr "Save Venue"
+
+msgid "Out of"
+msgstr "Out of"
+
+#~ msgid "Afternoon"
+#~ msgstr "Afternoon"
+
+msgid "Error"
+msgstr "Error"
+
+msgid "Settings"
+msgstr "Settings"
+
+msgid "Soccer Pitch"
+msgstr "Soccer Pitch"
+
+msgid "App Name"
+msgstr "DiscoverSports HK"
+
+# Venues
+#~ msgid "Venue Details"
+#~ msgstr "Venue Details"
+
+#~ msgid "Next Week"
+#~ msgstr "Next Week"
+
+#~ msgid "hours"
+#~ msgstr "hours"
+
+msgid "facility locations"
+msgstr "facility locations"
+
+#~ msgid "appName"
+#~ msgstr "Discover available sports venue bookings"
+
+#~ msgid "Apply Filters"
+#~ msgstr "Apply Filters"
+
+msgid "Availability Alerts"
+msgstr "Availability Alerts"
+
+#~ msgid "Quick Search"
+#~ msgstr "Quick Search"
+
+msgid "Loading..."
+msgstr "Loading..."
+
+msgid "On"
+msgstr "On"
+
+msgid "Search venues or facilities..."
+msgstr "Search venues or facilities..."
+
+msgid "Clear search"
+msgstr "Clear search"
+
+msgid "Search"
+msgstr "Search"
+
+#~ msgid "No facilities information available"
+#~ msgstr "No facilities information available"
+
+#~ msgid "No recent searches"
+#~ msgstr "No recent searches"
+
+msgid "Off"
+msgstr "Off"
+
+#~ msgid "Resource not found"
+#~ msgstr "Resource not found"
+
+msgid "Unique Venues"
+msgstr "Unique Venues"
+
+#~ msgid "Filters"
+#~ msgstr "Filters"
+
+#~ msgid "Delete"
+#~ msgstr "Delete"
+
+#~ msgid "Cancel"
+#~ msgstr "Cancel"
+
+#~ msgid "Enable Notifications"
+#~ msgstr "Enable Notifications"
+
+msgid "Network connection error"
+msgstr "Network connection error"
+
+msgid "Version"
+msgstr "Version"
+
+msgid "courts available"
+msgstr "courts available"
+
+#~ msgid "Edit"
+#~ msgstr "Edit"
+
+#~ msgid "Today"
+#~ msgstr "Today"
+
+#~ msgid "more"
+#~ msgstr "more"
+
+msgid "Night Time"
+msgstr "Night Time"
+
+msgid "Error loading data"
+msgstr "Error loading data"
+
+#~ msgid "Total Venues"
+#~ msgstr "Total Venues"
+
+#~ msgid "Discover available sports venue bookings"
+#~ msgstr "Discover available sports venue bookings"
+
+#~ msgid "Next"
+#~ msgstr "Next"
+
+# Navigation
+#~ msgid "Home"
+#~ msgstr "Home"
+
+msgid "Notifications"
+msgstr "Notifications"
+
+#~ msgid "Back"
+#~ msgstr "Back"
+
+msgid "Volleyball"
+msgstr "Volleyball"
+
+msgid "Failed to search venues"
+msgstr "Failed to search venues"
+
+msgid "Discover available sports venue bookings in Hong Kong"
+msgstr "Discover available sports venue bookings in Hong Kong"
+
+msgid "Contact"
+msgstr "Contact"
+
+#~ msgid "Results"
+#~ msgstr "Results"
+
+#~ msgid "Availability"
+#~ msgstr "Availability"
+
+#~ msgid "District"
+#~ msgstr "District"
+
+#~ msgid "Date"
+#~ msgstr "Date"
+
+msgid "Manage your notification preferences for venue availability and booking reminders."
+msgstr "Manage your notification preferences for venue availability and booking reminders."
+
+msgid "Something went wrong"
+msgstr "Something went wrong"
+
+#~ msgid "Filter"
+#~ msgstr "Filter"
+
+msgid "No Availability"
+msgstr "No Availability"
+
+#~ msgid "Check Availability"
+#~ msgstr "Check Availability"
+
+msgid "Failed to fetch sport data"
+msgstr "Failed to fetch sport data"
+
+msgid "venues"
+msgstr "venues"
+
+msgid "Venue Statistics"
+msgstr "Venue Statistics"
+
+#~ msgid "Checking..."
+#~ msgstr "Checking..."
+
+#~ msgid "Dark"
+#~ msgstr "Dark"
+
+#~ msgid "Server error occurred"
+#~ msgstr "Server error occurred"
+
+msgid "Courts Available"
+msgstr "Courts Available"
+
+msgid "Court Information"
+msgstr "Court Information"
+
+msgid "No data available"
+msgstr "No data available"
+
+#~ msgid "Save"
+#~ msgstr "Save"
+
+msgid "About"
+msgstr "About"
+
+#~ msgid "An unknown error occurred"
+#~ msgstr "An unknown error occurred"
+
+msgid "Language"
+msgstr "Language"
+
+msgid "Location"
+msgstr "Location"
+
+#~ msgid "Venue Type"
+#~ msgstr "Venue Type"
+
+#~ msgid "Clear"
+#~ msgstr "Clear"
+
+msgid "Terms of Service"
+msgstr "Terms of Service"
+
+#~ msgid "Yesterday"
+#~ msgstr "Yesterday"
+
+msgid "Basketball"
+msgstr "Basketball"
+
+#~ msgid "Search for venues, facilities..."
+#~ msgstr "Search for venues, facilities..."
+
+#~ msgid "Close"
+#~ msgstr "Close"
+
+#~ msgid "No internet connection"
+#~ msgstr "No internet connection"
+
+msgid "Book Now"
+msgstr "Book Now"
+
+#~ msgid "OK"
+#~ msgstr "OK"

@@ -1,0 +1,204 @@
+msgid ""
+msgstr ""
+"POT-Creation-Date: 2025-01-13 12:00+0000\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Generator: @lingui/cli\n"
+"Language: zh-HK\n"
+"Project-Id-Version: \n"
+"Report-Msgid-Bugs-To: \n"
+"PO-Revision-Date: \n"
+"Last-Translator: \n"
+"Language-Team: \n"
+"Plural-Forms: \n"
+
+msgid "Day Time"
+msgstr "日間時段"
+
+msgid "slots"
+msgstr "個時段"
+
+msgid "Available Dates"
+msgstr "可用日期"
+
+msgid "Failed to fetch sports list"
+msgstr "獲取運動項目列表失敗"
+
+msgid "Total Time Slots"
+msgstr "總時段數"
+
+msgid "Low Availability"
+msgstr "低可用性"
+
+msgid "No time slots available"
+msgstr "沒有可用時段"
+
+msgid "Done"
+msgstr "完成"
+
+msgid "Badminton"
+msgstr "羽毛球"
+
+msgid "Tennis"
+msgstr "網球"
+
+#~ msgid "Select Sport Type"
+#~ msgstr "選擇運動類型"
+
+msgid "Unknown"
+msgstr "未知"
+
+msgid "Failed to refresh data"
+msgstr "刷新數據失敗"
+
+msgid "Push Notifications"
+msgstr "推送通知"
+
+msgid "High Availability"
+msgstr "高可用性"
+
+msgid "total courts"
+msgstr "個場地"
+
+msgid "Privacy Policy"
+msgstr "私隱政策"
+
+msgid "Choose your preferred language for the app interface."
+msgstr "選擇您偏好的應用程式介面語言。"
+
+msgid "Medium Availability"
+msgstr "中等可用性"
+
+msgid "View Booking"
+msgstr "查看預訂"
+
+msgid "Districts"
+msgstr "地區"
+
+msgid "Save Venue"
+msgstr "儲存場地"
+
+msgid "Out of"
+msgstr "共"
+
+msgid "Error"
+msgstr "錯誤"
+
+msgid "Settings"
+msgstr "設定"
+
+msgid "Soccer Pitch"
+msgstr "足球場"
+
+msgid "App Name"
+msgstr "睇場易"
+
+msgid "facility locations"
+msgstr "個設施位置"
+
+msgid "Availability Alerts"
+msgstr "可用性提醒"
+
+msgid "Loading..."
+msgstr "載入中..."
+
+msgid "On"
+msgstr "開啟"
+
+msgid "Off"
+msgstr "關閉"
+
+msgid "Unique Venues"
+msgstr "獨特場地"
+
+msgid "Network connection error"
+msgstr "網絡連接錯誤"
+
+msgid "Version"
+msgstr "版本"
+
+msgid "courts available"
+msgstr "個場地可用"
+
+msgid "Night Time"
+msgstr "夜間時段"
+
+msgid "Error loading data"
+msgstr "載入數據時發生錯誤"
+
+msgid "Notifications"
+msgstr "通知"
+
+msgid "Volleyball"
+msgstr "排球"
+
+msgid "Failed to search venues"
+msgstr "搜索場地失敗"
+
+msgid "Discover available sports venue bookings in Hong Kong"
+msgstr "發掘香港可用的體育場地預訂"
+
+msgid "Contact"
+msgstr "聯絡"
+
+msgid "Manage your notification preferences for venue availability and booking reminders."
+msgstr "管理您的場地可用性和預訂提醒通知偏好設定。"
+
+msgid "Something went wrong"
+msgstr "出現問題"
+
+msgid "No Availability"
+msgstr "無可用性"
+
+msgid "Failed to fetch sport data"
+msgstr "獲取運動數據失敗"
+
+msgid "venues"
+msgstr "個場館"
+
+msgid "Venue Statistics"
+msgstr "場地統計"
+
+msgid "Courts Available"
+msgstr "可用場地"
+
+msgid "Court Information"
+msgstr "場地資訊"
+
+msgid "No data available"
+msgstr "沒有可用數據"
+
+msgid "About"
+msgstr "關於"
+
+msgid "Language"
+msgstr "語言"
+
+msgid "Location"
+msgstr "位置"
+
+msgid "Terms of Service"
+msgstr "服務條款"
+
+msgid "Basketball"
+msgstr "籃球"
+
+msgid "Book Now"
+msgstr "立即預訂"
+
+msgid "Search venues or facilities..."
+msgstr "搜尋場地或設施..."
+
+msgid "Clear search"
+msgstr "清除搜尋"
+
+msgid "Search"
+msgstr "搜尋"
+
+
+msgid "Data Information"
+msgstr "數據資訊"
+
+msgid "Data last updated"
+msgstr "數據最後更新"
