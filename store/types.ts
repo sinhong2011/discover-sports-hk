@@ -1,4 +1,6 @@
-// Store types for the LCSD Facilities Checker app
+// Store types for the App Name app
+
+import type { SportDataResponse } from '@/types/api';
 
 export interface Venue {
   id: string;
@@ -39,33 +41,28 @@ export interface SearchFilters {
 }
 
 export interface UserPreferences {
-  language: 'en' | 'zh-HK' | 'zh-CN';
-  theme: 'light' | 'dark' | 'auto';
+  language: 'en' | 'zh-HK';
   notifications: {
     enabled: boolean;
     reminderTime: number; // minutes before booking
     availabilityAlerts: boolean;
   };
-  favoriteDistricts: string[];
-  defaultSearchRadius: number;
 }
 
+// ============================================================================
+// Sport Venue Data Types
+// ============================================================================
+
+/**
+ * Sport venue data organized by sport type
+ * Contains venues and metadata for a specific sport
+ */
+export type SportVenueDataBySportType = SportDataResponse;
+
 export interface AppState {
-  // Venue data
-  venues: Venue[];
-  bookmarkedVenues: Venue[];
-  searchHistory: SearchFilters[];
-  
-  // Current search state
-  currentSearch: SearchFilters;
-  searchResults: Venue[];
-  isLoading: boolean;
-  error: string | null;
-  
   // User preferences
   preferences: UserPreferences;
-  
+
   // App state
   isFirstLaunch: boolean;
-  lastDataUpdate: Date | null;
 }

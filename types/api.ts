@@ -3,6 +3,9 @@
  * Based on the API documentation in docs/api/OpenPanData Backend API/
  */
 
+import type { SportType } from '@/constants/Sport';
+import type { SportVenueTimeslotTimeslotOrigin } from '@/types/sport';
+
 // ============================================================================
 // Authentication Types
 // ============================================================================
@@ -95,109 +98,14 @@ export interface ApiError {
 }
 
 // ============================================================================
-// Health Check Types
-// ============================================================================
-
-export interface HealthCheckResponse {
-  status: 'healthy' | 'degraded' | 'unhealthy';
-  timestamp: string;
-  version: string;
-  uptime: number;
-  services?: {
-    database?: 'healthy' | 'unhealthy';
-    cache?: 'healthy' | 'unhealthy';
-    external_apis?: 'healthy' | 'unhealthy';
-  };
-}
-
-export interface ApiInfoResponse {
-  name: string;
-  version: string;
-  description: string;
-  endpoints: string[];
-  documentation?: string;
-}
-
-// ============================================================================
 // Sports Data Types
 // ============================================================================
 
-export interface SportType {
-  id: string;
-  name: string;
-  nameEn?: string;
-  nameZhHk?: string;
-  nameZhCn?: string;
-  category: string;
-  description?: string;
-  facilities: string[];
-  isActive: boolean;
-}
-
-export interface SportsListResponse {
-  sports: SportType[];
-  total: number;
-  lastUpdated: string;
-}
-
-export interface Venue {
-  id: string;
-  name: string;
-  nameEn?: string;
-  nameZhHk?: string;
-  nameZhCn?: string;
-  type: string;
-  location: {
-    district: string;
-    address: string;
-    coordinates?: {
-      latitude: number;
-      longitude: number;
-    };
-  };
-  facilities: string[];
-  contact?: {
-    phone?: string;
-    email?: string;
-    website?: string;
-  };
-  operatingHours?: {
-    [day: string]: {
-      open: string;
-      close: string;
-      closed?: boolean;
-    };
-  };
-  isActive: boolean;
-  lastUpdated: string;
-}
-
-export interface TimeSlot {
-  id: string;
-  startTime: string;
-  endTime: string;
-  isAvailable: boolean;
-  facility: string;
-  price?: number;
-  currency?: string;
-  bookingUrl?: string;
-}
-
-export interface VenueAvailability {
-  venueId: string;
-  venueName: string;
-  date: string;
-  timeSlots: TimeSlot[];
-  lastUpdated: string;
-}
-
 export interface SportDataResponse {
   sportType: string;
-  venues: Venue[];
-  availability?: VenueAvailability[];
-  total: number;
+  data: SportVenueTimeslotTimeslotOrigin[];
+  count: number;
   lastUpdated: string;
-  dataSource: string;
 }
 
 // ============================================================================
@@ -206,23 +114,6 @@ export interface SportDataResponse {
 
 export interface GetSportDataParams {
   sportType: string;
-  district?: string;
-  date?: string;
-  includeAvailability?: boolean;
-}
-
-export interface SearchVenuesParams {
-  sportType?: string;
-  district?: string;
-  facility?: string;
-  date?: string;
-  coordinates?: {
-    latitude: number;
-    longitude: number;
-    radius?: number;
-  };
-  limit?: number;
-  offset?: number;
 }
 
 // ============================================================================
@@ -305,7 +196,7 @@ export type ApiEndpoint =
   | '/auth/app-token'
   | '/auth/validate-token'
   | '/api/sports'
-  | `/api/sports/${string}`
+  | `/api/sports/${SportType}`
   | '/';
 
 export type HttpMethod = 'GET' | 'POST' | 'PUT' | 'DELETE' | 'PATCH';
