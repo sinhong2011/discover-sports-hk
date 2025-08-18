@@ -1,4 +1,4 @@
-# Lefthook configuration for LCSD Facilities Checker
+# Lefthook configuration for App Name
 # https://github.com/evilmartians/lefthook
 
 # Global settings
@@ -12,19 +12,19 @@ pre-commit:
     # Format code with Biome
     format:
       glob: "*.{js,jsx,ts,tsx,json,css}"
-      run: npx biome format --write {staged_files}
+      run: bun x biome format --write {staged_files}
       stage_fixed: true
 
     # Lint code with Biome
     lint:
       glob: "*.{js,jsx,ts,tsx}"
-      run: npx biome lint --write {staged_files}
+      run: bun x biome lint --write {staged_files}
       stage_fixed: true
 
     # Check code with Biome (combines linting and formatting checks)
     check:
       glob: "*.{js,jsx,ts,tsx,json,css}"
-      run: npx biome check --write {staged_files}
+      run: bun x biome check --write {staged_files}
       stage_fixed: true
 
 # Pre-push hooks
@@ -32,19 +32,19 @@ pre-push:
   commands:
     # Run full Biome check on all files before pushing
     biome-check-all:
-      run: npx biome check .
+      run: bun x biome check .
 
     # Type check with TypeScript
     type-check:
-      run: npx tsc --noEmit
+      run: bun x tsc --noEmit
 
 # Commit message hooks
 commit-msg:
   commands:
     # Validate commit message format (optional)
     # You can customize this based on your team's conventions
-    # commitlint:
-    #   run: npx commitlint --edit {1}
+    commitlint:
+      run: bun x commitlint --edit {1}
 
 # Skip hooks for specific scenarios
 skip_output:

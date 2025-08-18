@@ -16,5 +16,24 @@
     "go": "/Users/niskan516/.local/share/mise/shims/go",
     "gopls": "/Users/niskan516/.local/share/mise/shims/gopls"
   },
-  "prettier.enable": false
+  "prettier.enable": false,
+  "cSpell.words": ["lcsd"],
+  "[typescript]": {
+    "editor.defaultFormatter": "biomejs.biome"
+  },
+  "[javascript]": {
+    "editor.defaultFormatter": "biomejs.biome"
+  },
+  "[typescriptreact]": {
+    "editor.defaultFormatter": "biomejs.biome"
+  },
+  "i18n-ally.localesPaths": ["locales"],
+  "i18n-ally.sourceLanguage": "zh-HK",
+  "i18n-ally.displayLanguage": "zh-HK",
+  "i18n-ally.enabledParsers": ["po"],
+  "i18n-ally.annotations": true,
+  "i18n-ally.keystyle": "flat",
+  "[jsonc]": {
+    "editor.defaultFormatter": "biomejs.biome"
+  }
 }
