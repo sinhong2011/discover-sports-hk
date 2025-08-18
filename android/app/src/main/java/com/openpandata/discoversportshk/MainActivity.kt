@@ -1,4 +1,4 @@
-package com.niskan516dev.lcsdfacilitieschecker
+package com.openpandata.discoversportshk
 import expo.modules.splashscreen.SplashScreenManager
 
 import android.os.Build

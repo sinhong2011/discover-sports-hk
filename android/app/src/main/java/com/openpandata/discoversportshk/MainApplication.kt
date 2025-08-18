@@ -1,4 +1,4 @@
-package com.niskan516dev.lcsdfacilitieschecker
+package com.openpandata.discoversportshk
 
 import android.app.Application
 import android.content.res.Configuration

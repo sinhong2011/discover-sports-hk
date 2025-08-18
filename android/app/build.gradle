@@ -87,9 +87,9 @@ android {
     buildToolsVersion rootProject.ext.buildToolsVersion
     compileSdk rootProject.ext.compileSdkVersion
 
-    namespace 'com.niskan516dev.lcsdfacilitieschecker'
+    namespace 'com.openpandata.discoversportshk'
     defaultConfig {
-        applicationId 'com.niskan516dev.lcsdfacilitieschecker'
+        applicationId 'com.openpandata.discoversportshk'
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion
         versionCode 1
