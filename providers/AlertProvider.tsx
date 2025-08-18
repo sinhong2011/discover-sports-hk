@@ -3,12 +3,13 @@
  * Manages toast-style alerts that appear at the top of the screen
  */
 
-import React, { createContext, useContext, useState, useCallback } from 'react';
-import { View, Platform } from 'react-native';
-import { StyleSheet } from 'react-native-unistyles';
+import type React from 'react';
+import { createContext, useCallback, useContext, useState } from 'react';
+import { Platform, View } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
+import { StyleSheet } from 'react-native-unistyles';
 
-import { Alert, type AlertProps, type AlertVariant } from '@/components/ui/Alert';
+import { Alert, type AlertProps } from '@/components/ui/Alert';
 
 // ============================================================================
 // Types
@@ -48,8 +49,8 @@ interface AlertProviderProps {
   defaultAutoDismiss?: number;
 }
 
-export function AlertProvider({ 
-  children, 
+export function AlertProvider({
+  children,
   maxAlerts = 3,
   defaultAutoDismiss = 5000,
 }: AlertProviderProps) {
@@ -62,26 +63,29 @@ export function AlertProvider({
   }, []);
 
   // Show a new alert
-  const showAlert = useCallback((alertData: Omit<AlertItem, 'id'>): string => {
-    const id = generateId();
-    const newAlert: AlertItem = {
-      ...alertData,
-      id,
-      autoDismiss: alertData.autoDismiss ?? defaultAutoDismiss,
-    };
+  const showAlert = useCallback(
+    (alertData: Omit<AlertItem, 'id'>): string => {
+      const id = generateId();
+      const newAlert: AlertItem = {
+        ...alertData,
+        id,
+        autoDismiss: alertData.autoDismiss ?? defaultAutoDismiss,
+      };
 
-    setAlerts(prev => {
-      const updated = [newAlert, ...prev];
-      // Limit the number of alerts
-      return updated.slice(0, maxAlerts);
-    });
+      setAlerts((prev) => {
+        const updated = [newAlert, ...prev];
+        // Limit the number of alerts
+        return updated.slice(0, maxAlerts);
+      });
 
-    return id;
-  }, [generateId, maxAlerts, defaultAutoDismiss]);
+      return id;
+    },
+    [generateId, maxAlerts, defaultAutoDismiss]
+  );
 
   // Hide a specific alert
   const hideAlert = useCallback((id: string) => {
-    setAlerts(prev => prev.filter(alert => alert.id !== id));
+    setAlerts((prev) => prev?.filter((alert) => alert.id !== id));
   }, []);
 
   // Clear all alerts
@@ -90,41 +94,53 @@ export function AlertProvider({
   }, []);
 
   // Convenience methods
-  const showError = useCallback((message: string, title?: string, autoDismiss?: number) => {
-    return showAlert({
-      variant: 'error',
-      message,
-      title,
-      autoDismiss,
-    });
-  }, [showAlert]);
+  const showError = useCallback(
+    (message: string, title?: string, autoDismiss?: number) => {
+      return showAlert({
+        variant: 'error',
+        message,
+        title,
+        autoDismiss,
+      });
+    },
+    [showAlert]
+  );
 
-  const showWarning = useCallback((message: string, title?: string, autoDismiss?: number) => {
-    return showAlert({
-      variant: 'warning',
-      message,
-      title,
-      autoDismiss,
-    });
-  }, [showAlert]);
+  const showWarning = useCallback(
+    (message: string, title?: string, autoDismiss?: number) => {
+      return showAlert({
+        variant: 'warning',
+        message,
+        title,
+        autoDismiss,
+      });
+    },
+    [showAlert]
+  );
 
-  const showSuccess = useCallback((message: string, title?: string, autoDismiss?: number) => {
-    return showAlert({
-      variant: 'success',
-      message,
-      title,
-      autoDismiss,
-    });
-  }, [showAlert]);
+  const showSuccess = useCallback(
+    (message: string, title?: string, autoDismiss?: number) => {
+      return showAlert({
+        variant: 'success',
+        message,
+        title,
+        autoDismiss,
+      });
+    },
+    [showAlert]
+  );
 
-  const showInfo = useCallback((message: string, title?: string, autoDismiss?: number) => {
-    return showAlert({
-      variant: 'info',
-      message,
-      title,
-      autoDismiss,
-    });
-  }, [showAlert]);
+  const showInfo = useCallback(
+    (message: string, title?: string, autoDismiss?: number) => {
+      return showAlert({
+        variant: 'info',
+        message,
+        title,
+        autoDismiss,
+      });
+    },
+    [showAlert]
+  );
 
   const contextValue: AlertContextType = {
     showAlert,
@@ -139,15 +155,15 @@ export function AlertProvider({
   return (
     <AlertContext.Provider value={contextValue}>
       {children}
-      
+
       {/* Alert Container */}
       {alerts.length > 0 && (
-        <View 
+        <View
           style={[
             styles.alertContainer,
             {
               top: insets.top + (Platform.OS === 'ios' ? 10 : 20),
-            }
+            },
           ]}
           pointerEvents="box-none"
         >
@@ -181,11 +197,11 @@ export function AlertProvider({
  */
 export function useAlert(): AlertContextType {
   const context = useContext(AlertContext);
-  
+
   if (!context) {
     throw new Error('useAlert must be used within an AlertProvider');
   }
-  
+
   return context;
 }
 

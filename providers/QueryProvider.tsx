@@ -3,12 +3,15 @@
  * Wraps the app with QueryClient for data fetching and caching
  */
 
-import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
-import React, { useState } from 'react'
-import { createQueryClient } from '../config/queryClient'
+// Import React Query dev plugin hook for development debugging
+import { useReactQueryDevTools } from '@dev-plugins/react-query';
+import { QueryClientProvider } from '@tanstack/react-query';
+import type React from 'react';
+import { useState } from 'react';
+import { createQueryClient } from '../config/queryClient';
 
 interface QueryProviderProps {
-  children: React.ReactNode
+  children: React.ReactNode;
 }
 
 /**
@@ -16,11 +19,16 @@ interface QueryProviderProps {
  */
 export function QueryProvider({ children }: QueryProviderProps) {
   // Create query client instance (only once per app lifecycle)
-  const [queryClient] = useState(() => createQueryClient())
+  const [queryClient] = useState(() => createQueryClient());
 
-  return (
-    <QueryClientProvider client={queryClient}>
-      {children}
-    </QueryClientProvider>
-  )
+  // Initialize React Query DevTools in development
+  useReactQueryDevTools(queryClient);
+
+  // Debug logging to confirm dev tools are initialized
+  if (__DEV__) {
+    // eslint-disable-next-line no-console
+    console.log('✅ React Query DevTools initialized');
+  }
+
+  return <QueryClientProvider client={queryClient}>{children}</QueryClientProvider>;
 }

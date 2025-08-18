@@ -1,6 +1,6 @@
 /**
  * TanStack Query client configuration
- * Provides optimized defaults for the LCSD Facilities Checker app
+ * Provides optimized defaults for the App Name app
  */
 
 import { QueryClient } from '@tanstack/react-query';

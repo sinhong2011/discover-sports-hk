@@ -3,5 +3,5 @@
  */
 
 export * from './AlertProvider';
+export * from './HomeTabProvider';
 export * from './QueryProvider';
-
