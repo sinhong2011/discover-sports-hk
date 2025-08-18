@@ -29,7 +29,18 @@
   - Tab navigation integration
   - Type-safe icon usage
 
-### 4. **@react-native-async-storage/async-storage** (v2.2.0) - Storage
+### 4. **date-fns** (v4.1.0) - Date & Time Utilities
+- **Location**: `/utils/dateUtils.ts`, `/hooks/useDateFormatting.ts`
+- **Features**:
+  - Comprehensive date/time formatting and manipulation
+  - Full internationalization support (en, zh-HK, zh-CN)
+  - Venue-specific time slot handling
+  - Booking window validation
+  - Relative time formatting
+  - Interactive date picker and time slot components
+  - Enhanced API data validation
+
+### 5. **@react-native-async-storage/async-storage** (v2.2.0) - Storage
 - **Purpose**: Enables Zustand persistence
 - **Auto-persisted data**: Bookmarks, search history, user preferences
 
@@ -95,11 +106,11 @@
 - Tab icons using AppIcon component
 - Consistent icon usage across screens
 
-### Demo Implementation
-- Complete working example in `/app/(tabs)/demo.tsx`
-- Shows all packages working together
-- Interactive language switching
-- Real-time state updates
+### Settings Implementation
+- Complete settings page in `/app/(tabs)/settings.tsx`
+- iOS 18-style design patterns
+- Language selection functionality
+- Native user experience
 
 ## 📱 Platform Compatibility
 

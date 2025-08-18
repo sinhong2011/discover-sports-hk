@@ -1,8 +1,8 @@
-# Multi-API Architecture for LCSD Facilities Checker
+# Multi-API Architecture for App Name
 
 ## Overview
 
-The LCSD Facilities Checker app supports two different APIs simultaneously:
+The App Name app supports two different APIs simultaneously:
 
 1. **Cloudflare Worker API** - Current OpenPanData Worker implementation
 2. **Backend API** - Future backend server implementation

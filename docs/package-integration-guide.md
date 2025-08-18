@@ -1,6 +1,6 @@
 # Package Integration Guide
 
-This document provides setup examples and usage patterns for the integrated packages in the LCSD Facilities Checker app.
+This document provides setup examples and usage patterns for the integrated packages in the App Name app.
 
 ## 📦 Installed Packages
 

@@ -1,6 +1,6 @@
 # Safe Area Integration Guide
 
-This document explains how safe area functionality has been integrated into the LCSD Facilities Checker app.
+This document explains how safe area functionality has been integrated into the App Name app.
 
 ## Overview
 
@@ -153,11 +153,11 @@ Test on devices with different safe area configurations:
 
 Use iOS Simulator's Device > Rotate options to test landscape orientations.
 
-## Demo Screen
+## Settings Screen
 
-The demo screen (`app/(tabs)/demo.tsx`) showcases:
-- Safe area information display
-- Different safe area configurations
+The settings screen (`app/(tabs)/settings.tsx`) showcases:
+- iOS 18-style design patterns
+- Proper safe area handling
 - Integration with existing components
 
 ## Common Issues
