@@ -1,18 +1,18 @@
 import {
-    AntDesign,
-    Entypo,
-    EvilIcons,
-    Feather,
-    FontAwesome,
-    FontAwesome5,
-    FontAwesome6,
-    Foundation,
-    Ionicons,
-    MaterialCommunityIcons,
-    MaterialIcons,
-    Octicons,
-    SimpleLineIcons,
-    Zocial,
+  AntDesign,
+  Entypo,
+  EvilIcons,
+  Feather,
+  FontAwesome,
+  FontAwesome5,
+  FontAwesome6,
+  Foundation,
+  Ionicons,
+  MaterialCommunityIcons,
+  MaterialIcons,
+  Octicons,
+  SimpleLineIcons,
+  Zocial,
 } from '@expo/vector-icons';
 import React from 'react';
 
@@ -108,6 +108,8 @@ export const AppIcons = {
   error: { family: 'Ionicons' as const, name: 'alert-circle-outline' },
   warning: { family: 'Ionicons' as const, name: 'warning-outline' },
   success: { family: 'Ionicons' as const, name: 'checkmark-circle-outline' },
+  'checkmark-circle': { family: 'Ionicons' as const, name: 'checkmark-circle-outline' },
+  'close-circle': { family: 'Ionicons' as const, name: 'close-circle-outline' },
   checkmark: { family: 'Ionicons' as const, name: 'checkmark-outline' },
   info: { family: 'Ionicons' as const, name: 'information-circle-outline' },
 
@@ -122,6 +124,7 @@ export const AppIcons = {
   basketball: { family: 'MaterialCommunityIcons' as const, name: 'basketball' },
   football: { family: 'MaterialCommunityIcons' as const, name: 'soccer' },
   badminton: { family: 'MaterialCommunityIcons' as const, name: 'badminton' },
+  volleyball: { family: 'MaterialCommunityIcons' as const, name: 'volleyball' },
 
   // User interface
   heart: { family: 'Ionicons' as const, name: 'heart-outline' },
@@ -144,6 +147,9 @@ export const AppIcons = {
   wifiOff: { family: 'Ionicons' as const, name: 'wifi-off-outline' },
   cloud: { family: 'Ionicons' as const, name: 'cloud-outline' },
   cloudOff: { family: 'Ionicons' as const, name: 'cloud-offline-outline' },
+  call: { family: 'Ionicons' as const, name: 'call-outline' },
+  sunny: { family: 'Ionicons' as const, name: 'sunny-outline' },
+  moon: { family: 'Ionicons' as const, name: 'moon-outline' },
 } as const;
 
 // Type-safe icon props for predefined icons
@@ -186,19 +192,18 @@ export function getTabIcon(iconName: AppIconName, focused = false) {
 
 // Export individual icon families for direct use
 export {
-    AntDesign,
-    Entypo,
-    EvilIcons,
-    Feather,
-    FontAwesome,
-    FontAwesome5,
-    FontAwesome6,
-    Foundation,
-    Ionicons,
-    MaterialCommunityIcons,
-    MaterialIcons,
-    Octicons,
-    SimpleLineIcons,
-    Zocial
+  AntDesign,
+  Entypo,
+  EvilIcons,
+  Feather,
+  FontAwesome,
+  FontAwesome5,
+  FontAwesome6,
+  Foundation,
+  Ionicons,
+  MaterialCommunityIcons,
+  MaterialIcons,
+  Octicons,
+  SimpleLineIcons,
+  Zocial,
 };
-

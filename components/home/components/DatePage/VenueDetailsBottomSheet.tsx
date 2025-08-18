@@ -4,6 +4,10 @@
  * including venue details, time slots, and booking information
  */
 
+import { ThemedText } from '@/components/ThemedText';
+import { AppIcon } from '@/components/ui/Icon';
+import { useDateFormatting } from '@/hooks/useDateFormatting';
+import { useSportVenueStore } from '@/store';
 import { BottomSheetBackdrop, BottomSheetModal, BottomSheetView } from '@gorhom/bottom-sheet';
 import { msg } from '@lingui/core/macro';
 import { useLingui } from '@lingui/react/macro';
@@ -12,10 +16,6 @@ import { useCallback, useEffect, useMemo, useRef } from 'react';
 import { Alert, Linking, ScrollView, TouchableOpacity, View } from 'react-native';
 import { showLocation } from 'react-native-map-link';
 import { StyleSheet } from 'react-native-unistyles';
-import { ThemedText } from '@/components/ThemedText';
-import { AppIcon } from '@/components/ui/Icon';
-import { useDateFormatting } from '@/hooks/useDateFormatting';
-import { useSportVenueStore } from '@/store';
 import type { VenueDetailsBottomSheetProps } from './types';
 
 // ============================================================================
@@ -369,15 +369,14 @@ export const VenueDetailsBottomSheet: React.FC<VenueDetailsBottomSheetProps> = (
           {/* Action Buttons */}
           <View style={styles.actionButtons}>
             <TouchableOpacity style={styles.primaryButton} activeOpacity={0.8}>
-              <AppIcon name="calendar" size={20} color="#FFFFFF" />
-              <ThemedText style={styles.primaryButtonText}>
+              <AppIcon name="bookmark" size={20} color="#FFFFFF" />
+              <ThemedText style={styles.primaryButtonText}>{t(saveVenueLabel)}</ThemedText>
+            </TouchableOpacity>
+            <TouchableOpacity style={styles.secondaryButton} activeOpacity={0.8}>
+              <AppIcon name="calendar" size={20} color="#6B7280" />
+              <ThemedText style={styles.secondaryButtonText}>
                 {isShowingSpecificTimeSlot ? t(bookNowLabel) : t(viewBookingLabel)}
               </ThemedText>
-            </TouchableOpacity>
-
-            <TouchableOpacity style={styles.secondaryButton} activeOpacity={0.8}>
-              <AppIcon name="bookmark" size={20} color="#6B7280" />
-              <ThemedText style={styles.secondaryButtonText}>{t(saveVenueLabel)}</ThemedText>
             </TouchableOpacity>
           </View>
         </ScrollView>
@@ -468,7 +467,7 @@ const styles = StyleSheet.create((theme) => ({
     fontSize: 16,
     fontWeight: '600',
     color: theme.colors.text,
-    marginBottom: 12,
+    marginBottom: 3,
   },
 
   courtInfo: {
@@ -504,7 +503,6 @@ const styles = StyleSheet.create((theme) => ({
 
   venueName: {
     fontSize: 18,
-
     marginBottom: 4,
   },
 
@@ -517,7 +515,7 @@ const styles = StyleSheet.create((theme) => ({
   facilityInfo: {
     flexDirection: 'row',
     alignItems: 'center',
-    marginBottom: 12,
+    marginBottom: 6,
   },
 
   facilityType: {
@@ -537,7 +535,8 @@ const styles = StyleSheet.create((theme) => ({
     flexDirection: 'row',
     alignItems: 'center',
     backgroundColor: `${theme.colors.background}80`,
-    padding: 12,
+    paddingHorizontal: 12,
+    paddingVertical: 6,
     borderRadius: 8,
     borderWidth: 1,
     borderColor: `${theme.colors.icon}20`,
@@ -554,7 +553,8 @@ const styles = StyleSheet.create((theme) => ({
     flexDirection: 'row',
     alignItems: 'center',
     backgroundColor: `${theme.colors.background}80`,
-    padding: 12,
+    paddingHorizontal: 12,
+    paddingVertical: 6,
     borderRadius: 8,
     borderWidth: 1,
     borderColor: `${theme.colors.icon}20`,
@@ -571,7 +571,8 @@ const styles = StyleSheet.create((theme) => ({
     flexDirection: 'row',
     alignItems: 'center',
     backgroundColor: `${theme.colors.background}80`,
-    padding: 12,
+    paddingHorizontal: 12,
+    paddingVertical: 3,
     borderRadius: 8,
     borderWidth: 1,
     borderColor: `${theme.colors.icon}20`,
@@ -580,6 +581,9 @@ const styles = StyleSheet.create((theme) => ({
   dataUpdateDetails: {
     marginLeft: 8,
     flex: 1,
+    display: 'flex',
+    flexDirection: 'row',
+    justifyContent: 'space-between',
   },
 
   dataUpdateText: {
