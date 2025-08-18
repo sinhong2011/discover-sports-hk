@@ -7,29 +7,29 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		0843531EE51891A23B9470CD /* libPods-lcsdfacilitieschecker.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 75A58F7ED89653E61C215663 /* libPods-lcsdfacilitieschecker.a */; };
 		13B07FBF1A68108700A75B9A /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 13B07FB51A68108700A75B9A /* Images.xcassets */; };
-		18CE09B1A5B5E9C1584C0EAF /* PrivacyInfo.xcprivacy in Resources */ = {isa = PBXBuildFile; fileRef = 03D76AE20B0DE0D7D3AF847C /* PrivacyInfo.xcprivacy */; };
 		3E461D99554A48A4959DE609 /* SplashScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = AA286B85B6C04FC6940260E9 /* SplashScreen.storyboard */; };
-		7F4CAFA40976B15DA1DD6BAC /* ExpoModulesProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = B2ECA883C5E59D746980967D /* ExpoModulesProvider.swift */; };
+		B5345061D554BC7DF3668A6D /* ExpoModulesProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5E5599D879E938A8D637EB59 /* ExpoModulesProvider.swift */; };
 		BB2F792D24A3F905000567C9 /* Expo.plist in Resources */ = {isa = PBXBuildFile; fileRef = BB2F792C24A3F905000567C9 /* Expo.plist */; };
+		C061A0E612F6FAB99D554E81 /* PrivacyInfo.xcprivacy in Resources */ = {isa = PBXBuildFile; fileRef = 92D158E1CF37ACFFA6AE9C76 /* PrivacyInfo.xcprivacy */; };
 		F11748422D0307B40044C1D9 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = F11748412D0307B40044C1D9 /* AppDelegate.swift */; };
+		FFD23598525CC50A07377732 /* libPods-discoversportshk.a in Frameworks */ = {isa = PBXBuildFile; fileRef = F26FC64BB37A9B5B6B55EFB2 /* libPods-discoversportshk.a */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
-		03D76AE20B0DE0D7D3AF847C /* PrivacyInfo.xcprivacy */ = {isa = PBXFileReference; includeInIndex = 1; name = PrivacyInfo.xcprivacy; path = lcsdfacilitieschecker/PrivacyInfo.xcprivacy; sourceTree = "<group>"; };
-		13B07F961A680F5B00A75B9A /* lcsdfacilitieschecker.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = lcsdfacilitieschecker.app; sourceTree = BUILT_PRODUCTS_DIR; };
-		13B07FB51A68108700A75B9A /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; name = Images.xcassets; path = lcsdfacilitieschecker/Images.xcassets; sourceTree = "<group>"; };
-		13B07FB61A68108700A75B9A /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = Info.plist; path = lcsdfacilitieschecker/Info.plist; sourceTree = "<group>"; };
-		75A58F7ED89653E61C215663 /* libPods-lcsdfacilitieschecker.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-lcsdfacilitieschecker.a"; sourceTree = BUILT_PRODUCTS_DIR; };
-		8A05DE20278B7D67DEE59881 /* Pods-lcsdfacilitieschecker.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-lcsdfacilitieschecker.debug.xcconfig"; path = "Target Support Files/Pods-lcsdfacilitieschecker/Pods-lcsdfacilitieschecker.debug.xcconfig"; sourceTree = "<group>"; };
-		AA286B85B6C04FC6940260E9 /* SplashScreen.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; name = SplashScreen.storyboard; path = lcsdfacilitieschecker/SplashScreen.storyboard; sourceTree = "<group>"; };
-		B2ECA883C5E59D746980967D /* ExpoModulesProvider.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = ExpoModulesProvider.swift; path = "Pods/Target Support Files/Pods-lcsdfacilitieschecker/ExpoModulesProvider.swift"; sourceTree = "<group>"; };
+		13B07F961A680F5B00A75B9A /* discoversportshk.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = discoversportshk.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		13B07FB51A68108700A75B9A /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; name = Images.xcassets; path = discoversportshk/Images.xcassets; sourceTree = "<group>"; };
+		13B07FB61A68108700A75B9A /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = Info.plist; path = discoversportshk/Info.plist; sourceTree = "<group>"; };
+		55945A4613CE43EF9FC72CDA /* Pods-discoversportshk.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-discoversportshk.release.xcconfig"; path = "Target Support Files/Pods-discoversportshk/Pods-discoversportshk.release.xcconfig"; sourceTree = "<group>"; };
+		5E5599D879E938A8D637EB59 /* ExpoModulesProvider.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = ExpoModulesProvider.swift; path = "Pods/Target Support Files/Pods-discoversportshk/ExpoModulesProvider.swift"; sourceTree = "<group>"; };
+		92D158E1CF37ACFFA6AE9C76 /* PrivacyInfo.xcprivacy */ = {isa = PBXFileReference; includeInIndex = 1; name = PrivacyInfo.xcprivacy; path = discoversportshk/PrivacyInfo.xcprivacy; sourceTree = "<group>"; };
+		AA286B85B6C04FC6940260E9 /* SplashScreen.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; name = SplashScreen.storyboard; path = discoversportshk/SplashScreen.storyboard; sourceTree = "<group>"; };
+		B723B16C93E96C73205C3FD6 /* Pods-discoversportshk.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-discoversportshk.debug.xcconfig"; path = "Target Support Files/Pods-discoversportshk/Pods-discoversportshk.debug.xcconfig"; sourceTree = "<group>"; };
 		BB2F792C24A3F905000567C9 /* Expo.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Expo.plist; sourceTree = "<group>"; };
-		C64E72826975C1D9A6091D61 /* Pods-lcsdfacilitieschecker.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-lcsdfacilitieschecker.release.xcconfig"; path = "Target Support Files/Pods-lcsdfacilitieschecker/Pods-lcsdfacilitieschecker.release.xcconfig"; sourceTree = "<group>"; };
 		ED297162215061F000B7C4FE /* JavaScriptCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = JavaScriptCore.framework; path = System/Library/Frameworks/JavaScriptCore.framework; sourceTree = SDKROOT; };
-		F11748412D0307B40044C1D9 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = AppDelegate.swift; path = lcsdfacilitieschecker/AppDelegate.swift; sourceTree = "<group>"; };
-		F11748442D0722820044C1D9 /* lcsdfacilitieschecker-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = "lcsdfacilitieschecker-Bridging-Header.h"; path = "lcsdfacilitieschecker/lcsdfacilitieschecker-Bridging-Header.h"; sourceTree = "<group>"; };
+		F11748412D0307B40044C1D9 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = AppDelegate.swift; path = discoversportshk/AppDelegate.swift; sourceTree = "<group>"; };
+		F11748442D0722820044C1D9 /* discoversportshk-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = "discoversportshk-Bridging-Header.h"; path = "discoversportshk/discoversportshk-Bridging-Header.h"; sourceTree = "<group>"; };
+		F26FC64BB37A9B5B6B55EFB2 /* libPods-discoversportshk.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-discoversportshk.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -37,44 +37,42 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				0843531EE51891A23B9470CD /* libPods-lcsdfacilitieschecker.a in Frameworks */,
+				FFD23598525CC50A07377732 /* libPods-discoversportshk.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
-		13B07FAE1A68108700A75B9A /* lcsdfacilitieschecker */ = {
+		13B07FAE1A68108700A75B9A /* discoversportshk */ = {
 			isa = PBXGroup;
 			children = (
 				F11748412D0307B40044C1D9 /* AppDelegate.swift */,
-				F11748442D0722820044C1D9 /* lcsdfacilitieschecker-Bridging-Header.h */,
+				F11748442D0722820044C1D9 /* discoversportshk-Bridging-Header.h */,
 				BB2F792B24A3F905000567C9 /* Supporting */,
 				13B07FB51A68108700A75B9A /* Images.xcassets */,
 				13B07FB61A68108700A75B9A /* Info.plist */,
 				AA286B85B6C04FC6940260E9 /* SplashScreen.storyboard */,
-				03D76AE20B0DE0D7D3AF847C /* PrivacyInfo.xcprivacy */,
+				92D158E1CF37ACFFA6AE9C76 /* PrivacyInfo.xcprivacy */,
 			);
-			name = lcsdfacilitieschecker;
+			name = discoversportshk;
+			sourceTree = "<group>";
+		};
+		199099C3617471CF2EB77CB5 /* discoversportshk */ = {
+			isa = PBXGroup;
+			children = (
+				5E5599D879E938A8D637EB59 /* ExpoModulesProvider.swift */,
+			);
+			name = discoversportshk;
 			sourceTree = "<group>";
 		};
 		2D16E6871FA4F8E400B85C8A /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
 				ED297162215061F000B7C4FE /* JavaScriptCore.framework */,
-				75A58F7ED89653E61C215663 /* libPods-lcsdfacilitieschecker.a */,
+				F26FC64BB37A9B5B6B55EFB2 /* libPods-discoversportshk.a */,
 			);
 			name = Frameworks;
-			sourceTree = "<group>";
-		};
-		2F8E451205BB5A565FA001B3 /* Pods */ = {
-			isa = PBXGroup;
-			children = (
-				8A05DE20278B7D67DEE59881 /* Pods-lcsdfacilitieschecker.debug.xcconfig */,
-				C64E72826975C1D9A6091D61 /* Pods-lcsdfacilitieschecker.release.xcconfig */,
-			);
-			name = Pods;
-			path = Pods;
 			sourceTree = "<group>";
 		};
 		832341AE1AAA6A7D00B99B32 /* Libraries */ = {
@@ -87,12 +85,12 @@
 		83CBB9F61A601CBA00E9B192 = {
 			isa = PBXGroup;
 			children = (
-				13B07FAE1A68108700A75B9A /* lcsdfacilitieschecker */,
+				13B07FAE1A68108700A75B9A /* discoversportshk */,
 				832341AE1AAA6A7D00B99B32 /* Libraries */,
 				83CBBA001A601CBA00E9B192 /* Products */,
 				2D16E6871FA4F8E400B85C8A /* Frameworks */,
-				2F8E451205BB5A565FA001B3 /* Pods */,
-				D0171BB50403FC019690BF6A /* ExpoModulesProviders */,
+				F813241689FA7202BA862417 /* Pods */,
+				E81CA7F5B6CA7C95E337A503 /* ExpoModulesProviders */,
 			);
 			indentWidth = 2;
 			sourceTree = "<group>";
@@ -102,7 +100,7 @@
 		83CBBA001A601CBA00E9B192 /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				13B07F961A680F5B00A75B9A /* lcsdfacilitieschecker.app */,
+				13B07F961A680F5B00A75B9A /* discoversportshk.app */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -113,48 +111,50 @@
 				BB2F792C24A3F905000567C9 /* Expo.plist */,
 			);
 			name = Supporting;
-			path = lcsdfacilitieschecker/Supporting;
+			path = discoversportshk/Supporting;
 			sourceTree = "<group>";
 		};
-		D0171BB50403FC019690BF6A /* ExpoModulesProviders */ = {
+		E81CA7F5B6CA7C95E337A503 /* ExpoModulesProviders */ = {
 			isa = PBXGroup;
 			children = (
-				E91970C943788F8A53B8B168 /* lcsdfacilitieschecker */,
+				199099C3617471CF2EB77CB5 /* discoversportshk */,
 			);
 			name = ExpoModulesProviders;
 			sourceTree = "<group>";
 		};
-		E91970C943788F8A53B8B168 /* lcsdfacilitieschecker */ = {
+		F813241689FA7202BA862417 /* Pods */ = {
 			isa = PBXGroup;
 			children = (
-				B2ECA883C5E59D746980967D /* ExpoModulesProvider.swift */,
+				B723B16C93E96C73205C3FD6 /* Pods-discoversportshk.debug.xcconfig */,
+				55945A4613CE43EF9FC72CDA /* Pods-discoversportshk.release.xcconfig */,
 			);
-			name = lcsdfacilitieschecker;
+			name = Pods;
+			path = Pods;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
-		13B07F861A680F5B00A75B9A /* lcsdfacilitieschecker */ = {
+		13B07F861A680F5B00A75B9A /* discoversportshk */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = 13B07F931A680F5B00A75B9A /* Build configuration list for PBXNativeTarget "lcsdfacilitieschecker" */;
+			buildConfigurationList = 13B07F931A680F5B00A75B9A /* Build configuration list for PBXNativeTarget "discoversportshk" */;
 			buildPhases = (
 				08A4A3CD28434E44B6B9DE2E /* [CP] Check Pods Manifest.lock */,
-				DFC348FB81D1F03548A5D057 /* [Expo] Configure project */,
+				EA732BBC38C32AE61DDBE405 /* [Expo] Configure project */,
 				13B07F871A680F5B00A75B9A /* Sources */,
 				13B07F8C1A680F5B00A75B9A /* Frameworks */,
 				13B07F8E1A680F5B00A75B9A /* Resources */,
 				00DD1BFF1BD5951E006B06BC /* Bundle React Native code and images */,
 				800E24972A6A228C8D4807E9 /* [CP] Copy Pods Resources */,
-				4CD8A620A8CB016FC56255C1 /* [CP] Embed Pods Frameworks */,
+				47F9C1216EBE5D79CADD3BB2 /* [CP] Embed Pods Frameworks */,
 			);
 			buildRules = (
 			);
 			dependencies = (
 			);
-			name = lcsdfacilitieschecker;
-			productName = lcsdfacilitieschecker;
-			productReference = 13B07F961A680F5B00A75B9A /* lcsdfacilitieschecker.app */;
+			name = discoversportshk;
+			productName = discoversportshk;
+			productReference = 13B07F961A680F5B00A75B9A /* discoversportshk.app */;
 			productType = "com.apple.product-type.application";
 		};
 /* End PBXNativeTarget section */
@@ -170,7 +170,7 @@
 					};
 				};
 			};
-			buildConfigurationList = 83CBB9FA1A601CBA00E9B192 /* Build configuration list for PBXProject "lcsdfacilitieschecker" */;
+			buildConfigurationList = 83CBB9FA1A601CBA00E9B192 /* Build configuration list for PBXProject "discoversportshk" */;
 			compatibilityVersion = "Xcode 3.2";
 			developmentRegion = en;
 			hasScannedForEncodings = 0;
@@ -183,7 +183,7 @@
 			projectDirPath = "";
 			projectRoot = "";
 			targets = (
-				13B07F861A680F5B00A75B9A /* lcsdfacilitieschecker */,
+				13B07F861A680F5B00A75B9A /* discoversportshk */,
 			);
 		};
 /* End PBXProject section */
@@ -196,7 +196,7 @@
 				BB2F792D24A3F905000567C9 /* Expo.plist in Resources */,
 				13B07FBF1A68108700A75B9A /* Images.xcassets in Resources */,
 				3E461D99554A48A4959DE609 /* SplashScreen.storyboard in Resources */,
-				18CE09B1A5B5E9C1584C0EAF /* PrivacyInfo.xcprivacy in Resources */,
+				C061A0E612F6FAB99D554E81 /* PrivacyInfo.xcprivacy in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -233,20 +233,20 @@
 			outputFileListPaths = (
 			);
 			outputPaths = (
-				"$(DERIVED_FILE_DIR)/Pods-lcsdfacilitieschecker-checkManifestLockResult.txt",
+				"$(DERIVED_FILE_DIR)/Pods-discoversportshk-checkManifestLockResult.txt",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
 			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
 			showEnvVarsInLog = 0;
 		};
-		4CD8A620A8CB016FC56255C1 /* [CP] Embed Pods Frameworks */ = {
+		47F9C1216EBE5D79CADD3BB2 /* [CP] Embed Pods Frameworks */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
 			);
 			inputPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-lcsdfacilitieschecker/Pods-lcsdfacilitieschecker-frameworks.sh",
+				"${PODS_ROOT}/Target Support Files/Pods-discoversportshk/Pods-discoversportshk-frameworks.sh",
 				"${PODS_XCFRAMEWORKS_BUILD_DIR}/hermes-engine/Pre-built/hermes.framework/hermes",
 			);
 			name = "[CP] Embed Pods Frameworks";
@@ -255,7 +255,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-lcsdfacilitieschecker/Pods-lcsdfacilitieschecker-frameworks.sh\"\n";
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-discoversportshk/Pods-discoversportshk-frameworks.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
 		800E24972A6A228C8D4807E9 /* [CP] Copy Pods Resources */ = {
@@ -264,37 +264,49 @@
 			files = (
 			);
 			inputPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-lcsdfacilitieschecker/Pods-lcsdfacilitieschecker-resources.sh",
+				"${PODS_ROOT}/Target Support Files/Pods-discoversportshk/Pods-discoversportshk-resources.sh",
+				"${PODS_CONFIGURATION_BUILD_DIR}/EXApplication/ExpoApplication_privacy.bundle",
 				"${PODS_CONFIGURATION_BUILD_DIR}/EXConstants/EXConstants.bundle",
 				"${PODS_CONFIGURATION_BUILD_DIR}/EXConstants/ExpoConstants_privacy.bundle",
+				"${PODS_CONFIGURATION_BUILD_DIR}/ExpoDevice/ExpoDevice_privacy.bundle",
 				"${PODS_CONFIGURATION_BUILD_DIR}/ExpoFileSystem/ExpoFileSystem_privacy.bundle",
+				"${PODS_CONFIGURATION_BUILD_DIR}/ExpoLocalization/ExpoLocalization_privacy.bundle",
 				"${PODS_CONFIGURATION_BUILD_DIR}/ExpoSystemUI/ExpoSystemUI_privacy.bundle",
 				"${PODS_CONFIGURATION_BUILD_DIR}/RCT-Folly/RCT-Folly_privacy.bundle",
+				"${PODS_CONFIGURATION_BUILD_DIR}/RNCAsyncStorage/RNCAsyncStorage_resources.bundle",
 				"${PODS_CONFIGURATION_BUILD_DIR}/React-Core/React-Core_privacy.bundle",
 				"${PODS_CONFIGURATION_BUILD_DIR}/React-cxxreact/React-cxxreact_privacy.bundle",
 				"${PODS_CONFIGURATION_BUILD_DIR}/SDWebImage/SDWebImage.bundle",
 				"${PODS_CONFIGURATION_BUILD_DIR}/boost/boost_privacy.bundle",
+				"${PODS_CONFIGURATION_BUILD_DIR}/expo-dev-launcher/EXDevLauncher.bundle",
+				"${PODS_CONFIGURATION_BUILD_DIR}/expo-dev-menu/EXDevMenu.bundle",
 				"${PODS_CONFIGURATION_BUILD_DIR}/glog/glog_privacy.bundle",
 			);
 			name = "[CP] Copy Pods Resources";
 			outputPaths = (
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/ExpoApplication_privacy.bundle",
 				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/EXConstants.bundle",
 				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/ExpoConstants_privacy.bundle",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/ExpoDevice_privacy.bundle",
 				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/ExpoFileSystem_privacy.bundle",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/ExpoLocalization_privacy.bundle",
 				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/ExpoSystemUI_privacy.bundle",
 				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/RCT-Folly_privacy.bundle",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/RNCAsyncStorage_resources.bundle",
 				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/React-Core_privacy.bundle",
 				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/React-cxxreact_privacy.bundle",
 				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/SDWebImage.bundle",
 				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/boost_privacy.bundle",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/EXDevLauncher.bundle",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/EXDevMenu.bundle",
 				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/glog_privacy.bundle",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-lcsdfacilitieschecker/Pods-lcsdfacilitieschecker-resources.sh\"\n";
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-discoversportshk/Pods-discoversportshk-resources.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
-		DFC348FB81D1F03548A5D057 /* [Expo] Configure project */ = {
+		EA732BBC38C32AE61DDBE405 /* [Expo] Configure project */ = {
 			isa = PBXShellScriptBuildPhase;
 			alwaysOutOfDate = 1;
 			buildActionMask = 2147483647;
@@ -311,7 +323,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "# This script configures Expo modules and generates the modules provider file.\nbash -l -c \"./Pods/Target\\ Support\\ Files/Pods-lcsdfacilitieschecker/expo-configure-project.sh\"\n";
+			shellScript = "# This script configures Expo modules and generates the modules provider file.\nbash -l -c \"./Pods/Target\\ Support\\ Files/Pods-discoversportshk/expo-configure-project.sh\"\n";
 		};
 /* End PBXShellScriptBuildPhase section */
 
@@ -321,7 +333,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				F11748422D0307B40044C1D9 /* AppDelegate.swift in Sources */,
-				7F4CAFA40976B15DA1DD6BAC /* ExpoModulesProvider.swift in Sources */,
+				B5345061D554BC7DF3668A6D /* ExpoModulesProvider.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -330,18 +342,18 @@
 /* Begin XCBuildConfiguration section */
 		13B07F941A680F5B00A75B9A /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 8A05DE20278B7D67DEE59881 /* Pods-lcsdfacilitieschecker.debug.xcconfig */;
+			baseConfigurationReference = B723B16C93E96C73205C3FD6 /* Pods-discoversportshk.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
-				CODE_SIGN_ENTITLEMENTS = lcsdfacilitieschecker/lcsdfacilitieschecker.entitlements;
+				CODE_SIGN_ENTITLEMENTS = discoversportshk/discoversportshk.entitlements;
 				CURRENT_PROJECT_VERSION = 1;
 				ENABLE_BITCODE = NO;
 				GCC_PREPROCESSOR_DEFINITIONS = (
 					"$(inherited)",
 					"FB_SONARKIT_ENABLED=1",
 				);
-				INFOPLIST_FILE = lcsdfacilitieschecker/Info.plist;
+				INFOPLIST_FILE = discoversportshk/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 15.1;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
@@ -354,9 +366,9 @@
 					"-lc++",
 				);
 				OTHER_SWIFT_FLAGS = "$(inherited) -D EXPO_CONFIGURATION_DEBUG";
-				PRODUCT_BUNDLE_IDENTIFIER = com.niskan516dev.lcsdfacilitieschecker;
-				PRODUCT_NAME = lcsdfacilitieschecker;
-				SWIFT_OBJC_BRIDGING_HEADER = "lcsdfacilitieschecker/lcsdfacilitieschecker-Bridging-Header.h";
+				PRODUCT_BUNDLE_IDENTIFIER = com.openpandata.discoversportshk;
+				PRODUCT_NAME = discoversportshk;
+				SWIFT_OBJC_BRIDGING_HEADER = "discoversportshk/discoversportshk-Bridging-Header.h";
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
@@ -366,13 +378,13 @@
 		};
 		13B07F951A680F5B00A75B9A /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = C64E72826975C1D9A6091D61 /* Pods-lcsdfacilitieschecker.release.xcconfig */;
+			baseConfigurationReference = 55945A4613CE43EF9FC72CDA /* Pods-discoversportshk.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
-				CODE_SIGN_ENTITLEMENTS = lcsdfacilitieschecker/lcsdfacilitieschecker.entitlements;
+				CODE_SIGN_ENTITLEMENTS = discoversportshk/discoversportshk.entitlements;
 				CURRENT_PROJECT_VERSION = 1;
-				INFOPLIST_FILE = lcsdfacilitieschecker/Info.plist;
+				INFOPLIST_FILE = discoversportshk/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 15.1;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
@@ -385,9 +397,9 @@
 					"-lc++",
 				);
 				OTHER_SWIFT_FLAGS = "$(inherited) -D EXPO_CONFIGURATION_RELEASE";
-				PRODUCT_BUNDLE_IDENTIFIER = com.niskan516dev.lcsdfacilitieschecker;
-				PRODUCT_NAME = lcsdfacilitieschecker;
-				SWIFT_OBJC_BRIDGING_HEADER = "lcsdfacilitieschecker/lcsdfacilitieschecker-Bridging-Header.h";
+				PRODUCT_BUNDLE_IDENTIFIER = com.openpandata.discoversportshk;
+				PRODUCT_NAME = discoversportshk;
+				SWIFT_OBJC_BRIDGING_HEADER = "discoversportshk/discoversportshk-Bridging-Header.h";
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 				VERSIONING_SYSTEM = "apple-generic";
@@ -521,7 +533,7 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
-		13B07F931A680F5B00A75B9A /* Build configuration list for PBXNativeTarget "lcsdfacilitieschecker" */ = {
+		13B07F931A680F5B00A75B9A /* Build configuration list for PBXNativeTarget "discoversportshk" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				13B07F941A680F5B00A75B9A /* Debug */,
@@ -530,7 +542,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		83CBB9FA1A601CBA00E9B192 /* Build configuration list for PBXProject "lcsdfacilitieschecker" */ = {
+		83CBB9FA1A601CBA00E9B192 /* Build configuration list for PBXProject "discoversportshk" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				83CBBA201A601CBA00E9B192 /* Debug */,
