@@ -1,4 +1,4 @@
-import type { TimeSlot } from '@/types/time';
+import type { TimeSlot, TimeSlotData } from '@/types/time';
 
 export interface LastUpdateInfo {
   code: string;
@@ -44,6 +44,7 @@ export interface SportVenueTimeslotTimeslotOrigin {
 
 export interface SportVenueTimeslot {
   district: string;
+  districtCode: string;
   venue: string;
   address: string;
   phoneNumber: string;
@@ -55,6 +56,7 @@ export interface SportVenueTimeslot {
   sessionStartTime: string;
   sessionEndTime: string;
   availableCourts: string;
+  originalData: SportVenueTimeslotTimeslotOrigin;
 }
 
 export type SportVenueTimeslotTableDataItemByHour = Pick<
@@ -84,3 +86,54 @@ export type SportSportType =
   | 'volleyball'
   | 'turfSoccerPitch'
   | 'tennis';
+
+// ============================================================================
+// Venue Data Types (moved from DatePage/types.ts)
+// ============================================================================
+
+/**
+ * Facility location data with its time slots
+ */
+export interface FacilityLocationData {
+  /** Facility location name */
+  name: string;
+  /** Array of time slots for this facility location */
+  timeSlots: TimeSlotData[];
+  /** Total available courts across all time slots for this facility location */
+  totalAvailableCourts: number;
+  /** Maximum courts available in any single time slot for this facility location */
+  maxCourtsPerSlot: number;
+}
+
+/**
+ * Venue data with multiple facility locations
+ */
+export interface VenueData {
+  /** Item type for FlashList */
+  type: 'venue';
+  /** Unique identifier for the venue */
+  id: string;
+  /** Venue name */
+  name: string;
+  /** Venue address */
+  address: string;
+  /** Venue phone number */
+  phoneNumber: string;
+  /** District name */
+  district: string;
+  /** Facility type */
+  facilityType: string;
+  /** Array of facility locations with their time slots */
+  facilityLocations: FacilityLocationData[];
+  /** Venue coordinates */
+  coordinates: {
+    latitude: string;
+    longitude: string;
+  };
+  /** Total available courts across all facility locations */
+  totalAvailableCourts: number;
+  /** Maximum courts available in any single time slot across all facility locations */
+  maxCourtsPerSlot: number;
+  /** All time slots across all facility locations (for backward compatibility) */
+  timeSlots: TimeSlotData[];
+}

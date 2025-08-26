@@ -246,7 +246,7 @@ export function transformApiTimeSlotToTimeSlot(apiTimeSlot: ApiTimeSlot): TimeSl
 /**
  * Enhanced venue transformation with date-fns validation
  */
-export function transformApiVenueToVenueWithDateValidation(apiVenue: ApiVenue): Venue {
+export function transformApiVenueToVenueWithDateValidation(apiVenue: ApiVenueData): Venue {
   // Import date-fns functions for validation
   const { isValid, parseISO } = require('date-fns');
 

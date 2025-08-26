@@ -3,12 +3,12 @@
  * Handles app token requests, validation, and secure storage
  */
 
-import AsyncStorage from '@react-native-async-storage/async-storage';
 import * as Application from 'expo-application';
 import * as Device from 'expo-device';
 import * as SecureStore from 'expo-secure-store';
 import ky from 'ky';
 import { Platform } from 'react-native';
+import { authStorage } from '../store/mmkvStorage';
 import type {
   AppCredentials,
   AppTokenRequest,
@@ -35,10 +35,10 @@ const TOKEN_EXPIRY_BUFFER = 5 * 60 * 1000; // 5 minutes buffer before expiry
 /**
  * Generate a unique device ID
  */
-async function generateDeviceId(): Promise<string> {
+function generateDeviceId(): string {
   try {
     // Try to get existing device ID from storage
-    const existingId = await AsyncStorage.getItem('@device_id');
+    const existingId = authStorage.getString('@device_id');
     if (existingId) {
       return existingId;
     }
@@ -50,7 +50,7 @@ async function generateDeviceId(): Promise<string> {
     const deviceId = `${platform}_${timestamp}_${random}`;
 
     // Store for future use
-    await AsyncStorage.setItem('@device_id', deviceId);
+    authStorage.set('@device_id', deviceId);
     return deviceId;
   } catch (error) {
     console.warn('Failed to generate/retrieve device ID:', error);
@@ -62,9 +62,9 @@ async function generateDeviceId(): Promise<string> {
 /**
  * Get device information for API requests
  */
-export async function getDeviceInfo(): Promise<DeviceInfo> {
+export function getDeviceInfo(): DeviceInfo {
   try {
-    const deviceId = await generateDeviceId();
+    const deviceId = generateDeviceId();
     const appVersion = Application.nativeApplicationVersion || '1.0.0';
     const osVersion = Device.osVersion || 'unknown';
     const deviceModel = Device.modelName || 'unknown';
@@ -81,7 +81,7 @@ export async function getDeviceInfo(): Promise<DeviceInfo> {
     console.warn('Failed to get device info:', error);
     // Return fallback device info
     return {
-      deviceId: await generateDeviceId(),
+      deviceId: generateDeviceId(),
       platform: Platform.OS,
       appVersion: '1.0.0',
       osVersion: 'unknown',
@@ -148,28 +148,28 @@ async function storeToken(tokenData: AppTokenResponse): Promise<void> {
     }
     console.error('Failed to store token in SecureStore:', error);
 
-    // Fallback to AsyncStorage if SecureStore fails
+    // Fallback to MMKV if SecureStore fails
     try {
-      const asyncStorageKey = `@${TOKEN_STORAGE_KEY}`; // Keep @ for AsyncStorage compatibility
-      const asyncRefreshKey = `@${REFRESH_TOKEN_STORAGE_KEY}`;
+      const mmkvTokenKey = `@${TOKEN_STORAGE_KEY}`; // Keep @ for compatibility
+      const mmkvRefreshKey = `@${REFRESH_TOKEN_STORAGE_KEY}`;
 
-      await AsyncStorage.setItem(asyncStorageKey, JSON.stringify(cachedToken));
+      authStorage.set(mmkvTokenKey, JSON.stringify(cachedToken));
       if (tokenData.refreshToken) {
-        await AsyncStorage.setItem(asyncRefreshKey, tokenData.refreshToken);
+        authStorage.set(mmkvRefreshKey, tokenData.refreshToken);
       }
 
       if (__DEV__) {
-        console.log(`✅ Token stored in AsyncStorage fallback`);
+        console.log(`✅ Token stored in MMKV fallback`);
       }
-      console.warn('Fallback: Stored token in AsyncStorage instead of SecureStore');
+      console.warn('Fallback: Stored token in MMKV instead of SecureStore');
     } catch (fallbackError) {
       if (__DEV__) {
-        console.error(`❌ AsyncStorage fallback failed:`, {
+        console.error(`❌ MMKV fallback failed:`, {
           timestamp: new Date().toISOString(),
           error: fallbackError instanceof Error ? fallbackError.message : String(fallbackError),
         });
       }
-      console.error('Failed to store token in fallback AsyncStorage:', fallbackError);
+      console.error('Failed to store token in fallback MMKV:', fallbackError);
       throw new Error('Failed to store authentication token');
     }
   }
@@ -190,25 +190,25 @@ async function getStoredToken(): Promise<CachedToken | null> {
     // Try SecureStore first
     const tokenJson = await SecureStore.getItemAsync(TOKEN_STORAGE_KEY);
     if (!tokenJson) {
-      // Fallback to AsyncStorage for migration (with @ prefix)
-      const asyncStorageKey = `@${TOKEN_STORAGE_KEY}`;
-      const fallbackTokenJson = await AsyncStorage.getItem(asyncStorageKey);
+      // Fallback to MMKV for migration (with @ prefix)
+      const mmkvStorageKey = `@${TOKEN_STORAGE_KEY}`;
+      const fallbackTokenJson = authStorage.getString(mmkvStorageKey);
       if (!fallbackTokenJson) {
         if (__DEV__) {
-          console.log(`📖 No stored token found in SecureStore or AsyncStorage`);
+          console.log(`📖 No stored token found in SecureStore or MMKV`);
         }
         return null;
       }
 
-      // Migrate from AsyncStorage to SecureStore
+      // Migrate from MMKV to SecureStore
       const cachedToken: CachedToken = JSON.parse(fallbackTokenJson);
       try {
         await SecureStore.setItemAsync(TOKEN_STORAGE_KEY, fallbackTokenJson);
-        await AsyncStorage.removeItem(asyncStorageKey); // Clean up old storage
+        authStorage.delete(mmkvStorageKey); // Clean up old storage
         if (__DEV__) {
-          console.log(`✅ Migrated token from AsyncStorage to SecureStore`);
+          console.log(`✅ Migrated token from MMKV to SecureStore`);
         }
-        console.log('Migrated token from AsyncStorage to SecureStore');
+        console.log('Migrated token from MMKV to SecureStore');
       } catch (migrationError) {
         if (__DEV__) {
           console.warn(`⚠️ Failed to migrate token:`, {
@@ -242,29 +242,29 @@ async function getStoredToken(): Promise<CachedToken | null> {
     }
     console.warn('Failed to retrieve stored token from SecureStore:', error);
 
-    // Fallback to AsyncStorage
+    // Fallback to MMKV
     try {
-      const asyncStorageKey = `@${TOKEN_STORAGE_KEY}`;
-      const fallbackTokenJson = await AsyncStorage.getItem(asyncStorageKey);
+      const mmkvStorageKey = `@${TOKEN_STORAGE_KEY}`;
+      const fallbackTokenJson = authStorage.getString(mmkvStorageKey);
       if (!fallbackTokenJson) {
         if (__DEV__) {
-          console.log(`📖 No token found in AsyncStorage fallback`);
+          console.log(`📖 No token found in MMKV fallback`);
         }
         return null;
       }
       const cachedToken: CachedToken = JSON.parse(fallbackTokenJson);
       if (__DEV__) {
-        console.log(`✅ Retrieved token from AsyncStorage fallback`);
+        console.log(`✅ Retrieved token from MMKV fallback`);
       }
       return cachedToken;
     } catch (fallbackError) {
       if (__DEV__) {
-        console.warn(`⚠️ AsyncStorage fallback failed:`, {
+        console.warn(`⚠️ MMKV fallback failed:`, {
           timestamp: new Date().toISOString(),
           error: fallbackError instanceof Error ? fallbackError.message : String(fallbackError),
         });
       }
-      console.warn('Failed to retrieve token from fallback AsyncStorage:', fallbackError);
+      console.warn('Failed to retrieve token from fallback MMKV:', fallbackError);
       return null;
     }
   }
@@ -283,10 +283,11 @@ async function clearStoredTokens(): Promise<void> {
   }
 
   try {
-    // Also clear from AsyncStorage (for migration/fallback cleanup)
-    await AsyncStorage.multiRemove([TOKEN_STORAGE_KEY, REFRESH_TOKEN_STORAGE_KEY]);
+    // Also clear from MMKV (for migration/fallback cleanup)
+    authStorage.delete(`@${TOKEN_STORAGE_KEY}`);
+    authStorage.delete(`@${REFRESH_TOKEN_STORAGE_KEY}`);
   } catch (error) {
-    console.warn('Failed to clear tokens from AsyncStorage:', error);
+    console.warn('Failed to clear tokens from MMKV:', error);
   }
 }
 
@@ -310,7 +311,7 @@ async function requestAppToken(baseUrl: string): Promise<AppTokenResponse> {
   const timestamp = new Date().toISOString();
 
   try {
-    const deviceInfo = await getDeviceInfo();
+    const deviceInfo = getDeviceInfo();
     const credentials = getAppCredentials();
 
     const requestData: AppTokenRequest = {

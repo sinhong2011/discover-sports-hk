@@ -3,9 +3,9 @@
  * Handles authentication flow for the Backend API (different from Worker API)
  */
 
-import AsyncStorage from '@react-native-async-storage/async-storage';
 import * as SecureStore from 'expo-secure-store';
 import ky from 'ky';
+import { authStorage } from '../store/mmkvStorage';
 import type {
   BackendLoginRequest,
   BackendRefreshRequest,
@@ -57,13 +57,13 @@ async function storeBackendTokens(tokenData: BackendTokenResponse): Promise<void
   } catch (error) {
     console.error('Failed to store backend tokens in SecureStore:', error);
 
-    // Fallback to AsyncStorage if SecureStore fails
+    // Fallback to MMKV if SecureStore fails
     try {
-      await AsyncStorage.setItem(BACKEND_TOKEN_STORAGE_KEY, JSON.stringify(cachedToken));
-      await AsyncStorage.setItem(BACKEND_REFRESH_TOKEN_STORAGE_KEY, tokenData.refreshToken);
-      console.warn('Fallback: Stored backend tokens in AsyncStorage instead of SecureStore');
+      authStorage.set(BACKEND_TOKEN_STORAGE_KEY, JSON.stringify(cachedToken));
+      authStorage.set(BACKEND_REFRESH_TOKEN_STORAGE_KEY, tokenData.refreshToken);
+      console.warn('Fallback: Stored backend tokens in MMKV instead of SecureStore');
     } catch (fallbackError) {
-      console.error('Failed to store backend tokens in fallback AsyncStorage:', fallbackError);
+      console.error('Failed to store backend tokens in fallback MMKV:', fallbackError);
       throw new Error('Failed to store backend authentication tokens');
     }
   }
@@ -77,25 +77,23 @@ async function getStoredBackendToken(): Promise<CachedBackendToken | null> {
     // Try SecureStore first
     const tokenJson = await SecureStore.getItemAsync(BACKEND_TOKEN_STORAGE_KEY);
     if (!tokenJson) {
-      // Fallback to AsyncStorage for migration
-      const fallbackTokenJson = await AsyncStorage.getItem(BACKEND_TOKEN_STORAGE_KEY);
+      // Fallback to MMKV for migration
+      const fallbackTokenJson = authStorage.getString(BACKEND_TOKEN_STORAGE_KEY);
       if (!fallbackTokenJson) {
         return null;
       }
 
-      // Migrate from AsyncStorage to SecureStore
+      // Migrate from MMKV to SecureStore
       const cachedToken: CachedBackendToken = JSON.parse(fallbackTokenJson);
       try {
         await SecureStore.setItemAsync(BACKEND_TOKEN_STORAGE_KEY, fallbackTokenJson);
-        const refreshToken = await AsyncStorage.getItem(BACKEND_REFRESH_TOKEN_STORAGE_KEY);
+        const refreshToken = authStorage.getString(BACKEND_REFRESH_TOKEN_STORAGE_KEY);
         if (refreshToken) {
           await SecureStore.setItemAsync(BACKEND_REFRESH_TOKEN_STORAGE_KEY, refreshToken);
         }
-        await AsyncStorage.multiRemove([
-          BACKEND_TOKEN_STORAGE_KEY,
-          BACKEND_REFRESH_TOKEN_STORAGE_KEY,
-        ]);
-        console.log('Migrated backend tokens from AsyncStorage to SecureStore');
+        authStorage.delete(BACKEND_TOKEN_STORAGE_KEY);
+        authStorage.delete(BACKEND_REFRESH_TOKEN_STORAGE_KEY);
+        console.log('Migrated backend tokens from MMKV to SecureStore');
       } catch (migrationError) {
         console.warn('Failed to migrate backend tokens to SecureStore:', migrationError);
       }
@@ -107,16 +105,16 @@ async function getStoredBackendToken(): Promise<CachedBackendToken | null> {
   } catch (error) {
     console.warn('Failed to retrieve backend token from SecureStore:', error);
 
-    // Fallback to AsyncStorage
+    // Fallback to MMKV
     try {
-      const fallbackTokenJson = await AsyncStorage.getItem(BACKEND_TOKEN_STORAGE_KEY);
+      const fallbackTokenJson = authStorage.getString(BACKEND_TOKEN_STORAGE_KEY);
       if (!fallbackTokenJson) {
         return null;
       }
       const cachedToken: CachedBackendToken = JSON.parse(fallbackTokenJson);
       return cachedToken;
     } catch (fallbackError) {
-      console.warn('Failed to retrieve backend token from fallback AsyncStorage:', fallbackError);
+      console.warn('Failed to retrieve backend token from fallback MMKV:', fallbackError);
       return null;
     }
   }
@@ -135,10 +133,11 @@ async function clearStoredBackendTokens(): Promise<void> {
   }
 
   try {
-    // Also clear from AsyncStorage (for migration/fallback cleanup)
-    await AsyncStorage.multiRemove([BACKEND_TOKEN_STORAGE_KEY, BACKEND_REFRESH_TOKEN_STORAGE_KEY]);
+    // Also clear from MMKV (for migration/fallback cleanup)
+    authStorage.delete(BACKEND_TOKEN_STORAGE_KEY);
+    authStorage.delete(BACKEND_REFRESH_TOKEN_STORAGE_KEY);
   } catch (error) {
-    console.warn('Failed to clear backend tokens from AsyncStorage:', error);
+    console.warn('Failed to clear backend tokens from MMKV:', error);
   }
 }
 
@@ -160,7 +159,7 @@ function isBackendTokenExpired(token: CachedBackendToken): boolean {
  */
 async function loginToBackend(baseUrl: string): Promise<BackendTokenResponse> {
   try {
-    const deviceInfo = await getDeviceInfo();
+    const deviceInfo = getDeviceInfo();
 
     // TODO: Implement actual backend login flow
     // This might involve user credentials, OAuth, or different device registration

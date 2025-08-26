@@ -1,8 +1,9 @@
 import { StyleSheet } from 'react-native-unistyles';
 
-const lightTheme = {
+export const lightTheme = {
   colors: {
     text: '#11181C',
+    textSecondary: '#687076',
     background: '#ffffff',
     pageBackground: '#f2f2f7', // Light gray page background
     border: '#e5e5ea', // Subtle border color
@@ -21,21 +22,29 @@ const lightTheme = {
       inactiveText: '#3a3b3eff',
     },
   },
+  fonts: {
+    light: 'Inter_300Light',
+    regular: 'Inter_400Regular',
+    medium: 'Inter_500Medium',
+    semiBold: 'Inter_600SemiBold',
+    bold: 'Inter_700Bold',
+  },
   gap: (v: number) => v * 8,
 };
 
-const darkTheme = {
+export const darkTheme = {
   colors: {
     text: '#ECEDEE',
-    background: '#151718',
-    pageBackground: '#1c1c1e', // Dark gray page background
+    textSecondary: '#9BA1A6',
+    background: '#282a36',
+    pageBackground: '#1e1f2e', // Dark gray page background
     border: '#38383a', // Subtle border color for dark theme
     tint: '#e5660bff',
     icon: '#9BA1A6',
     tabIconDefault: '#9BA1A6',
     tabIconSelected: '#ffffff',
     // Skeleton colors - improved contrast
-    skeletonCard: '#1f2937',
+    skeletonCard: '#232530',
     skeletonElement: '#374151',
     skeletonGradientStart: '#1f2937',
     skeletonGradientEnd: '#374151',
@@ -44,6 +53,13 @@ const darkTheme = {
       activeText: '#ffffff',
       inactiveText: '#9BA1A6',
     },
+  },
+  fonts: {
+    light: 'Inter_300Light',
+    regular: 'Inter_400Regular',
+    medium: 'Inter_500Medium',
+    semiBold: 'Inter_600SemiBold',
+    bold: 'Inter_700Bold',
   },
   gap: (v: number) => v * 8,
 };

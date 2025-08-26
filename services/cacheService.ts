@@ -1,10 +1,10 @@
 /**
  * Cache Service for venue data
- * Handles in-memory caching with TTL and AsyncStorage persistence
+ * Handles in-memory caching with TTL and MMKV persistence
  */
 
-import AsyncStorage from '@react-native-async-storage/async-storage';
 import { getConfig } from '../config/env';
+import { storage } from '../store/mmkvStorage';
 import type { CacheEntry } from './types';
 
 // ============================================================================
@@ -83,12 +83,12 @@ function clearMemoryCache(pattern?: string): void {
 const CACHE_PREFIX = 'r2_cache';
 
 /**
- * Get from AsyncStorage cache
+ * Get from MMKV cache
  */
-async function getFromAsyncStorage<T>(key: string): Promise<T | null> {
+function getFromMMKVStorage<T>(key: string): T | null {
   try {
     const cacheKey = `${CACHE_PREFIX}:${key}`;
-    const cached = await AsyncStorage.getItem(cacheKey);
+    const cached = storage.getString(cacheKey);
 
     if (!cached) {
       return null;
@@ -96,21 +96,21 @@ async function getFromAsyncStorage<T>(key: string): Promise<T | null> {
 
     const entry: CacheEntry<T> = JSON.parse(cached);
     if (isExpired(entry)) {
-      await AsyncStorage.removeItem(cacheKey);
+      storage.delete(cacheKey);
       return null;
     }
 
     return entry.data;
   } catch (error) {
-    console.warn('Failed to get from AsyncStorage cache:', error);
+    console.warn('Failed to get from MMKV cache:', error);
     return null;
   }
 }
 
 /**
- * Set in AsyncStorage cache
+ * Set in MMKV cache
  */
-async function setInAsyncStorage<T>(key: string, data: T, ttl?: number): Promise<void> {
+function setInMMKVStorage<T>(key: string, data: T, ttl?: number): void {
   try {
     const config = getConfig();
     const cacheTtl = ttl || config.api.worker.cacheTtl;
@@ -121,28 +121,28 @@ async function setInAsyncStorage<T>(key: string, data: T, ttl?: number): Promise
     };
 
     const cacheKey = `${CACHE_PREFIX}:${key}`;
-    await AsyncStorage.setItem(cacheKey, JSON.stringify(entry));
+    storage.set(cacheKey, JSON.stringify(entry));
   } catch (error) {
-    console.warn('Failed to set AsyncStorage cache:', error);
+    console.warn('Failed to set MMKV cache:', error);
   }
 }
 
 /**
- * Clear AsyncStorage cache
+ * Clear MMKV cache
  */
-async function clearAsyncStorage(pattern?: string): Promise<void> {
+function clearMMKVStorage(pattern?: string): void {
   try {
-    const keys = await AsyncStorage.getAllKeys();
-    const cacheKeys = keys.filter((key) => key.startsWith(CACHE_PREFIX));
+    const keys = storage.getAllKeys();
+    const cacheKeys = keys.filter((key: string) => key.startsWith(CACHE_PREFIX));
 
     if (pattern) {
-      const keysToDelete = cacheKeys.filter((key) => key.includes(pattern));
-      await AsyncStorage.multiRemove(keysToDelete);
+      const keysToDelete = cacheKeys.filter((key: string) => key.includes(pattern));
+      keysToDelete.forEach((key: string) => storage.delete(key));
     } else {
-      await AsyncStorage.multiRemove(cacheKeys);
+      cacheKeys.forEach((key: string) => storage.delete(key));
     }
   } catch (error) {
-    console.warn('Failed to clear AsyncStorage cache:', error);
+    console.warn('Failed to clear MMKV cache:', error);
   }
 }
 
@@ -153,38 +153,38 @@ async function clearAsyncStorage(pattern?: string): Promise<void> {
 /**
  * Get cached data (checks memory first, then AsyncStorage)
  */
-export async function getCached<T>(key: string): Promise<T | null> {
+export function getCached<T>(key: string): T | null {
   // Try memory cache first
   const memoryResult = getFromMemoryCache<T>(key);
   if (memoryResult !== null) {
     return memoryResult;
   }
 
-  // Try AsyncStorage cache
-  const asyncResult = await getFromAsyncStorage<T>(key);
-  if (asyncResult !== null) {
+  // Try MMKV cache
+  const mmkvResult = getFromMMKVStorage<T>(key);
+  if (mmkvResult !== null) {
     // Populate memory cache for faster access
-    setInMemoryCache(key, asyncResult);
-    return asyncResult;
+    setInMemoryCache(key, mmkvResult);
+    return mmkvResult;
   }
 
   return null;
 }
 
 /**
- * Set cached data (sets in both memory and AsyncStorage)
+ * Set cached data (sets in both memory and MMKV)
  */
-export async function setCached<T>(key: string, data: T, ttl?: number): Promise<void> {
+export function setCached<T>(key: string, data: T, ttl?: number): void {
   setInMemoryCache(key, data, ttl);
-  await setInAsyncStorage(key, data, ttl);
+  setInMMKVStorage(key, data, ttl);
 }
 
 /**
  * Clear cached data
  */
-export async function clearCache(pattern?: string): Promise<void> {
+export function clearCache(pattern?: string): void {
   clearMemoryCache(pattern);
-  await clearAsyncStorage(pattern);
+  clearMMKVStorage(pattern);
 }
 
 /**
@@ -204,7 +204,7 @@ export async function withCache<T>(
   }
 
   const data = await fetcher();
-  await setCached(key, data, ttl);
+  setCached(key, data, ttl);
   return data;
 }
 
