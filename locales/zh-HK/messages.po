@@ -13,23 +13,113 @@ msgstr ""
 "Language-Team: \n"
 "Plural-Forms: \n"
 
-msgid "Day Time"
-msgstr "日間時段"
+msgid "Information We Collect"
+msgstr "我們收集的資訊"
+
+msgid "Get notified when venues become available"
+msgstr "當場地可用時獲得通知"
+
+msgid "Set how far in advance you want to be reminded about your bookings."
+msgstr "設定您希望提前多久收到預訂提醒。"
+
+msgid "To"
+msgstr "至"
+
+msgid "Allow the app to send you push notifications about venue availability and booking updates."
+msgstr "允許應用程式向您發送有關場地可用性和預訂更新的推送通知。"
+
+#~ msgid "courts"
+#~ msgstr "個場地"
+
+msgid "Termination"
+msgstr "終止"
+
+#~ msgid "Day Time"
+#~ msgstr "日間時段"
+
+msgid "Location Not Available"
+msgstr "位置不可用"
+
+msgid "Data Accuracy"
+msgstr "數據準確性"
+
+msgid "Phone Not Available"
+msgstr "電話不可用"
 
 msgid "slots"
 msgstr "個時段"
 
-msgid "Available Dates"
-msgstr "可用日期"
+msgid "Start Time"
+msgstr "開始時間"
+
+msgid "Changes to Terms"
+msgstr "條款變更"
+
+msgid "The app and its content are protected by intellectual property laws. You may not reproduce, distribute, or create derivative works without our express written permission."
+msgstr "本應用程式及其內容受知識產權法保護。未經我們明確書面許可，您不得複製、分發或創建衍生作品。"
+
+#~ msgid "Available Dates"
+#~ msgstr "可用日期"
+
+msgid "Facility Information"
+msgstr "設施資訊"
+
+msgid "NT"
+msgstr "新界"
+
+msgid "Select District"
+msgstr "選擇地區"
+
+msgid "Map Error"
+msgstr "地圖錯誤"
 
 msgid "Failed to fetch sports list"
 msgstr "獲取運動項目列表失敗"
 
-msgid "Total Time Slots"
-msgstr "總時段數"
+msgid "Select your preferred language for the app interface."
+msgstr "選擇您偏好的應用程式介面語言。"
 
-msgid "Low Availability"
-msgstr "低可用性"
+msgid "You have the right to access, modify, or delete your personal information. You can manage your preferences through the app settings or contact us directly."
+msgstr "您有權存取、修改或刪除您的個人資訊。您可以透過應用程式設定管理您的偏好設定或直接聯絡我們。"
+
+#~ msgid "Total Time Slots"
+#~ msgstr "總時段數"
+
+msgid "Bookmarks"
+msgstr "收藏"
+
+#~ msgid "slot"
+#~ msgstr "個時段"
+
+msgid "Phone Call Error"
+msgstr "撥打電話錯誤"
+
+msgid "Call"
+msgstr "撥打電話"
+
+msgid "Data last updated"
+msgstr "數據最後更新"
+
+msgid "We may update this privacy policy from time to time. We will notify you of any significant changes through the app or by other means."
+msgstr "我們可能會不時更新此私隱政策。我們將透過應用程式或其他方式通知您任何重大變更。"
+
+msgid "Search"
+msgstr "搜尋"
+
+msgid "DiscoverSports HK is a mobile application that provides information about sports venue availability in Hong Kong through integration with government APIs. We facilitate venue discovery but do not handle actual bookings."
+msgstr "OpenPandata Hong Kong 是一個流動應用程式，透過整合政府 API 提供香港體育場地可用性資訊。我們促進場地發現，但不處理實際預訂。"
+
+msgid "We reserve the right to terminate or suspend access to our service at any time, with or without cause, and with or without notice."
+msgstr "我們保留隨時終止或暫停您存取我們服務的權利，無論是否有原因，無論是否通知。"
+
+msgid "Location information is not available for this venue."
+msgstr "此場地沒有提供位置資訊。"
+
+#~ msgid "Low Availability"
+#~ msgstr "低可用性"
+
+msgid "Limitation of Liability"
+msgstr "責任限制"
 
 msgid "No time slots available"
 msgstr "沒有可用時段"
@@ -37,11 +127,17 @@ msgstr "沒有可用時段"
 msgid "Done"
 msgstr "完成"
 
+msgid "Address"
+msgstr "地址"
+
 msgid "Badminton"
 msgstr "羽毛球"
 
 msgid "Tennis"
 msgstr "網球"
+
+msgid "Coordinates"
+msgstr "座標"
 
 #~ msgid "Select Sport Type"
 #~ msgstr "選擇運動類型"
@@ -52,35 +148,86 @@ msgstr "未知"
 msgid "Failed to refresh data"
 msgstr "刷新數據失敗"
 
+#~ msgid "Time Range"
+#~ msgstr "時間範圍"
+
 msgid "Push Notifications"
 msgstr "推送通知"
 
-msgid "High Availability"
-msgstr "高可用性"
+msgid "KLN"
+msgstr "九龍"
 
-msgid "total courts"
-msgstr "個場地"
+msgid "Any Time"
+msgstr "任何時間"
+
+msgid "No Bookmarks Yet"
+msgstr "暫無收藏"
+
+msgid "Contact Info"
+msgstr "聯絡資訊"
+
+#~ msgid "High Availability"
+#~ msgstr "高可用性"
+
+msgid "Venue not found"
+msgstr "找不到場地"
+
+msgid "Available Courts"
+msgstr "可用場地"
+
+msgid "Total Available Courts"
+msgstr "總可用場地數"
+
+#~ msgid "total courts"
+#~ msgstr "個場地"
+
+msgid "Your Rights"
+msgstr "您的權利"
 
 msgid "Privacy Policy"
 msgstr "私隱政策"
 
-msgid "Choose your preferred language for the app interface."
-msgstr "選擇您偏好的應用程式介面語言。"
+msgid "Our app integrates with third-party services including Hong Kong government APIs. We are not responsible for the availability or accuracy of these external services."
+msgstr "我們的應用程式與包括香港政府 API 在內的第三方服務整合。我們不對這些外部服務的可用性或準確性負責。"
 
-msgid "Medium Availability"
-msgstr "中等可用性"
+#~ msgid "Choose your preferred language for the app interface."
+#~ msgstr "選擇您偏好的應用程式介面語言。"
 
-msgid "View Booking"
-msgstr "查看預訂"
+msgid "You are responsible for using the app in accordance with applicable laws and regulations. You must not use the service for any unlawful or prohibited activities."
+msgstr "您有責任根據適用的法律法規使用本應用程式。您不得將服務用於任何非法或被禁止的活動。"
 
-msgid "Districts"
-msgstr "地區"
+msgid "Reminder Settings"
+msgstr "提醒設定"
 
-msgid "Save Venue"
-msgstr "儲存場地"
+#~ msgid "Medium Availability"
+#~ msgstr "中等可用性"
 
-msgid "Out of"
-msgstr "共"
+#~ msgid "View Booking"
+#~ msgstr "查看預訂"
+
+#~ msgid "Districts"
+#~ msgstr "地區"
+
+msgid "Intellectual Property"
+msgstr "知識產權"
+
+#~ msgid "Reset"
+#~ msgstr "重設"
+
+msgid "Preferences"
+msgstr "偏好設定"
+
+#~ msgid "Clear All"
+#~ msgstr "清除全部"
+
+msgid "We may modify these terms at any time. Continued use of the app after changes constitutes acceptance of the new terms."
+msgstr "我們可能隨時修改這些條款。在變更後繼續使用應用程式即表示接受新條款。"
+
+#~ msgid "Save Venue"
+#~ msgstr "儲存場地"
+
+#~ msgid "Out of"
+#~ msgstr "共"
 
 msgid "Error"
 msgstr "錯誤"
@@ -88,29 +235,95 @@ msgstr "錯誤"
 msgid "Settings"
 msgstr "設定"
 
+msgid "Add to bookmarks"
+msgstr "加入收藏"
+
 msgid "Soccer Pitch"
 msgstr "足球場"
 
-msgid "App Name"
-msgstr "睇場易"
+msgid "Time Slot Details"
+msgstr "時段詳情"
 
-msgid "facility locations"
-msgstr "個設施位置"
+#~ msgid "App Name"
+#~ msgstr "OpenPandata Hong Kong"
+
+msgid "Phone number is not available for this venue."
+msgstr "此場地沒有提供電話號碼。"
+
+msgid "Remove from bookmarks"
+msgstr "移除收藏"
+
+msgid "By using DiscoverSports HK, you agree to be bound by these Terms of Service. If you do not agree to these terms, please do not use our application."
+msgstr "使用 OpenPandata Hong Kong，即表示您同意受這些服務條款約束。如果您不同意這些條款，請不要使用我們的應用程式。"
+
+msgid "Clear search"
+msgstr "清除搜尋"
+
+msgid "User Responsibilities"
+msgstr "用戶責任"
+
+msgid "Venue Details"
+msgstr "場地詳情"
+
+#~ msgid "facility locations"
+#~ msgstr "個設施位置"
+
+msgid "Removed from bookmarks"
+msgstr "已移除收藏"
+
+msgid "DiscoverSports HK collects minimal information necessary to provide our venue booking services. This includes your language preferences, notification settings, and venue search history stored locally on your device."
+msgstr "OpenPandata Hong Kong 收集提供場地預訂服務所需的最少資訊。這包括您的語言偏好、通知設定和存儲在您設備上的場地搜尋記錄。"
+
+#~ msgid "Choose Language"
+#~ msgstr "選擇語言"
+
+#~ msgid "Apply Filters"
+#~ msgstr "套用篩選"
+
+msgid "Data Storage and Security"
+msgstr "數據存儲和安全"
 
 msgid "Availability Alerts"
 msgstr "可用性提醒"
 
-msgid "Loading..."
-msgstr "載入中..."
+msgid "Contact Us"
+msgstr "聯絡我們"
 
-msgid "On"
-msgstr "開啟"
+#~ msgid "Loading..."
+#~ msgstr "載入中..."
 
-msgid "Off"
-msgstr "關閉"
+#~ msgid "On"
+#~ msgstr "開啟"
 
-msgid "Unique Venues"
-msgstr "獨特場地"
+#~ msgid "Data Information"
+#~ msgstr "數據資訊"
+
+msgid "Acceptance of Terms"
+msgstr "接受條款"
+
+msgid "DiscoverSports HK is committed to protecting your privacy and ensuring transparency in our data practices."
+msgstr "OpenPandata Hong Kong 致力於保護您的私隱並確保我們數據處理的透明度。"
+
+msgid "Enable Push Notifications"
+msgstr "啟用推送通知"
+
+#~ msgid "Off"
+#~ msgstr "關閉"
+
+msgid "We use the information to personalize your experience, send you relevant notifications about venue availability, and improve our services. Your data is processed locally on your device whenever possible."
+msgstr "我們使用這些資訊來個人化您的體驗、向您發送有關場地可用性的相關通知，並改善我們的服務。您的數據盡可能在您的設備上本地處理。"
+
+#~ msgid "The app will restart to apply the new language setting."
+#~ msgstr "應用程式將重新啟動以套用新的語言設定。"
+
+msgid "Search Venues..."
+msgstr "搜尋體育館..."
+
+#~ msgid "Unique Venues"
+#~ msgstr "獨特場地"
+
+msgid "Changes to This Policy"
+msgstr "本政策的變更"
 
 msgid "Network connection error"
 msgstr "網絡連接錯誤"
@@ -121,14 +334,45 @@ msgstr "版本"
 msgid "courts available"
 msgstr "個場地可用"
 
-msgid "Night Time"
-msgstr "夜間時段"
+msgid "HKI"
+msgstr "香港島"
 
-msgid "Error loading data"
-msgstr "載入數據時發生錯誤"
+msgid "From"
+msgstr "從"
+
+#~ msgid "Night Time"
+#~ msgstr "夜間時段"
+
+#~ msgid "Error loading data"
+#~ msgstr "載入數據時發生錯誤"
+
+#. placeholder {0}: new Date().getFullYear()
+msgid "© {0} OpenPandata Hong Kong. All rights reserved."
+msgstr "© {0} OpenPandata Hong Kong。版權所有。"
+
+msgid "Schedule"
+msgstr "時間表"
+
+msgid "Select a district to filter venues"
+msgstr ""
+
+#~ msgid "Notification Settings"
+#~ msgstr "通知設定"
+
+msgid "Home"
+msgstr "主頁"
+
+msgid "Unable to make phone call. Please check your device settings."
+msgstr "無法撥打電話。請檢查您的設備設定。"
 
 msgid "Notifications"
 msgstr "通知"
+
+msgid "Choose which types of notifications you want to receive."
+msgstr "選擇您想要接收的通知類型。"
+
+msgid "Third-Party Services"
+msgstr "第三方服務"
 
 msgid "Volleyball"
 msgstr "排球"
@@ -136,20 +380,77 @@ msgstr "排球"
 msgid "Failed to search venues"
 msgstr "搜索場地失敗"
 
-msgid "Discover available sports venue bookings in Hong Kong"
-msgstr "發掘香港可用的體育場地預訂"
+#~ msgid "Discover available sports venue bookings in Hong Kong"
+#~ msgstr "發掘香港可用的體育場地預訂"
 
-msgid "Contact"
-msgstr "聯絡"
+#~ msgid "Contact"
+#~ msgstr "聯絡"
+
+#~ msgid "Map Navigation Error"
+#~ msgstr "地圖導航錯誤"
+
+msgid "Enable push notifications to receive alerts about venue availability and booking reminders."
+msgstr "啟用推送通知以接收有關場地可用性和預訂提醒的警報。"
+
+msgid "All Districts"
+msgstr "所有地區"
+
+msgid "Open Map"
+msgstr "開啟地圖"
+
+msgid "Added to bookmarks"
+msgstr "已加入收藏"
+
+#~ msgid "Bookmarked on"
+#~ msgstr "收藏於"
+
+msgid "How We Use Your Information"
+msgstr "我們如何使用您的資訊"
+
+#~ msgid "Unable to open map application. Please check if you have a map app installed."
+#~ msgstr "無法打開地圖應用程序。請檢查是否已安裝地圖應用程序。"
+
+msgid "Selected time"
+msgstr "選定時間"
+
+msgid "District"
+msgstr "地區"
+
+msgid "Start exploring venues and tap the heart icon to save your favorites here."
+msgstr "開始探索場地並在此處點擊心形圖示以保存您的收藏。"
 
 msgid "Manage your notification preferences for venue availability and booking reminders."
 msgstr "管理您的場地可用性和預訂提醒通知偏好設定。"
 
+msgid "Your preferences and settings are stored securely on your device using encrypted storage. We implement industry-standard security measures to protect your information."
+msgstr "您的偏好和設置安全地存儲在您的設備上，使用加密存儲。我們實施行業標準的安全措施來保護您的信息。"
+
+msgid "Description of Service"
+msgstr "服務描述"
+
+msgid "Last updated: January 2025"
+msgstr "最後更新：2025年1月"
+
+msgid "Push notifications are sent only with your explicit consent. You can disable notifications at any time through the app settings or your device settings."
+msgstr "推送通知僅在您明確同意的情況下發送。您可以隨時透過應用程式設定或設備設定停用通知。"
+
+msgid "Customize your app experience and preferences."
+msgstr "自訂您的應用程式體驗和偏好設定。"
+
 msgid "Something went wrong"
 msgstr "出現問題"
 
-msgid "No Availability"
-msgstr "無可用性"
+msgid "Select Time Range"
+msgstr "選擇時間範圍"
+
+#~ msgid "No Availability"
+#~ msgstr "無可用性"
+
+msgid "District List"
+msgstr ""
+
+msgid "Unable to open map. Please check your device settings."
+msgstr "無法開啟地圖。請檢查您的設備設定。"
 
 msgid "Failed to fetch sport data"
 msgstr "獲取運動數據失敗"
@@ -157,48 +458,110 @@ msgstr "獲取運動數據失敗"
 msgid "venues"
 msgstr "個場館"
 
-msgid "Venue Statistics"
-msgstr "場地統計"
+#~ msgid "Venue Statistics"
+#~ msgstr "場地統計"
 
-msgid "Courts Available"
-msgstr "可用場地"
+msgid "End Time"
+msgstr "結束時間"
 
-msgid "Court Information"
-msgstr "場地資訊"
+msgid "Governing Law"
+msgstr "管轄法律"
 
-msgid "No data available"
-msgstr "沒有可用數據"
+msgid "Manage your app preferences and account"
+msgstr "管理您的應用程式偏好設定和帳戶"
+
+msgid "Contact Information"
+msgstr "聯絡資訊"
+
+#~ msgid "Courts Available"
+#~ msgstr "可用場地"
+
+#. placeholder {0}: preferences.notifications.reminderTime
+msgid "Reminder Time: {0} minutes before"
+msgstr "提醒時間：提前 {0} 分鐘"
+
+#~ msgid "Court Information"
+#~ msgstr "場地資訊"
+
+msgid "For questions about these terms, please contact us through the app's support section."
+msgstr "如對這些條款有疑問，請透過應用程式的支援部分聯絡我們。"
+
+msgid "Selected district"
+msgstr "選定地區"
+
+#~ msgid "timeslot available"
+#~ msgstr "個時段可用"
+
+#~ msgid "Search venues or facilities..."
+#~ msgstr "搜尋場地或設施..."
+
+#~ msgid "Available Facilities"
+#~ msgstr "可用設施"
+
+#~ msgid "No data available"
+#~ msgstr "沒有可用數據"
+
+msgid "We integrate with Hong Kong LCSD government APIs to provide real-time venue information. We may also use analytics services to improve app performance and user experience."
+msgstr "我們與香港康文署政府 API 整合，提供即時場地資訊。我們也可能使用分析服務來改善應用程式效能和用戶體驗。"
+
+#. placeholder {0}: venue.name
+msgid "Open map for {0}"
+msgstr "開啟 {0} 的地圖"
+
+msgid "Required venue information not provided"
+msgstr "未提供所需的場地資訊"
 
 msgid "About"
 msgstr "關於"
 
+msgid "We are not liable for any direct, indirect, incidental, or consequential damages arising from your use of the app. Our liability is limited to the maximum extent permitted by law."
+msgstr "我們不對您使用應用程式所產生的任何直接、間接、附帶或後果性損害承擔責任。我們的責任在法律允許的最大範圍內受到限制。"
+
 msgid "Language"
 msgstr "語言"
 
-msgid "Location"
-msgstr "位置"
+msgid "Receive notifications about venue availability"
+msgstr "接收有關場地可用性的通知"
+
+msgid "If you have any questions about this privacy policy or our data practices, please contact us through the app's support section."
+msgstr "如果您對此私隱政策或我們的數據處理有任何疑問，請透過應用程式的支援部分聯絡我們。"
+
+#~ msgid "Location"
+#~ msgstr "位置"
+
+#. placeholder {0}: venue.name
+msgid "Call {0}"
+msgstr "致電 {0}"
+
+msgid "Notification Types"
+msgstr "通知類型"
+
+msgid "just now"
+msgstr "剛剛"
 
 msgid "Terms of Service"
 msgstr "服務條款"
 
+msgid "These terms are governed by the laws of Hong Kong Special Administrative Region. Any disputes will be resolved in Hong Kong courts."
+msgstr "這些條款受香港特別行政區法律管轄。任何爭議將在香港法院解決。"
+
+#~ msgid "timeslots available"
+#~ msgstr "個時段可用"
+
 msgid "Basketball"
 msgstr "籃球"
 
-msgid "Book Now"
-msgstr "立即預訂"
+msgid "While we strive to provide accurate and up-to-date venue information, we cannot guarantee the accuracy of all data. Venue availability is subject to change and should be verified directly with the facility."
+msgstr "雖然我們努力提供準確和及時的場地資訊，但我們無法保證所有數據的準確性。場地可用性隨時會改變，應直接與設施核實。"
 
-msgid "Search venues or facilities..."
-msgstr "搜尋場地或設施..."
+#~ msgid "Close"
+#~ msgstr "關閉"
 
-msgid "Clear search"
-msgstr "清除搜尋"
+#~ msgid "Book Now"
+#~ msgstr "立即預訂"
 
-msgid "Search"
-msgstr "搜尋"
+msgid "Filter Venues"
+msgstr "篩選場地"
 
-
-msgid "Data Information"
-msgstr "數據資訊"
-
-msgid "Data last updated"
-msgstr "數據最後更新"
+msgid "Phone"
+msgstr "電話"

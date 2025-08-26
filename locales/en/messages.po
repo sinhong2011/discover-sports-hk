@@ -13,11 +13,23 @@ msgstr ""
 "Language-Team: \n"
 "Plural-Forms: \n"
 
+msgid "Information We Collect"
+msgstr "Information We Collect"
+
 #~ msgid "Facilities"
 #~ msgstr "Facilities"
 
+msgid "Get notified when venues become available"
+msgstr "Get notified when venues become available"
+
+msgid "Set how far in advance you want to be reminded about your bookings."
+msgstr "Set how far in advance you want to be reminded about your bookings."
+
 #~ msgid "Remove Bookmark"
 #~ msgstr "Remove Bookmark"
+
+msgid "To"
+msgstr "To"
 
 #~ msgid "Remove this venue from bookmarks?"
 #~ msgstr "Remove this venue from bookmarks?"
@@ -25,17 +37,41 @@ msgstr ""
 #~ msgid "Popular Venues"
 #~ msgstr "Popular Venues"
 
+msgid "Allow the app to send you push notifications about venue availability and booking updates."
+msgstr "Allow the app to send you push notifications about venue availability and booking updates."
+
+#~ msgid "courts"
+#~ msgstr "courts"
+
+msgid "Termination"
+msgstr "Termination"
+
 #~ msgid "History"
 #~ msgstr "History"
 
-msgid "Day Time"
-msgstr "Day Time"
+#~ msgid "Day Time"
+#~ msgstr "Day Time"
+
+msgid "Location Not Available"
+msgstr "Location Not Available"
+
+msgid "Data Accuracy"
+msgstr "Data Accuracy"
+
+msgid "Phone Not Available"
+msgstr "Phone Not Available"
 
 #~ msgid "Bookmarked"
 #~ msgstr "Bookmarked"
 
 msgid "slots"
 msgstr "slots"
+
+msgid "Start Time"
+msgstr "Start Time"
+
+msgid "Changes to Terms"
+msgstr "Changes to Terms"
 
 #~ msgid "Light"
 #~ msgstr "Light"
@@ -46,21 +82,42 @@ msgstr "slots"
 #~ msgid "No bookmarks yet"
 #~ msgstr "No bookmarks yet"
 
-msgid "Available Dates"
-msgstr "Available Dates"
+msgid "The app and its content are protected by intellectual property laws. You may not reproduce, distribute, or create derivative works without our express written permission."
+msgstr "The app and its content are protected by intellectual property laws. You may not reproduce, distribute, or create derivative works without our express written permission."
+
+#~ msgid "Available Dates"
+#~ msgstr "Available Dates"
 
 #~ msgid "Recent Searches"
 #~ msgstr "Recent Searches"
+
+msgid "Facility Information"
+msgstr "Facility Information"
+
+msgid "NT"
+msgstr "New Territories"
 
 # Search
 #~ msgid "Search Venues"
 #~ msgstr "Search Venues"
 
+msgid "Select District"
+msgstr "Select District"
+
+msgid "Map Error"
+msgstr "Map Error"
+
 msgid "Failed to fetch sports list"
 msgstr "Failed to fetch sports list"
 
-msgid "Total Time Slots"
-msgstr "Total Time Slots"
+msgid "Select your preferred language for the app interface."
+msgstr "Select your preferred language for the app interface."
+
+msgid "You have the right to access, modify, or delete your personal information. You can manage your preferences through the app settings or contact us directly."
+msgstr "You have the right to access, modify, or delete your personal information. You can manage your preferences through the app settings or contact us directly."
+
+#~ msgid "Total Time Slots"
+#~ msgstr "Total Time Slots"
 
 #~ msgid "Try refreshing or check your connection"
 #~ msgstr "Try refreshing or check your connection"
@@ -68,14 +125,26 @@ msgstr "Total Time Slots"
 #~ msgid "Retry"
 #~ msgstr "Retry"
 
-#~ msgid "Bookmarks"
-#~ msgstr "Bookmarks"
+msgid "Bookmarks"
+msgstr "Bookmarks"
 
 #~ msgid "Confirm"
 #~ msgstr "Confirm"
 
+#~ msgid "slot"
+#~ msgstr "slot"
+
+msgid "Phone Call Error"
+msgstr "Phone Call Error"
+
 #~ msgid "Reminder Time"
 #~ msgstr "Reminder Time"
+
+msgid "Call"
+msgstr "Call"
+
+msgid "Data last updated"
+msgstr "Data last updated"
 
 #~ msgid "Evening"
 #~ msgstr "Evening"
@@ -84,8 +153,20 @@ msgstr "Total Time Slots"
 #~ msgid "Bookmarked Venues"
 #~ msgstr "Bookmarked Venues"
 
-#~ msgid "Search"
-#~ msgstr "Search"
+msgid "We may update this privacy policy from time to time. We will notify you of any significant changes through the app or by other means."
+msgstr "We may update this privacy policy from time to time. We will notify you of any significant changes through the app or by other means."
+
+msgid "Search"
+msgstr "Search"
+
+msgid "DiscoverSports HK is a mobile application that provides information about sports venue availability in Hong Kong through integration with government APIs. We facilitate venue discovery but do not handle actual bookings."
+msgstr "OpenPandata Hong Kong is a mobile application that provides information about sports venue availability in Hong Kong through integration with government APIs. We facilitate venue discovery but do not handle actual bookings."
+
+msgid "We reserve the right to terminate or suspend access to our service at any time, with or without cause, and with or without notice."
+msgstr "We reserve the right to terminate or suspend access to our service at any time, with or without cause, and with or without notice."
+
+msgid "Location information is not available for this venue."
+msgstr "Location information is not available for this venue."
 
 #~ msgid "API connection lost"
 #~ msgstr "API connection lost"
@@ -96,8 +177,11 @@ msgstr "Total Time Slots"
 #~ msgid "Sport Types"
 #~ msgstr "Sport Types"
 
-msgid "Low Availability"
-msgstr "Low Availability"
+#~ msgid "Low Availability"
+#~ msgstr "Low Availability"
+
+msgid "Limitation of Liability"
+msgstr "Limitation of Liability"
 
 #~ msgid "Last updated"
 #~ msgstr "Last updated"
@@ -111,14 +195,17 @@ msgstr "No time slots available"
 msgid "Done"
 msgstr "Done"
 
-#~ msgid "Address"
-#~ msgstr "Address"
+msgid "Address"
+msgstr "Address"
 
 msgid "Badminton"
 msgstr "Badminton"
 
 msgid "Tennis"
 msgstr "Tennis"
+
+msgid "Coordinates"
+msgstr "Coordinates"
 
 #~ msgid "Select Sport Type"
 #~ msgstr "Select Sport Type"
@@ -153,12 +240,27 @@ msgstr "Push Notifications"
 #~ msgid "minutes"
 #~ msgstr "minutes"
 
+msgid "KLN"
+msgstr "Kowloon"
+
+msgid "Any Time"
+msgstr "Any Time"
+
+msgid "No Bookmarks Yet"
+msgstr "No Bookmarks Yet"
+
+msgid "Contact Info"
+msgstr "Contact Info"
+
 # Time
 #~ msgid "Morning"
 #~ msgstr "Morning"
 
-msgid "High Availability"
-msgstr "High Availability"
+#~ msgid "High Availability"
+#~ msgstr "High Availability"
+
+msgid "Venue not found"
+msgstr "Venue not found"
 
 #~ msgid "No venues available for this sport type"
 #~ msgstr "No venues available for this sport type"
@@ -169,29 +271,53 @@ msgstr "High Availability"
 #~ msgid "Clear Filters"
 #~ msgstr "Clear Filters"
 
-msgid "total courts"
-msgstr "total courts"
+msgid "Available Courts"
+msgstr "Available Courts"
+
+msgid "Total Available Courts"
+msgstr "Total Available Courts"
+
+#~ msgid "total courts"
+#~ msgstr "total courts"
+
+msgid "Your Rights"
+msgstr "Your Rights"
 
 msgid "Privacy Policy"
 msgstr "Privacy Policy"
 
-msgid "Choose your preferred language for the app interface."
-msgstr "Choose your preferred language for the app interface."
+msgid "Our app integrates with third-party services including Hong Kong government APIs. We are not responsible for the availability or accuracy of these external services."
+msgstr "Our app integrates with third-party services including Hong Kong government APIs. We are not responsible for the availability or accuracy of these external services."
+
+#~ msgid "Choose your preferred language for the app interface."
+#~ msgstr "Choose your preferred language for the app interface."
+
+msgid "You are responsible for using the app in accordance with applicable laws and regulations. You must not use the service for any unlawful or prohibited activities."
+msgstr "You are responsible for using the app in accordance with applicable laws and regulations. You must not use the service for any unlawful or prohibited activities."
+
+msgid "Reminder Settings"
+msgstr "Reminder Settings"
 
 #~ msgid "No venues found"
 #~ msgstr "No venues found"
 
-msgid "Medium Availability"
-msgstr "Medium Availability"
+#~ msgid "Medium Availability"
+#~ msgstr "Medium Availability"
 
-msgid "View Booking"
-msgstr "View Booking"
+#~ msgid "View Booking"
+#~ msgstr "View Booking"
 
-msgid "Districts"
-msgstr "Districts"
+#~ msgid "Districts"
+#~ msgstr "Districts"
+
+msgid "Intellectual Property"
+msgstr "Intellectual Property"
 
 #~ msgid "Bookmark"
 #~ msgstr "Bookmark"
+
+msgid "Preferences"
+msgstr "Preferences"
 
 #~ msgid "Auto"
 #~ msgstr "Auto"
@@ -199,11 +325,17 @@ msgstr "Districts"
 #~ msgid "Unauthorized access"
 #~ msgstr "Unauthorized access"
 
-msgid "Save Venue"
-msgstr "Save Venue"
+#~ msgid "Clear All"
+#~ msgstr "Clear All"
 
-msgid "Out of"
-msgstr "Out of"
+msgid "We may modify these terms at any time. Continued use of the app after changes constitutes acceptance of the new terms."
+msgstr "We may modify these terms at any time. Continued use of the app after changes constitutes acceptance of the new terms."
+
+#~ msgid "Save Venue"
+#~ msgstr "Save Venue"
+
+#~ msgid "Out of"
+#~ msgstr "Out of"
 
 #~ msgid "Afternoon"
 #~ msgstr "Afternoon"
@@ -214,15 +346,35 @@ msgstr "Error"
 msgid "Settings"
 msgstr "Settings"
 
+msgid "Add to bookmarks"
+msgstr "Add to bookmarks"
+
 msgid "Soccer Pitch"
 msgstr "Soccer Pitch"
 
-msgid "App Name"
-msgstr "DiscoverSports HK"
+msgid "Time Slot Details"
+msgstr "Time Slot Details"
 
-# Venues
-#~ msgid "Venue Details"
-#~ msgstr "Venue Details"
+#~ msgid "App Name"
+#~ msgstr "OpenPandata Hong Kong"
+
+msgid "Phone number is not available for this venue."
+msgstr "Phone number is not available for this venue."
+
+msgid "Remove from bookmarks"
+msgstr "Remove from bookmarks"
+
+msgid "By using DiscoverSports HK, you agree to be bound by these Terms of Service. If you do not agree to these terms, please do not use our application."
+msgstr "By using OpenPandata Hong Kong, you agree to be bound by these Terms of Service. If you do not agree to these terms, please do not use our application."
+
+msgid "Clear search"
+msgstr "Clear search"
+
+msgid "User Responsibilities"
+msgstr "User Responsibilities"
+
+msgid "Venue Details"
+msgstr "Venue Details"
 
 #~ msgid "Next Week"
 #~ msgstr "Next Week"
@@ -230,14 +382,26 @@ msgstr "DiscoverSports HK"
 #~ msgid "hours"
 #~ msgstr "hours"
 
-msgid "facility locations"
-msgstr "facility locations"
+#~ msgid "facility locations"
+#~ msgstr "facility locations"
+
+msgid "Removed from bookmarks"
+msgstr "Removed from bookmarks"
+
+msgid "DiscoverSports HK collects minimal information necessary to provide our venue booking services. This includes your language preferences, notification settings, and venue search history stored locally on your device."
+msgstr "OpenPandata Hong Kong collects minimal information necessary to provide our venue booking services. This includes your language preferences, notification settings, and venue search history stored locally on your device."
 
 #~ msgid "appName"
 #~ msgstr "Discover available sports venue bookings"
 
+#~ msgid "Choose Language"
+#~ msgstr "Choose Language"
+
 #~ msgid "Apply Filters"
 #~ msgstr "Apply Filters"
+
+msgid "Data Storage and Security"
+msgstr "Data Storage and Security"
 
 msgid "Availability Alerts"
 msgstr "Availability Alerts"
@@ -245,35 +409,50 @@ msgstr "Availability Alerts"
 #~ msgid "Quick Search"
 #~ msgstr "Quick Search"
 
-msgid "Loading..."
-msgstr "Loading..."
+msgid "Contact Us"
+msgstr "Contact Us"
 
-msgid "On"
-msgstr "On"
+#~ msgid "Loading..."
+#~ msgstr "Loading..."
 
-msgid "Search venues or facilities..."
-msgstr "Search venues or facilities..."
+#~ msgid "On"
+#~ msgstr "On"
 
-msgid "Clear search"
-msgstr "Clear search"
-
-msgid "Search"
-msgstr "Search"
+msgid "Acceptance of Terms"
+msgstr "Acceptance of Terms"
 
 #~ msgid "No facilities information available"
 #~ msgstr "No facilities information available"
 
+msgid "DiscoverSports HK is committed to protecting your privacy and ensuring transparency in our data practices."
+msgstr "OpenPandata Hong Kong is committed to protecting your privacy and ensuring transparency in our data practices."
+
+msgid "Enable Push Notifications"
+msgstr "Enable Push Notifications"
+
 #~ msgid "No recent searches"
 #~ msgstr "No recent searches"
 
-msgid "Off"
-msgstr "Off"
+#~ msgid "Off"
+#~ msgstr "Off"
+
+msgid "We use the information to personalize your experience, send you relevant notifications about venue availability, and improve our services. Your data is processed locally on your device whenever possible."
+msgstr "We use the information to personalize your experience, send you relevant notifications about venue availability, and improve our services. Your data is processed locally on your device whenever possible."
 
 #~ msgid "Resource not found"
 #~ msgstr "Resource not found"
 
-msgid "Unique Venues"
-msgstr "Unique Venues"
+#~ msgid "The app will restart to apply the new language setting."
+#~ msgstr "The app will restart to apply the new language setting."
+
+msgid "Search Venues..."
+msgstr "Search Venues..."
+
+#~ msgid "Unique Venues"
+#~ msgstr "Unique Venues"
+
+msgid "Changes to This Policy"
+msgstr "Changes to This Policy"
 
 #~ msgid "Filters"
 #~ msgstr "Filters"
@@ -302,14 +481,27 @@ msgstr "courts available"
 #~ msgid "Today"
 #~ msgstr "Today"
 
+msgid "HKI"
+msgstr "Hong Kong Island"
+
+msgid "From"
+msgstr "From"
+
 #~ msgid "more"
 #~ msgstr "more"
 
-msgid "Night Time"
-msgstr "Night Time"
+#~ msgid "Night Time"
+#~ msgstr "Night Time"
 
-msgid "Error loading data"
-msgstr "Error loading data"
+#~ msgid "Error loading data"
+#~ msgstr "Error loading data"
+
+#. placeholder {0}: new Date().getFullYear()
+msgid "© {0} OpenPandata Hong Kong. All rights reserved."
+msgstr "© {0} OpenPandata Hong Kong. All rights reserved."
+
+msgid "Schedule"
+msgstr "Schedule"
 
 #~ msgid "Total Venues"
 #~ msgstr "Total Venues"
@@ -317,12 +509,20 @@ msgstr "Error loading data"
 #~ msgid "Discover available sports venue bookings"
 #~ msgstr "Discover available sports venue bookings"
 
+msgid "Select a district to filter venues"
+msgstr "Select a district to filter venues"
+
+#~ msgid "Notification Settings"
+#~ msgstr "Notification Settings"
+
 #~ msgid "Next"
 #~ msgstr "Next"
 
-# Navigation
-#~ msgid "Home"
-#~ msgstr "Home"
+msgid "Home"
+msgstr "Home"
+
+msgid "Unable to make phone call. Please check your device settings."
+msgstr "Unable to make phone call. Please check your device settings."
 
 msgid "Notifications"
 msgstr "Notifications"
@@ -330,41 +530,101 @@ msgstr "Notifications"
 #~ msgid "Back"
 #~ msgstr "Back"
 
+msgid "Choose which types of notifications you want to receive."
+msgstr "Choose which types of notifications you want to receive."
+
+msgid "Third-Party Services"
+msgstr "Third-Party Services"
+
 msgid "Volleyball"
 msgstr "Volleyball"
 
 msgid "Failed to search venues"
 msgstr "Failed to search venues"
 
-msgid "Discover available sports venue bookings in Hong Kong"
-msgstr "Discover available sports venue bookings in Hong Kong"
+#~ msgid "Discover available sports venue bookings in Hong Kong"
+#~ msgstr "Discover available sports venue bookings in Hong Kong"
 
-msgid "Contact"
-msgstr "Contact"
+#~ msgid "Contact"
+#~ msgstr "Contact"
+
+#~ msgid "Map Navigation Error"
+#~ msgstr "Map Navigation Error"
+
+msgid "Enable push notifications to receive alerts about venue availability and booking reminders."
+msgstr "Enable push notifications to receive alerts about venue availability and booking reminders."
+
+msgid "All Districts"
+msgstr "All Districts"
+
+msgid "Open Map"
+msgstr "Open Map"
+
+msgid "Added to bookmarks"
+msgstr "Added to bookmarks"
+
+#~ msgid "Bookmarked on"
+#~ msgstr "Bookmarked on"
 
 #~ msgid "Results"
 #~ msgstr "Results"
 
+msgid "How We Use Your Information"
+msgstr "How We Use Your Information"
+
+#~ msgid "Unable to open map application. Please check if you have a map app installed."
+#~ msgstr "Unable to open map application. Please check if you have a map app installed."
+
 #~ msgid "Availability"
 #~ msgstr "Availability"
 
-#~ msgid "District"
-#~ msgstr "District"
+msgid "Selected time"
+msgstr "Selected time"
+
+msgid "District"
+msgstr "District"
 
 #~ msgid "Date"
 #~ msgstr "Date"
 
+msgid "Start exploring venues and tap the heart icon to save your favorites here."
+msgstr "Start exploring venues and tap the heart icon to save your favorites here."
+
 msgid "Manage your notification preferences for venue availability and booking reminders."
 msgstr "Manage your notification preferences for venue availability and booking reminders."
+
+msgid "Your preferences and settings are stored securely on your device using encrypted storage. We implement industry-standard security measures to protect your information."
+msgstr "Your preferences and settings are stored securely on your device using encrypted storage. We implement industry-standard security measures to protect your information."
+
+msgid "Description of Service"
+msgstr "Description of Service"
+
+msgid "Last updated: January 2025"
+msgstr "Last updated: January 2025"
+
+msgid "Push notifications are sent only with your explicit consent. You can disable notifications at any time through the app settings or your device settings."
+msgstr "Push notifications are sent only with your explicit consent. You can disable notifications at any time through the app settings or your device settings."
+
+msgid "Customize your app experience and preferences."
+msgstr "Customize your app experience and preferences."
 
 msgid "Something went wrong"
 msgstr "Something went wrong"
 
+msgid "Select Time Range"
+msgstr "Select Time Range"
+
 #~ msgid "Filter"
 #~ msgstr "Filter"
 
-msgid "No Availability"
-msgstr "No Availability"
+#~ msgid "No Availability"
+#~ msgstr "No Availability"
+
+msgid "District List"
+msgstr "District List"
+
+msgid "Unable to open map. Please check your device settings."
+msgstr "Unable to open map. Please check your device settings."
 
 #~ msgid "Check Availability"
 #~ msgstr "Check Availability"
@@ -375,8 +635,8 @@ msgstr "Failed to fetch sport data"
 msgid "venues"
 msgstr "venues"
 
-msgid "Venue Statistics"
-msgstr "Venue Statistics"
+#~ msgid "Venue Statistics"
+#~ msgstr "Venue Statistics"
 
 #~ msgid "Checking..."
 #~ msgstr "Checking..."
@@ -387,20 +647,64 @@ msgstr "Venue Statistics"
 #~ msgid "Server error occurred"
 #~ msgstr "Server error occurred"
 
-msgid "Courts Available"
-msgstr "Courts Available"
+msgid "End Time"
+msgstr "End Time"
 
-msgid "Court Information"
-msgstr "Court Information"
+msgid "Governing Law"
+msgstr "Governing Law"
 
-msgid "No data available"
-msgstr "No data available"
+msgid "Manage your app preferences and account"
+msgstr "Manage your app preferences and account"
+
+msgid "Contact Information"
+msgstr "Contact Information"
+
+#~ msgid "Courts Available"
+#~ msgstr "Courts Available"
+
+#. placeholder {0}: preferences.notifications.reminderTime
+msgid "Reminder Time: {0} minutes before"
+msgstr "Reminder Time: {0} minutes before"
+
+#~ msgid "Court Information"
+#~ msgstr "Court Information"
+
+msgid "For questions about these terms, please contact us through the app's support section."
+msgstr "For questions about these terms, please contact us through the app's support section."
+
+msgid "Selected district"
+msgstr "Selected district"
+
+#~ msgid "timeslot available"
+#~ msgstr "timeslot available"
+
+#~ msgid "Search venues or facilities..."
+#~ msgstr "Search venues or facilities..."
+
+#~ msgid "Available Facilities"
+#~ msgstr "Available Facilities"
+
+#~ msgid "No data available"
+#~ msgstr "No data available"
 
 #~ msgid "Save"
 #~ msgstr "Save"
 
+msgid "We integrate with Hong Kong LCSD government APIs to provide real-time venue information. We may also use analytics services to improve app performance and user experience."
+msgstr "We integrate with Hong Kong LCSD government APIs to provide real-time venue information. We may also use analytics services to improve app performance and user experience."
+
+#. placeholder {0}: venue.name
+msgid "Open map for {0}"
+msgstr "Open map for {0}"
+
+msgid "Required venue information not provided"
+msgstr "Required venue information not provided"
+
 msgid "About"
 msgstr "About"
+
+msgid "We are not liable for any direct, indirect, incidental, or consequential damages arising from your use of the app. Our liability is limited to the maximum extent permitted by law."
+msgstr "We are not liable for any direct, indirect, incidental, or consequential damages arising from your use of the app. Our liability is limited to the maximum extent permitted by law."
 
 #~ msgid "An unknown error occurred"
 #~ msgstr "An unknown error occurred"
@@ -408,8 +712,18 @@ msgstr "About"
 msgid "Language"
 msgstr "Language"
 
-msgid "Location"
-msgstr "Location"
+msgid "Receive notifications about venue availability"
+msgstr "Receive notifications about venue availability"
+
+msgid "If you have any questions about this privacy policy or our data practices, please contact us through the app's support section."
+msgstr "If you have any questions about this privacy policy or our data practices, please contact us through the app's support section."
+
+#~ msgid "Location"
+#~ msgstr "Location"
+
+#. placeholder {0}: venue.name
+msgid "Call {0}"
+msgstr "Call {0}"
 
 #~ msgid "Venue Type"
 #~ msgstr "Venue Type"
@@ -417,14 +731,29 @@ msgstr "Location"
 #~ msgid "Clear"
 #~ msgstr "Clear"
 
+msgid "Notification Types"
+msgstr "Notification Types"
+
+msgid "just now"
+msgstr "just now"
+
 msgid "Terms of Service"
 msgstr "Terms of Service"
+
+msgid "These terms are governed by the laws of Hong Kong Special Administrative Region. Any disputes will be resolved in Hong Kong courts."
+msgstr "These terms are governed by the laws of Hong Kong Special Administrative Region. Any disputes will be resolved in Hong Kong courts."
 
 #~ msgid "Yesterday"
 #~ msgstr "Yesterday"
 
+#~ msgid "timeslots available"
+#~ msgstr "timeslots available"
+
 msgid "Basketball"
 msgstr "Basketball"
+
+msgid "While we strive to provide accurate and up-to-date venue information, we cannot guarantee the accuracy of all data. Venue availability is subject to change and should be verified directly with the facility."
+msgstr "While we strive to provide accurate and up-to-date venue information, we cannot guarantee the accuracy of all data. Venue availability is subject to change and should be verified directly with the facility."
 
 #~ msgid "Search for venues, facilities..."
 #~ msgstr "Search for venues, facilities..."
@@ -435,8 +764,14 @@ msgstr "Basketball"
 #~ msgid "No internet connection"
 #~ msgstr "No internet connection"
 
-msgid "Book Now"
-msgstr "Book Now"
+#~ msgid "Book Now"
+#~ msgstr "Book Now"
+
+msgid "Filter Venues"
+msgstr "Filter Venues"
 
 #~ msgid "OK"
 #~ msgstr "OK"
+
+msgid "Phone"
+msgstr "Phone"
