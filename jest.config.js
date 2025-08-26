@@ -1,13 +1,15 @@
 module.exports = {
   preset: 'jest-expo',
+  setupFiles: ['<rootDir>/jest.setup.early.js', '<rootDir>/jest.setup.js'],
   setupFilesAfterEnv: ['@testing-library/jest-native/extend-expect'],
   transformIgnorePatterns: [
-    'node_modules/(?!((jest-)?react-native|@react-native(-community)?)|expo(nent)?|@expo(nent)?/.*|@expo-google-fonts/.*|react-navigation|@react-navigation/.*|@unimodules/.*|unimodules|sentry-expo|native-base|react-native-svg|react-native-map-link)',
+    'node_modules/(?!((jest-)?react-native|@react-native(-community)?)|expo(nent)?|@expo(nent)?/.*|@expo-google-fonts/.*|react-navigation|@react-navigation/.*|@unimodules/.*|unimodules|sentry-expo|native-base|react-native-svg|react-native-map-link|react-native-unistyles|react-native-nitro-modules|@gorhom/bottom-sheet|react-native-reanimated|react-native-gesture-handler|react-native-screens|react-native-safe-area-context|@shopify/flash-list|react-native-mmkv|zustand|immer|ky|es-toolkit|date-fns|zod|@csark0812/zustand-expo-devtools)',
   ],
   moduleNameMapper: {
     '^@/(.*)$': '<rootDir>/$1',
+    '^expo/src/winter/runtime\\.native$': '<rootDir>/jest.setup.js',
   },
-  testEnvironment: 'node',
+  testEnvironment: 'jsdom',
   collectCoverageFrom: [
     '**/*.{ts,tsx}',
     '!**/*.d.ts',

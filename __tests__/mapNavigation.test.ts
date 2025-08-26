@@ -252,7 +252,7 @@ describe('Map Navigation Functionality', () => {
   });
 
   describe('Coordinate Validation', () => {
-    it('should reject empty string coordinates', async () => {
+    it('should fall back to address when coordinates are empty strings', async () => {
       const emptyCoordVenue: MockVenue = {
         name: 'Empty Coord Venue',
         address: 'Empty Coord Address',
@@ -264,13 +264,13 @@ describe('Map Navigation Functionality', () => {
 
       await handleMapNavigation(emptyCoordVenue, mockT);
 
-      expect(mockAlert.alert).toHaveBeenCalledWith(
-        'Location Not Available',
-        'Location information is not available for this venue.'
-      );
+      expect(showLocation).toHaveBeenCalledWith({
+        title: 'Empty Coord Venue',
+        address: 'Empty Coord Address',
+      });
     });
 
-    it('should reject partially invalid coordinates', async () => {
+    it('should fall back to address when coordinates are partially invalid', async () => {
       const partiallyInvalidVenue: MockVenue = {
         name: 'Partially Invalid Venue',
         address: 'Partially Invalid Address',
@@ -281,6 +281,24 @@ describe('Map Navigation Functionality', () => {
       };
 
       await handleMapNavigation(partiallyInvalidVenue, mockT);
+
+      expect(showLocation).toHaveBeenCalledWith({
+        title: 'Partially Invalid Venue',
+        address: 'Partially Invalid Address',
+      });
+    });
+
+    it('should show alert when coordinates are invalid and no address', async () => {
+      const invalidCoordNoAddressVenue: MockVenue = {
+        name: 'Invalid Coord No Address Venue',
+        address: '',
+        coordinates: {
+          latitude: 'invalid',
+          longitude: 'invalid',
+        },
+      };
+
+      await handleMapNavigation(invalidCoordNoAddressVenue, mockT);
 
       expect(mockAlert.alert).toHaveBeenCalledWith(
         'Location Not Available',
