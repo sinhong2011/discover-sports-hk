@@ -3,18 +3,19 @@
  * iOS 18-style settings page with navigation to sub-pages
  */
 
+import { msg } from '@lingui/core/macro';
+import { useLingui } from '@lingui/react/macro';
+import Constants from 'expo-constants';
+import { router } from 'expo-router';
+import type React from 'react';
+import { ScrollView, TouchableOpacity, View } from 'react-native';
+import { StyleSheet } from 'react-native-unistyles';
 import { HomeHeader } from '@/components/home/components';
 import { ThemedText } from '@/components/ThemedText';
 import { ThemedView } from '@/components/ThemedView';
 import { AppIcon, type AppIconName } from '@/components/ui/Icon';
 import { SafeAreaView } from '@/components/ui/SafeAreaView';
 import { useAppStore } from '@/store';
-import { msg } from '@lingui/core/macro';
-import { useLingui } from '@lingui/react/macro';
-import { router } from 'expo-router';
-import type React from 'react';
-import { ScrollView, TouchableOpacity, View } from 'react-native';
-import { StyleSheet } from 'react-native-unistyles';
 
 // Language options with proper labels
 const LANGUAGE_OPTIONS = [
@@ -75,6 +76,15 @@ export default function SettingsScreen() {
   );
   const currentLanguageLabel = currentLanguageOption?.label || 'English';
 
+  // Get app version and name from expo config
+  const appVersion = Constants.expoConfig?.version || '0.1.0-alpha.0';
+  const appName = Constants.expoConfig?.name || 'Discover Sports HK';
+  const buildNumber =
+    Constants.expoConfig?.ios?.buildNumber || Constants.expoConfig?.android?.versionCode || '1';
+
+  // Format version display with build number
+  const versionDisplay = `${appVersion} (${buildNumber})`;
+
   return (
     <SafeAreaView style={styles.container}>
       {/* Header */}
@@ -98,7 +108,7 @@ export default function SettingsScreen() {
         </SettingsSection>
 
         {/* Notifications Section */}
-        <SettingsSection
+        {/* <SettingsSection
           title={t(msg`Notifications`)}
           footer={t(
             msg`Manage your notification preferences for venue availability and booking reminders.`
@@ -110,18 +120,23 @@ export default function SettingsScreen() {
             onPress={() => router.push('/settings/notifications')}
             icon="notifications"
           />
-        </SettingsSection>
+        </SettingsSection> */}
 
         {/* About Section */}
         <SettingsSection title={t(msg`About`)}>
-          <SettingsRow title={t(msg`Version`)} value="1.0.0" showChevron={false} icon="info" />
-          <View style={styles.separator} />
           <SettingsRow
+            title={t(msg`Version`)}
+            value={versionDisplay}
+            showChevron={false}
+            icon="info"
+          />
+          <View style={styles.separator} />
+          {/* <SettingsRow
             title={t(msg`Privacy Policy`)}
             icon="privacy"
             onPress={() => router.push('/settings/privacy')}
           />
-          <View style={styles.separator} />
+          <View style={styles.separator} /> */}
           <SettingsRow
             title={t(msg`Terms of Service`)}
             icon="about"
@@ -131,7 +146,7 @@ export default function SettingsScreen() {
 
         {/* Footer */}
         <View style={styles.footer}>
-          <ThemedText style={styles.appName}>{t(msg`App Name`)}</ThemedText>
+          <ThemedText style={styles.appName}>{appName}</ThemedText>
           <ThemedText style={styles.copyright}>
             {t(msg`© ${new Date().getFullYear()} OpenPandata Hong Kong. All rights reserved.`)}
           </ThemedText>
@@ -144,7 +159,7 @@ export default function SettingsScreen() {
 const styles = StyleSheet.create((theme) => ({
   container: {
     flex: 1,
-    backgroundColor: theme.colors.pageBackground, // Use theme page background color
+    backgroundColor: theme.colors.background, // Use theme page background color
   },
   scrollView: {
     flex: 1,
@@ -192,7 +207,6 @@ const styles = StyleSheet.create((theme) => ({
     width: 32,
     height: 32,
     borderRadius: 8,
-    backgroundColor: theme.colors.tint,
     alignItems: 'center',
     justifyContent: 'center',
     marginRight: theme.gap(1.5),

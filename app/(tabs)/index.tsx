@@ -5,20 +5,13 @@
 
 import { useBottomTabBarHeight } from '@react-navigation/bottom-tabs';
 import React from 'react';
-import {
-  type LayoutChangeEvent,
-  type NativeScrollEvent,
-  type NativeSyntheticEvent,
-  RefreshControl,
-  ScrollView,
-  useWindowDimensions,
-  View,
-} from 'react-native';
-import { useSafeAreaInsets } from 'react-native-safe-area-context';
+import { useWindowDimensions, View } from 'react-native';
 import { StyleSheet } from 'react-native-unistyles';
 // Import home screen components
-import { DatePagerView, FilterBar } from '@/components/home/components';
+import { DatePagerView, FilterBar, FilterModal } from '@/components/home/components';
+import type { FilterModalRef, FilterState } from '@/components/home/components/FilterModal';
 import { homeScreenStyles } from '@/components/home/styles';
+import { FloatingActionButton } from '@/components/ui/FloatingActionButton';
 import { SafeAreaView } from '@/components/ui/SafeAreaView';
 // Import local sport types constant
 import type { SportType } from '@/constants/Sport';
@@ -30,19 +23,15 @@ import { HomeTabProvider, useHomeTabContext } from '@/providers/HomeTabProvider'
 
 // Inner component that uses the HomeTabContext
 function HomeScreenContent() {
-  // Get device dimensions and safe area insets
+  // Get device dimensions
   const { height: screenHeight } = useWindowDimensions();
-  const insets = useSafeAreaInsets();
 
   // Get dynamic tab bar height from React Navigation
   const tabBarHeight = useBottomTabBarHeight();
 
   // Calculate available height for sticky section
   // Account for: screen height - top safe area - bottom safe area - bottom navigation bar
-  const availableHeight = screenHeight + tabBarHeight;
-
-  const scrollViewRef = React.useRef<ScrollView>(null);
-  const [filterBarHeight, setFilterBarHeight] = React.useState(120); // Default height
+  const availableHeight = screenHeight - tabBarHeight;
 
   // Get data and actions from HomeTabContext
   const {
@@ -50,27 +39,17 @@ function HomeScreenContent() {
     setSelectedSportType,
     searchQuery,
     setSearchQuery,
-    clearSearch,
-    setIsFilterBarScrolledOut,
-    refetch,
-    isRefetching,
-    setOuterScrollViewRef,
+    selectedDistrict,
+    setSelectedDistrict,
+    hasActiveFilters,
+    clearAllFilters,
+    sportVenueTimeSlotsListByDateOrder,
+    filteredSportVenueTimeSlotsListByDateOrder,
+    fabScrollDirection,
   } = useHomeTabContext();
 
-  // Set the ScrollView ref in context for nested scroll coordination
-  React.useEffect(() => {
-    setOuterScrollViewRef(scrollViewRef);
-  }, [setOuterScrollViewRef]);
-
-  // Handle pull-to-refresh - bypasses intelligent caching to fetch fresh data
-  const handleRefresh = React.useCallback(async () => {
-    try {
-      await refetch();
-    } catch {
-      // Error handling is managed by the useSportVenues hook and HomeTabProvider
-      // Swallow error to avoid noisy logs; UI shows proper states
-    }
-  }, [refetch]);
+  // Filter modal ref
+  const filterModalRef = React.useRef<FilterModalRef>(null);
 
   // Handle sport type selection
   const handleSportTypeSelect = (sportType: SportType) => {
@@ -81,83 +60,88 @@ function HomeScreenContent() {
     setSelectedSportType(sportType);
   };
 
-  // Handle search functionality
-  const handleSearchChange = (query: string) => {
-    setSearchQuery(query);
+  // Handle filter modal
+  const handleFilterPress = () => {
+    filterModalRef.current?.present();
   };
 
-  const handleSearchClear = () => {
-    clearSearch();
+  const handleApplyFilters = (filterState: FilterState) => {
+    setSearchQuery(filterState.searchQuery);
+    setSelectedDistrict(filterState.selectedDistrict);
   };
+
+  // Handle clearing all filters
+  const handleClearFilters = React.useCallback(() => {
+    clearAllFilters();
+  }, [clearAllFilters]);
 
   // Handle date change from DatePagerView
   const handleDateChange = React.useCallback((_date: Date, _index: number) => {
     // DatePagerView handles its own content, no need to manage state here
   }, []);
 
-  // Handle FilterBar layout to get its actual height
-  const handleFilterBarLayout = React.useCallback((event: LayoutChangeEvent) => {
-    const { height } = event.nativeEvent.layout;
-    setFilterBarHeight(height);
-  }, []);
-
-  // Handle scroll to track FilterBar visibility and sticky section position
-  const handleScroll = React.useCallback(
-    (event: NativeSyntheticEvent<NativeScrollEvent>) => {
-      const scrollY = event.nativeEvent.contentOffset.y;
-
-      // Calculate the sticky section's top position relative to the screen
-      // When scrollY = 0: sticky section is at filterBarHeight from top of SafeAreaView
-      // When scrollY = filterBarHeight: sticky section is at top of SafeAreaView (insets.top)
-      const stickySectionTopPosition = filterBarHeight - scrollY;
-
-      // Enable venue list scrolling when the sticky section container's top edge
-      // intersects with or goes above the SafeAreaView's top boundary (insets.top)
-      // Add a small buffer (8px) to ensure smooth transition and prevent rapid toggling
-      const shouldDisableVenueScroll = stickySectionTopPosition > insets.top + 8;
-      const newFilterBarScrolledOut = !shouldDisableVenueScroll;
-
-      // Update state with the new value
-      setIsFilterBarScrolledOut(newFilterBarScrolledOut);
-    },
-    [setIsFilterBarScrolledOut, filterBarHeight, insets.top]
-  );
-
   // Note: VenueCard component is available for rendering venue items when needed
 
   return (
-    <SafeAreaView style={[homeScreenStyles.container]}>
-      <ScrollView
-        ref={scrollViewRef}
-        style={[styles.scrollView]}
-        stickyHeaderIndices={[1]} // Make DatePagerView (index 1) sticky
-        showsVerticalScrollIndicator={false}
-        onScroll={handleScroll}
-        scrollEventThrottle={16}
-        refreshControl={
-          <RefreshControl
-            refreshing={isRefetching}
-            onRefresh={handleRefresh}
-            progressViewOffset={filterBarHeight * 0.65}
-          />
-        }
-      >
-        {/* First scrollable content section - FilterBar */}
-        <View style={styles.filterBarSection} onLayout={handleFilterBarLayout}>
-          <FilterBar
-            selectedSportType={selectedSportType}
-            onSportTypeSelect={handleSportTypeSelect}
-            searchQuery={searchQuery}
-            onSearchChange={handleSearchChange}
-            onSearchClear={handleSearchClear}
-          />
-        </View>
+    <SafeAreaView style={[homeScreenStyles.container]} bottom={false}>
+      {/* FilterBar section */}
+      <View style={styles.filterBarSection}>
+        <FilterBar
+          selectedSportType={selectedSportType}
+          onSportTypeSelect={handleSportTypeSelect}
+          onFilterPress={handleFilterPress}
+          hasActiveFilters={hasActiveFilters}
+        />
+      </View>
 
-        {/* Sticky section - DatePagerView remains visible at the top during scroll */}
-        <View style={[styles.stickySection, { height: availableHeight }]}>
-          <DatePagerView onDateChange={handleDateChange} />
-        </View>
-      </ScrollView>
+      {/* DatePagerView section - takes remaining space */}
+      <View style={[styles.datePagerSection, { height: availableHeight }]}>
+        <DatePagerView
+          onDateChange={handleDateChange}
+          sportVenueTimeSlotsListByDateOrder={
+            hasActiveFilters
+              ? filteredSportVenueTimeSlotsListByDateOrder
+              : sportVenueTimeSlotsListByDateOrder
+          }
+        />
+      </View>
+
+      {/* Filter Modal */}
+      <FilterModal
+        ref={filterModalRef}
+        filterState={{
+          searchQuery,
+          selectedDistrict,
+        }}
+        onApplyFilters={handleApplyFilters}
+      />
+
+      {/* Clear Filters FAB - Only visible when filters are active */}
+      <FloatingActionButton
+        iconName="close"
+        onPress={handleClearFilters}
+        bottom={tabBarHeight * 1.85}
+        visible={hasActiveFilters}
+        accessibilityLabel="Clear all filters"
+        testID="clear-filters-fab"
+        size={42}
+        showEntranceAnimation={false}
+      />
+
+      {/* Filter FAB */}
+      <FloatingActionButton
+        iconName="filter"
+        activeIconName="filterActive"
+        isActive={hasActiveFilters}
+        onPress={handleFilterPress}
+        bottom={tabBarHeight + 18}
+        accessibilityLabel="Open filter options"
+        testID="filter-fab"
+        hideOnScroll={true}
+        scrollDirection={fabScrollDirection}
+        size={42}
+        iconSize={18}
+      />
     </SafeAreaView>
   );
 }
@@ -179,25 +163,14 @@ export default React.memo(HomeScreen);
 // ============================================================================
 
 const styles = StyleSheet.create((theme) => ({
-  scrollView: {
-    flex: 1,
-  },
-
   filterBarSection: {
-    // FilterBar section that will scroll out of view
+    // FilterBar section at the top
     backgroundColor: theme.colors.background,
   },
 
-  stickySection: {
-    // Sticky section that remains visible at the top during scroll
+  datePagerSection: {
+    // DatePagerView section that takes remaining space
     backgroundColor: theme.colors.background,
-    borderBottomWidth: 1,
-    borderBottomColor: `${theme.colors.icon}20`, // 20% opacity
-    elevation: 2, // Android shadow
-    shadowColor: '#000', // iOS shadow
-    shadowOffset: { width: 0, height: 2 },
-    shadowOpacity: 0.1,
-    shadowRadius: 4,
     flex: 1, // Take up remaining space
   },
 }));

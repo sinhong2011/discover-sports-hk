@@ -10,19 +10,15 @@ import { ScrollView, View } from 'react-native';
 import { StyleSheet } from 'react-native-unistyles';
 
 import { ThemedText } from '@/components/ThemedText';
-import { SafeAreaView } from '@/components/ui/SafeAreaView';
 
 export default function TermsScreen() {
   const { t } = useLingui();
 
   return (
-    <SafeAreaView style={styles.container}>
+    <View style={styles.container}>
       <ScrollView style={styles.scrollView} contentContainerStyle={styles.scrollContent}>
-        {/* Header Section */}
-        <View style={styles.headerSection}>
-          <ThemedText style={styles.headerTitle}>{t(msg`Terms of Service`)}</ThemedText>
-          <ThemedText style={styles.lastUpdated}>{t(msg`Last updated: January 2025`)}</ThemedText>
-        </View>
+        {/* 
+     
 
         {/* Terms Content */}
         <View style={styles.contentSection}>
@@ -124,9 +120,11 @@ export default function TermsScreen() {
               msg`For questions about these terms, please contact us through the app's support section.`
             )}
           </ThemedText>
+
+          <ThemedText style={styles.lastUpdated}>{t(msg`Last updated: January 2025`)}</ThemedText>
         </View>
       </ScrollView>
-    </SafeAreaView>
+    </View>
   );
 }
 
@@ -140,23 +138,6 @@ const styles = StyleSheet.create((theme) => ({
   },
   scrollContent: {
     paddingBottom: theme.gap(4),
-  },
-  headerSection: {
-    paddingHorizontal: theme.gap(2),
-    paddingVertical: theme.gap(3),
-    borderBottomWidth: 0.5,
-    borderBottomColor: theme.colors.icon,
-    borderBottomOpacity: 0.3,
-  },
-  headerTitle: {
-    fontSize: 24,
-    fontWeight: '700',
-    color: theme.colors.text,
-    marginBottom: theme.gap(1),
-  },
-  lastUpdated: {
-    fontSize: 14,
-    color: theme.colors.icon,
   },
   contentSection: {
     paddingHorizontal: theme.gap(2),
@@ -177,12 +158,10 @@ const styles = StyleSheet.create((theme) => ({
     opacity: 0.8,
   },
   footerSection: {
-    paddingHorizontal: theme.gap(2),
-    paddingVertical: theme.gap(4),
+    // paddingHorizontal: theme.gap(2),
+    paddingBottom: theme.gap(8),
     marginTop: theme.gap(4),
-    borderTopWidth: 0.5,
-    borderTopColor: theme.colors.icon,
-    borderTopOpacity: 0.3,
+    textAlign: 'left',
   },
   footerText: {
     fontSize: 14,
@@ -190,5 +169,10 @@ const styles = StyleSheet.create((theme) => ({
     textAlign: 'center',
     lineHeight: 20,
     fontStyle: 'italic',
+  },
+  lastUpdated: {
+    fontSize: 14,
+    color: theme.colors.icon,
+    paddingHorizontal: theme.gap(1.5),
   },
 }));

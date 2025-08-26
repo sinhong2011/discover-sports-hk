@@ -5,15 +5,13 @@
 
 import { msg } from '@lingui/core/macro';
 import { useLingui } from '@lingui/react/macro';
+import { FlashList } from '@shopify/flash-list';
 import { router } from 'expo-router';
-
-import { ScrollView, TouchableOpacity, View } from 'react-native';
+import { TouchableOpacity, View } from 'react-native';
 import { StyleSheet } from 'react-native-unistyles';
 
 import { ThemedText } from '@/components/ThemedText';
-import { ThemedView } from '@/components/ThemedView';
 import { AppIcon } from '@/components/ui/Icon';
-import { SafeAreaView } from '@/components/ui/SafeAreaView';
 import { useAppStore } from '@/store';
 
 // Language options with proper labels
@@ -52,39 +50,53 @@ export default function LanguageScreen() {
     router.back();
   };
 
+  const renderLanguageOption = ({
+    item,
+    index,
+  }: {
+    item: (typeof LANGUAGE_OPTIONS)[0];
+    index: number;
+  }) => {
+    const isFirst = index === 0;
+    const isLast = index === LANGUAGE_OPTIONS.length - 1;
+
+    return (
+      <View
+        style={[
+          styles.languageOptionContainer,
+          isFirst && styles.firstOption,
+          isLast && styles.lastOption,
+        ]}
+      >
+        <LanguageOption
+          option={item}
+          isSelected={preferences.language === item.code}
+          onSelect={() => handleLanguageSelect(item.code)}
+        />
+        {!isLast && <View style={styles.separator} />}
+      </View>
+    );
+  };
+
+  const renderHeader = () => (
+    <View style={styles.headerSection}>
+      <ThemedText style={styles.headerSubtitle}>
+        {t(msg`Select your preferred language for the app interface.`)}
+      </ThemedText>
+    </View>
+  );
+
   return (
-    <SafeAreaView style={styles.container}>
-      <ScrollView style={styles.scrollView} contentContainerStyle={styles.scrollContent}>
-        {/* Header Section */}
-        <View style={styles.headerSection}>
-          <ThemedText style={styles.headerTitle}>{t(msg`Choose Language`)}</ThemedText>
-          <ThemedText style={styles.headerSubtitle}>
-            {t(msg`Select your preferred language for the app interface.`)}
-          </ThemedText>
-        </View>
-
-        {/* Language Options */}
-        <ThemedView style={styles.languageList}>
-          {LANGUAGE_OPTIONS.map((option, index) => (
-            <View key={option.code}>
-              <LanguageOption
-                option={option}
-                isSelected={preferences.language === option.code}
-                onSelect={() => handleLanguageSelect(option.code)}
-              />
-              {index < LANGUAGE_OPTIONS.length - 1 && <View style={styles.separator} />}
-            </View>
-          ))}
-        </ThemedView>
-
-        {/* Footer Information */}
-        <View style={styles.footerSection}>
-          <ThemedText style={styles.footerText}>
-            {t(msg`The app will restart to apply the new language setting.`)}
-          </ThemedText>
-        </View>
-      </ScrollView>
-    </SafeAreaView>
+    <View style={styles.container}>
+      <FlashList
+        data={LANGUAGE_OPTIONS}
+        renderItem={renderLanguageOption}
+        keyExtractor={(item) => item.code}
+        ListHeaderComponent={renderHeader}
+        contentContainerStyle={styles.flashListContent}
+        showsVerticalScrollIndicator={false}
+      />
+    </View>
   );
 }
 
@@ -93,10 +105,7 @@ const styles = StyleSheet.create((theme) => ({
     flex: 1,
     backgroundColor: theme.colors.background,
   },
-  scrollView: {
-    flex: 1,
-  },
-  scrollContent: {
+  flashListContent: {
     paddingBottom: theme.gap(3),
   },
   headerSection: {
@@ -114,11 +123,17 @@ const styles = StyleSheet.create((theme) => ({
     color: theme.colors.icon,
     lineHeight: 22,
   },
-  languageList: {
+  languageOptionContainer: {
     backgroundColor: theme.colors.background,
-    borderRadius: 12,
     marginHorizontal: theme.gap(2),
-    overflow: 'hidden',
+  },
+  firstOption: {
+    borderTopLeftRadius: 12,
+    borderTopRightRadius: 12,
+  },
+  lastOption: {
+    borderBottomLeftRadius: 12,
+    borderBottomRightRadius: 12,
   },
   languageOption: {
     minHeight: 60,

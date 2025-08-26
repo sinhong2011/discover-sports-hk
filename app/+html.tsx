@@ -4,7 +4,7 @@ import '../unistyles';
 
 export default function Root({ children }: PropsWithChildren) {
   return (
-    <html lang="en">
+    <html lang="zh-HK">
       <head />
       <body>
         <ScrollViewStyleReset />

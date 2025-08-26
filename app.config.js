@@ -1,8 +1,10 @@
+const packageJson = require('./package.json');
+
 module.exports = {
   expo: {
-    name: 'discover-sports-hk',
+    name: '睇場易HK',
     slug: 'discover-sports-hk',
-    version: '1.0.0',
+    version: packageJson.version,
     orientation: 'portrait',
     icon: './assets/images/icon.png',
     scheme: 'discoversportshk',
@@ -11,6 +13,7 @@ module.exports = {
     ios: {
       supportsTablet: true,
       bundleIdentifier: 'com.openpandata.discoversportshk',
+      buildNumber: process.env.EAS_BUILD_NUMBER || '1',
     },
     android: {
       adaptiveIcon: {
@@ -19,6 +22,7 @@ module.exports = {
       },
       edgeToEdgeEnabled: true,
       package: 'com.openpandata.discoversportshk',
+      versionCode: parseInt(process.env.EAS_BUILD_NUMBER || '1'),
     },
     web: {
       bundler: 'metro',

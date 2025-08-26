@@ -3,26 +3,17 @@
  * Handles navigation between different settings screens
  */
 
+import { msg } from '@lingui/core/macro';
+import { useLingui } from '@lingui/react/macro';
 import { Stack } from 'expo-router';
-import React from 'react';
-import { useUnistyles } from 'react-native-unistyles';
+import { useSharedHeaderConfig } from '@/utils/headerConfig';
 
 export default function SettingsLayout() {
-  const { theme } = useUnistyles();
+  const { t } = useLingui();
+  const sharedHeaderConfig = useSharedHeaderConfig();
 
   return (
-    <Stack
-      screenOptions={{
-        headerStyle: {
-          backgroundColor: theme.colors.background,
-        },
-        headerTintColor: theme.colors.text,
-        headerTitleStyle: {
-          fontWeight: '600',
-        },
-        headerShadowVisible: false,
-      }}
-    >
+    <Stack screenOptions={sharedHeaderConfig}>
       <Stack.Screen
         name="index"
         options={{
@@ -32,28 +23,28 @@ export default function SettingsLayout() {
       <Stack.Screen
         name="language"
         options={{
-          title: 'Language',
+          title: t(msg`Language`),
           presentation: 'card',
         }}
       />
-      <Stack.Screen
+      {/* <Stack.Screen
         name="notifications"
         options={{
-          title: 'Notifications',
+          title: t(msg`Notifications`),
           presentation: 'card',
         }}
-      />
-      <Stack.Screen
+      /> */}
+      {/* <Stack.Screen
         name="privacy"
         options={{
-          title: 'Privacy Policy',
-          presentation: 'card',
+          title: t(msg`Privacy Policy`),
+          presentation: 'pageSheet',
         }}
-      />
+      /> */}
       <Stack.Screen
         name="terms"
         options={{
-          title: 'Terms of Service',
+          title: t(msg`Terms of Service`),
           presentation: 'card',
         }}
       />
