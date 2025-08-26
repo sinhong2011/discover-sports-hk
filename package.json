@@ -115,6 +115,7 @@
     "typescript": "~5.8.3"
   },
   "private": true,
+  "type": "module",
   "packageManager": "bun@1.2.18",
   "engines": {
     "bun": "1.2.18"
