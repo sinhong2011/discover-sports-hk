@@ -86,6 +86,7 @@ export const AppIcons = {
 
   // Actions
   filter: { family: 'Ionicons' as const, name: 'filter-outline' },
+  filterActive: { family: 'Ionicons' as const, name: 'funnel' },
   clear: { family: 'Ionicons' as const, name: 'close-circle-outline' },
   refresh: { family: 'Ionicons' as const, name: 'refresh-outline' },
   share: { family: 'Ionicons' as const, name: 'share-outline' },
