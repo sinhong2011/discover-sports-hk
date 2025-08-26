@@ -87,8 +87,7 @@ export const DatePageSkeleton: React.FC<DatePageSkeletonProps> = ({
 const styles = StyleSheet.create((theme) => ({
   container: {
     flex: 1,
-    paddingHorizontal: 16,
-    paddingVertical: 8,
+    padding: 8,
   },
 
   // Venue Card Skeleton

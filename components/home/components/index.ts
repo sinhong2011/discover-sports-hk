@@ -4,7 +4,9 @@
 
 // Main components
 export { default as DatePagerView } from './DatePagerView';
+export { DistrictList } from './DistrictList';
 export { FilterBar } from './FilterBar';
+export { FilterModal } from './FilterModal';
 export { HomeHeader } from './HomeHeader';
 // State components
 export { EmptyState } from './states/EmptyState';

@@ -9,11 +9,11 @@ import type React from 'react';
 import { useEffect } from 'react';
 import { View } from 'react-native';
 import Animated, {
-  useSharedValue,
+  interpolate,
   useAnimatedStyle,
+  useSharedValue,
   withRepeat,
   withTiming,
-  interpolate,
 } from 'react-native-reanimated';
 import { StyleSheet, useUnistyles } from 'react-native-unistyles';
 
@@ -47,22 +47,14 @@ export const CustomSkeletonWrapper: React.FC<CustomSkeletonWrapperProps> = ({
 
   useEffect(() => {
     if (isLoading) {
-      shimmerValue.value = withRepeat(
-        withTiming(1, { duration }),
-        -1,
-        false
-      );
+      shimmerValue.value = withRepeat(withTiming(1, { duration }), -1, false);
     } else {
       shimmerValue.value = 0;
     }
   }, [isLoading, duration, shimmerValue]);
 
   const animatedStyle = useAnimatedStyle(() => {
-    const translateX = interpolate(
-      shimmerValue.value,
-      [0, 1],
-      [-100, 100]
-    );
+    const translateX = interpolate(shimmerValue.value, [0, 1], [-100, 100]);
 
     return {
       transform: [{ translateX }],

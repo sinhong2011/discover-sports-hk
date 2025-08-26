@@ -8,11 +8,11 @@ import type React from 'react';
 import { useEffect } from 'react';
 import { View } from 'react-native';
 import Animated, {
-  useSharedValue,
+  interpolate,
   useAnimatedStyle,
+  useSharedValue,
   withRepeat,
   withTiming,
-  interpolate,
 } from 'react-native-reanimated';
 import { StyleSheet, useUnistyles } from 'react-native-unistyles';
 
@@ -50,19 +50,11 @@ const SkeletonItem: React.FC<SkeletonItemProps> = ({
   const shimmerValue = useSharedValue(0);
 
   useEffect(() => {
-    shimmerValue.value = withRepeat(
-      withTiming(1, { duration: 1500 }),
-      -1,
-      false
-    );
+    shimmerValue.value = withRepeat(withTiming(1, { duration: 1500 }), -1, false);
   }, [shimmerValue]);
 
   const animatedStyle = useAnimatedStyle(() => {
-    const opacity = interpolate(
-      shimmerValue.value,
-      [0, 0.5, 1],
-      [0.3, 0.7, 0.3]
-    );
+    const opacity = interpolate(shimmerValue.value, [0, 0.5, 1], [0.3, 0.7, 0.3]);
 
     return {
       opacity,
@@ -112,31 +104,26 @@ export const EnhancedDatePageSkeleton: React.FC<EnhancedDatePageSkeletonProps> =
             <View style={styles.venueHeader}>
               <View style={styles.venueInfo}>
                 <SkeletonItem width={venueNameWidth} height={20} borderRadius={8} />
-                <SkeletonItem 
-                  width={locationWidth} 
-                  height={16} 
-                  borderRadius={6} 
+                <SkeletonItem
+                  width={locationWidth}
+                  height={16}
+                  borderRadius={6}
                   style={styles.venueLocationSkeleton}
                 />
               </View>
               <View style={styles.courtsInfo}>
                 <SkeletonItem width={16} height={16} borderRadius={8} />
-                <SkeletonItem 
-                  width={20} 
-                  height={16} 
-                  borderRadius={4} 
+                <SkeletonItem
+                  width={20}
+                  height={16}
+                  borderRadius={4}
                   style={styles.courtsCountSkeleton}
                 />
               </View>
             </View>
 
             {/* Divider */}
-            <SkeletonItem 
-              width="100%" 
-              height={1} 
-              borderRadius={0} 
-              style={styles.dividerSkeleton}
-            />
+            <SkeletonItem width="100%" height={1} borderRadius={0} style={styles.dividerSkeleton} />
 
             {/* Time Slots Grid */}
             <View style={styles.timeSlotsContainer}>

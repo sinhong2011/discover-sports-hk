@@ -28,11 +28,6 @@ export const homeScreenStyles = StyleSheet.create((theme) => ({
     marginTop: 2,
   },
 
-  // Sport type selector styles
-  sportTypeContainer: {
-    marginTop: 6,
-    marginBottom: 4,
-  },
   sectionTitle: {
     fontSize: 14,
     fontWeight: '500',

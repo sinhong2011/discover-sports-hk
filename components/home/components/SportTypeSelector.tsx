@@ -10,10 +10,8 @@ import { useMemo } from 'react';
 import { View } from 'react-native';
 import { StyleSheet, useUnistyles } from 'react-native-unistyles';
 
-import { ThemedText } from '@/components/ThemedText';
 import type { SportType } from '@/constants/Sport';
 import { TRANSLATABLE_SPORT_TYPE_OPTIONS } from '@/constants/SportTranslations';
-import { homeScreenStyles } from '../styles';
 
 // ============================================================================
 // Component Props
@@ -64,26 +62,21 @@ export const SportTypeSelector: React.FC<SportTypeSelectorProps> = ({
   };
 
   return (
-    <View style={homeScreenStyles.sportTypeContainer}>
-      {sectionTitle && (
-        <ThemedText style={homeScreenStyles.sectionTitle}>{sectionTitle}</ThemedText>
-      )}
-      <View style={styles.segmentedControlContainer}>
-        <SegmentedControl
-          values={segmentLabels}
-          selectedIndex={selectedIndex}
-          onChange={(event) => {
-            handleSegmentChange(event.nativeEvent.selectedSegmentIndex);
-          }}
-          style={styles.segmentedControl}
-          backgroundColor={theme.colors.background}
-          tintColor={theme.colors.tint}
-          activeFontStyle={styles.activeFontStyle}
-          fontStyle={styles.fontStyle}
-          accessibilityLabel={sectionTitle || 'Sport type selector'}
-          testID="sport-type-selector"
-        />
-      </View>
+    <View style={styles.segmentedControlContainer}>
+      <SegmentedControl
+        values={segmentLabels}
+        selectedIndex={selectedIndex}
+        onChange={(event) => {
+          handleSegmentChange(event.nativeEvent.selectedSegmentIndex);
+        }}
+        style={styles.segmentedControl}
+        backgroundColor={theme.colors.background}
+        tintColor={theme.colors.tint}
+        activeFontStyle={styles.activeFontStyle}
+        fontStyle={styles.fontStyle}
+        accessibilityLabel={sectionTitle || 'Sport type selector'}
+        testID="sport-type-selector"
+      />
     </View>
   );
 };
@@ -94,22 +87,23 @@ export const SportTypeSelector: React.FC<SportTypeSelectorProps> = ({
 
 const styles = StyleSheet.create((theme) => ({
   segmentedControlContainer: {
-    paddingHorizontal: 20,
+    width: '100%',
+    marginBottom: 2,
   },
 
   segmentedControl: {
-    height: 32,
+    height: 34,
   },
 
   activeFontStyle: {
-    fontSize: 14,
+    fontSize: 12,
     fontWeight: '600',
     color: theme.colors.segmentedControl.activeText,
   },
 
   fontStyle: {
-    fontSize: 14,
-    fontWeight: '500',
+    fontSize: 12,
+    fontWeight: '400',
     color: theme.colors.segmentedControl.inactiveText,
   },
 }));

@@ -3,83 +3,18 @@
  * Defines interfaces for transformed data structures, component props, and bottom sheet data
  */
 
-import type { SportVenueTimeslot } from '@/types/sport';
+import type { SportVenueTimeslot, VenueData } from '@/types/sport';
 
 // ============================================================================
 // Core Data Types
 // ============================================================================
 
-/**
- * Availability level for color coding time slots
- */
-export type AvailabilityLevel = 'high' | 'medium' | 'low' | 'none';
+// TimeSlotData and AvailabilityLevel moved to @/components/ui/TimeSlotItem/types
+// Import them from there if needed in this file
+import type { TimeSlotData } from '@/components/ui/TimeSlotItem';
 
-/**
- * Transformed time slot data for display
- */
-export interface TimeSlotData {
-  /** Unique identifier for the time slot */
-  id: string;
-  /** Start time in HH:MM format */
-  startTime: string;
-  /** End time in HH:MM format */
-  endTime: string;
-  /** Number of available courts */
-  availableCourts: number;
-  /** Whether this is a day time slot (6AM-6PM) */
-  isDay: boolean;
-  /** Availability level for color coding */
-  availabilityLevel: AvailabilityLevel;
-  /** Original data from API */
-  originalData: SportVenueTimeslot;
-}
-
-/**
- * Facility location data with its time slots
- */
-export interface FacilityLocationData {
-  /** Facility location name */
-  name: string;
-  /** Array of time slots for this facility location */
-  timeSlots: TimeSlotData[];
-  /** Total available courts across all time slots for this facility location */
-  totalAvailableCourts: number;
-  /** Maximum courts available in any single time slot for this facility location */
-  maxCourtsPerSlot: number;
-}
-
-/**
- * Venue data with multiple facility locations
- */
-export interface VenueData {
-  /** Item type for FlashList */
-  type: 'venue';
-  /** Unique identifier for the venue */
-  id: string;
-  /** Venue name */
-  name: string;
-  /** Venue address */
-  address: string;
-  /** Venue phone number */
-  phoneNumber: string;
-  /** District name */
-  district: string;
-  /** Facility type */
-  facilityType: string;
-  /** Array of facility locations with their time slots */
-  facilityLocations: FacilityLocationData[];
-  /** Venue coordinates */
-  coordinates: {
-    latitude: string;
-    longitude: string;
-  };
-  /** Total available courts across all facility locations */
-  totalAvailableCourts: number;
-  /** Maximum courts available in any single time slot across all facility locations */
-  maxCourtsPerSlot: number;
-  /** All time slots across all facility locations (for backward compatibility) */
-  timeSlots: TimeSlotData[];
-}
+// VenueData and FacilityLocationData moved to @/types/sport
+// Import them from there if needed in this file
 
 /**
  * District data with venues
@@ -95,6 +30,8 @@ export interface DistrictData {
   totalVenues: number;
   /** Total time slots across all venues */
   totalTimeSlots: number;
+  /** Total available time slots (availableCourts >= 1) across all venues */
+  totalAvailableTimeSlots: number;
 }
 
 /**
@@ -109,8 +46,10 @@ export interface SectionHeaderItem {
   type: 'sectionHeader';
   id: string;
   districtName: string;
+  areaCode: string;
   totalVenues: number;
   totalTimeSlots: number;
+  totalAvailableTimeSlots: number;
 }
 
 /**
@@ -122,19 +61,7 @@ export type FlashListItem = SectionHeaderItem | VenueData;
 // Component Props
 // ============================================================================
 
-/**
- * Props for TimeSlotItem component
- */
-export interface TimeSlotItemProps {
-  /** Time slot data */
-  timeSlot: TimeSlotData;
-  /** Whether this time slot is selected */
-  selected?: boolean;
-  /** Whether the time slot is disabled */
-  disabled?: boolean;
-  /** Index for determining if it's the last item in a row */
-  index?: number;
-}
+// TimeSlotItemProps moved to @/components/ui/TimeSlotItem/types
 
 /**
  * Props for VenueItem component
@@ -142,8 +69,6 @@ export interface TimeSlotItemProps {
 export interface VenueItemProps {
   /** Venue data */
   venue: VenueData;
-  /** Callback when venue is pressed for details */
-  onVenuePress?: (venue: VenueData) => void;
   /** Selected time slot ID */
   selectedTimeSlotId?: string;
 }
@@ -154,10 +79,12 @@ export interface VenueItemProps {
 export interface DistrictSectionHeaderProps {
   /** District name to display */
   districtName: string;
+  /** Area Code to display (e.g., "Hong Kong Island", "Kowloon", "New Territories") */
+  areaCode: string;
   /** Total number of venues in district */
   totalVenues: number;
-  /** Total number of time slots in district */
-  totalTimeSlots: number;
+  /** Total number of available time slots (availableCourts >= 1) in district */
+  totalAvailableTimeSlots: number;
 }
 
 /**
@@ -208,6 +135,8 @@ export interface TransformedDatePageData {
   totalVenues: number;
   /** Total number of time slots */
   totalTimeSlots: number;
+  /** Total number of available time slots (availableCourts >= 1) */
+  totalAvailableTimeSlots: number;
 }
 
 /**
@@ -243,6 +172,17 @@ export interface AvailabilityColors {
  */
 export function getAllTimeSlots(venue: VenueData): TimeSlotData[] {
   return venue.facilityLocations.flatMap((location) => location.timeSlots);
+}
+
+/**
+ * Gets all available time slots (availableCourts >= 1) across all facility locations for a venue
+ * @param venue - Venue data
+ * @returns Array of available time slots
+ */
+export function getAvailableTimeSlots(venue: VenueData): TimeSlotData[] {
+  return venue.facilityLocations.flatMap((location) =>
+    location.timeSlots.filter((timeSlot) => timeSlot.availableCourts >= 1)
+  );
 }
 
 /**

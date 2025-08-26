@@ -20,20 +20,43 @@ import type { DistrictSectionHeaderProps } from './types';
 const venuesLabel = msg`venues`;
 const slotsLabel = msg`slots`;
 
+// Pre-define area code messages for Lingui extraction
+const hkiLabel = msg`HKI`;
+const klnLabel = msg`KLN`;
+const ntLabel = msg`NT`;
+
 // ============================================================================
 // DistrictSectionHeader Component
 // ============================================================================
 
 export const DistrictSectionHeader: React.FC<DistrictSectionHeaderProps> = ({
   districtName,
+  areaCode,
   totalVenues,
-  totalTimeSlots,
+  totalAvailableTimeSlots,
 }) => {
   const { t } = useLingui();
 
+  // Get the localized area name using predefined message IDs
+  const getAreaName = (code: string) => {
+    switch (code) {
+      case 'HKI':
+        return t(hkiLabel);
+      case 'KLN':
+        return t(klnLabel);
+      case 'NT':
+        return t(ntLabel);
+      default:
+        return '';
+    }
+  };
+
+  const displayTitle = areaCode ? `${districtName} • ${getAreaName(areaCode)}` : districtName;
+
   // Get accessibility label
   const getAccessibilityLabel = () => {
-    return `District: ${districtName}, ${totalVenues} venues, ${totalTimeSlots} time slots available`;
+    const areaText = areaCode ? `, ${getAreaName(areaCode)}` : '';
+    return `District: ${districtName}${areaText}, ${totalVenues} venues, ${totalAvailableTimeSlots} time slots available`;
   };
 
   return (
@@ -47,14 +70,14 @@ export const DistrictSectionHeader: React.FC<DistrictSectionHeaderProps> = ({
         <AppIcon name="location" size={14} color={styles.iconColor.color} />
       </View>
 
-      {/* District Name */}
+      {/* District Name with Area */}
       <ThemedText style={styles.districtText} numberOfLines={1}>
-        {districtName}
+        {displayTitle}
       </ThemedText>
 
       {/* Summary Text */}
       <ThemedText style={styles.summaryText}>
-        {totalVenues} {t(venuesLabel)} • {totalTimeSlots} {t(slotsLabel)}
+        {totalVenues} {t(venuesLabel)} • {totalAvailableTimeSlots} {t(slotsLabel)}
       </ThemedText>
 
       {/* Decorative Element */}

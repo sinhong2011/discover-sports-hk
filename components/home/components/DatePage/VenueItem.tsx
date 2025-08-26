@@ -6,14 +6,22 @@
 
 import { msg } from '@lingui/core/macro';
 import { useLingui } from '@lingui/react/macro';
+import { FlashList } from '@shopify/flash-list';
+import { useRouter } from 'expo-router';
 import type React from 'react';
+import { useCallback } from 'react';
 import { TouchableOpacity, View } from 'react-native';
 import { StyleSheet, useUnistyles } from 'react-native-unistyles';
 import { ThemedText } from '@/components/ThemedText';
+import { TouchableCard } from '@/components/ui/Card';
 import { AppIcon } from '@/components/ui/Icon';
-
-import { TimeSlotItem } from './TimeSlotItem';
-import type { FacilityLocationData, VenueItemProps } from './types';
+import type { TimeSlotData } from '@/components/ui/TimeSlotItem';
+import { TimeSlotItem } from '@/components/ui/TimeSlotItem';
+import { useHomeTabContext } from '@/providers';
+import { AppToast } from '@/providers/ToastProvider';
+import { useIsVenueBookmarked, useSportVenueStore } from '@/store/useSportVenueStore';
+import type { FacilityLocationData } from '@/types/sport';
+import type { VenueItemProps } from './types';
 import { hasMultipleFacilityLocations } from './types';
 
 // ============================================================================
@@ -21,28 +29,98 @@ import { hasMultipleFacilityLocations } from './types';
 // ============================================================================
 
 const noTimeSlotsAvailableLabel = msg`No time slots available`;
+const addToBookmarksLabel = msg`Add to bookmarks`;
+const removeFromBookmarksLabel = msg`Remove from bookmarks`;
 
 // ============================================================================
 // VenueItem Component
 // ============================================================================
 
-export const VenueItem: React.FC<VenueItemProps> = ({
-  venue,
-  onVenuePress,
-  selectedTimeSlotId,
-}) => {
+export const VenueItem: React.FC<VenueItemProps> = ({ venue, selectedTimeSlotId }) => {
   // Get theme colors for icons
   const { theme } = useUnistyles();
   const { t } = useLingui();
+  const router = useRouter();
+
+  // Bookmark functionality
+  const { selectedSportType } = useHomeTabContext();
+  const isBookmarked = useIsVenueBookmarked(venue.id);
+  const toggleBookmark = useSportVenueStore((state) => state.toggleBookmark);
 
   // Handle venue press for details
   const handleVenuePress = () => {
-    onVenuePress?.(venue);
+    // Navigate to shared venue details modal with sport type parameter
+    router.push({
+      pathname: '/venue/[id]',
+      params: {
+        id: venue.id,
+        sportType: selectedSportType,
+      },
+    });
   };
+
+  // Handle bookmark toggle
+  const handleBookmarkPress = () => {
+    const wasBookmarked = isBookmarked;
+    const result = toggleBookmark(venue, selectedSportType);
+
+    if (result) {
+      // Successfully added bookmark
+      AppToast.success(t(msg`Added to bookmarks`), {
+        title: venue.name,
+        duration: 2000,
+        icon: 'heartFilled',
+        iconColor: '#EF4444', // Red color for success
+      });
+    } else if (wasBookmarked) {
+      // Successfully removed bookmark
+      AppToast.info(t(msg`Removed from bookmarks`), {
+        title: venue.name,
+        duration: 2000,
+        icon: 'heart',
+        iconColor: theme.colors.icon,
+      });
+    }
+  };
+
+  // Render time slot item for FlashList
+  const renderTimeSlotItem = useCallback(
+    ({ item }: { item: { timeSlot: TimeSlotData; selected: boolean; index: number } }) => {
+      return (
+        <View style={styles.timeSlotItemWrapper}>
+          <TimeSlotItem
+            timeSlot={item.timeSlot}
+            selected={item.selected}
+            disabled={false}
+            index={item.index}
+          />
+        </View>
+      );
+    },
+    []
+  );
+
+  // Key extractor for FlashList
+  const keyExtractor = useCallback(
+    (item: { timeSlot: TimeSlotData; selected: boolean; index: number }) => item.timeSlot.id,
+    []
+  );
 
   // Render facility location section
   const renderFacilityLocation = (facilityLocation: FacilityLocationData, index: number) => {
     const showLocationLabel = hasMultipleFacilityLocations(venue);
+
+    // Filter out time slots with available courts less than 1
+    const availableTimeSlots = facilityLocation.timeSlots.filter(
+      (timeSlot) => timeSlot.availableCourts >= 1
+    );
+
+    // Transform data for FlashList
+    const timeSlotData = availableTimeSlots.map((timeSlot, idx) => ({
+      timeSlot,
+      selected: selectedTimeSlotId === timeSlot.id,
+      index: idx,
+    }));
 
     return (
       <View key={`facility-${index}`} style={styles.facilityLocationContainer}>
@@ -53,22 +131,19 @@ export const VenueItem: React.FC<VenueItemProps> = ({
         )}
 
         <View style={styles.timeSlotsContainer}>
-          {facilityLocation.timeSlots.length > 0 ? (
-            <View
-              style={styles.timeSlotsGrid}
+          {availableTimeSlots.length > 0 ? (
+            <FlashList
+              data={timeSlotData}
+              renderItem={renderTimeSlotItem}
+              keyExtractor={keyExtractor}
+              numColumns={4}
+              ItemSeparatorComponent={() => <View style={{ height: 8 }} />}
+              contentContainerStyle={styles.timeSlotGridContainer}
+              showsVerticalScrollIndicator={false}
+              scrollEnabled={false}
               accessibilityRole="list"
-              accessibilityLabel={`${facilityLocation.timeSlots.length} time slots available for ${facilityLocation.name}`}
-            >
-              {facilityLocation.timeSlots.map((timeSlot, index) => (
-                <TimeSlotItem
-                  key={timeSlot.id}
-                  timeSlot={timeSlot}
-                  selected={selectedTimeSlotId === timeSlot.id}
-                  disabled={timeSlot.availableCourts === 0}
-                  index={index}
-                />
-              ))}
-            </View>
+              accessibilityLabel={`${availableTimeSlots.length} time slots available for ${facilityLocation.name}`}
+            />
           ) : (
             <View style={styles.noSlotsContainer}>
               <AppIcon name="time" size={20} color={theme.colors.icon} />
@@ -90,10 +165,11 @@ export const VenueItem: React.FC<VenueItemProps> = ({
   };
 
   return (
-    <TouchableOpacity
-      style={styles.container}
+    <TouchableCard
       onPress={handleVenuePress}
       activeOpacity={0.7}
+      variant="default"
+      size="medium"
       accessibilityLabel={getVenueAccessibilityLabel()}
       accessibilityRole="button"
       accessibilityHint="Tap to view venue details and all available time slots"
@@ -106,11 +182,21 @@ export const VenueItem: React.FC<VenueItemProps> = ({
           </ThemedText>
         </View>
 
-        <View style={styles.courtsInfo}>
-          <View style={styles.courtsContainer}>
-            <AppIcon name="sports" size={14} />
-            <ThemedText style={styles.courtsText}>{venue.totalAvailableCourts}</ThemedText>
-          </View>
+        <View style={styles.headerActions}>
+          {/* Bookmark Icon */}
+          <TouchableOpacity
+            style={styles.bookmarkButton}
+            onPress={handleBookmarkPress}
+            activeOpacity={0.7}
+            accessibilityLabel={isBookmarked ? t(removeFromBookmarksLabel) : t(addToBookmarksLabel)}
+            accessibilityRole="button"
+          >
+            <AppIcon
+              name={isBookmarked ? 'heartFilled' : 'heart'}
+              size={18}
+              color={isBookmarked ? '#EF4444' : theme.colors.icon}
+            />
+          </TouchableOpacity>
         </View>
       </View>
 
@@ -126,7 +212,7 @@ export const VenueItem: React.FC<VenueItemProps> = ({
           {renderFacilityLocation(facilityLocation, index)}
         </View>
       ))}
-    </TouchableOpacity>
+    </TouchableCard>
   );
 };
 
@@ -135,20 +221,7 @@ export const VenueItem: React.FC<VenueItemProps> = ({
 // ============================================================================
 
 const styles = StyleSheet.create((theme) => ({
-  container: {
-    backgroundColor: theme.colors.background,
-    borderRadius: 12,
-    padding: 12,
-    marginHorizontal: 16,
-    marginBottom: 8,
-    borderWidth: 1,
-    borderColor: `${theme.colors.icon}20`, // 20% opacity
-    shadowColor: '#000',
-    shadowOffset: { width: 0, height: 1 },
-    shadowOpacity: 0.08,
-    shadowRadius: 3,
-    elevation: 2,
-  },
+  // Container styles are now handled by TouchableCard component
 
   header: {
     flexDirection: 'row',
@@ -163,22 +236,23 @@ const styles = StyleSheet.create((theme) => ({
   },
 
   venueName: {
-    fontSize: 16,
-    fontWeight: '600',
-    color: theme.colors.text,
+    fontSize: 15,
+    fontWeight: '500',
+    color: `${theme.colors.text}CC`,
     marginBottom: 3,
   },
 
-  venueDetails: {
+  headerActions: {
     flexDirection: 'row',
     alignItems: 'center',
+    gap: 8,
   },
 
-  venueAddress: {
-    fontSize: 14,
-    color: `${theme.colors.text}CC`, // 80% opacity
-    marginLeft: 4,
-    flex: 1,
+  bookmarkButton: {
+    padding: 4,
+    borderRadius: 6,
+    alignItems: 'center',
+    justifyContent: 'center',
   },
 
   courtsInfo: {
@@ -234,11 +308,10 @@ const styles = StyleSheet.create((theme) => ({
     marginTop: 2,
   },
 
-  timeSlotsGrid: {
-    flexDirection: 'row',
-    flexWrap: 'wrap',
-    justifyContent: 'flex-start',
-    alignItems: 'flex-start',
+  timeSlotGridContainer: {},
+
+  timeSlotItemWrapper: {
+    width: '95%',
   },
 
   noSlotsContainer: {

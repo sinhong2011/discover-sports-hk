@@ -6,7 +6,7 @@
 import * as Haptics from 'expo-haptics';
 import type React from 'react';
 import { useEffect } from 'react';
-import { Pressable, View } from 'react-native';
+import { TouchableOpacity, View } from 'react-native';
 import Animated, {
   interpolateColor,
   useAnimatedStyle,
@@ -15,6 +15,7 @@ import Animated, {
   withTiming,
 } from 'react-native-reanimated';
 import { StyleSheet, useUnistyles } from 'react-native-unistyles';
+import { useLanguage } from '@/store/useAppStore';
 
 // ============================================================================
 // Types
@@ -57,7 +58,7 @@ export const AnimatedTabItem: React.FC<AnimatedTabItemProps> = ({
 }) => {
   const { theme } = useUnistyles();
   const focusedValue = useSharedValue(focused ? 1 : 0);
-  const pressedValue = useSharedValue(0);
+  const lang = useLanguage();
 
   // Create shared values for theme colors to make them reactive
   const tintColor = useSharedValue(theme.colors.tint);
@@ -87,17 +88,6 @@ export const AnimatedTabItem: React.FC<AnimatedTabItemProps> = ({
     });
   }, [focused, focusedValue]);
 
-  const animatedContainerStyle = useAnimatedStyle(() => {
-    const scale = withSpring(1 - pressedValue.value * 0.05, {
-      damping: 15,
-      stiffness: 300,
-    });
-
-    return {
-      transform: [{ scale }],
-    };
-  });
-
   // Separate animated styles for top and bottom text to match original styling
   const animatedTopTextStyle = useAnimatedStyle(() => {
     const color = interpolateColor(
@@ -122,32 +112,27 @@ export const AnimatedTabItem: React.FC<AnimatedTabItemProps> = ({
     return { color, opacity };
   });
 
-  const handlePressIn = () => {
-    pressedValue.value = withTiming(1, { duration: 50 }); // Faster press animation
+  const handlePress = () => {
     // Add haptic feedback on iOS
     if (process.env.EXPO_OS === 'ios') {
       Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
     }
-  };
-
-  const handlePressOut = () => {
-    pressedValue.value = withTiming(0, { duration: 50 }); // Faster release animation
     onPress();
   };
 
   return (
-    <Pressable onPressIn={handlePressIn} onPressOut={handlePressOut} style={styles.pressable}>
-      <Animated.View style={[animatedContainerStyle, styles.animatedContainer]}>
+    <TouchableOpacity onPress={handlePress} activeOpacity={0.8} style={styles.pressable}>
+      <Animated.View style={styles.animatedContainer}>
         <View style={styles.labelContainer}>
           <Animated.Text style={[animatedTopTextStyle, styles.titleText]}>
             {route.title}
           </Animated.Text>
           <Animated.Text style={[animatedBottomTextStyle, styles.dateText]}>
-            {formatAvailability(route.date, { format: 'M月d日' })}
+            {formatAvailability(route.date, { format: lang === 'en' ? 'MMM d' : 'M月d日' })}
           </Animated.Text>
         </View>
       </Animated.View>
-    </Pressable>
+    </TouchableOpacity>
   );
 };
 

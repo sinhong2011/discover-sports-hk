@@ -4,13 +4,14 @@
  */
 
 import type React from 'react';
-import { memo, useCallback, useEffect, useState } from 'react';
+import { memo, useCallback, useEffect, useRef, useState } from 'react';
 import { useWindowDimensions, View } from 'react-native';
+
 import Animated, { useAnimatedStyle, useSharedValue, withSpring } from 'react-native-reanimated';
 import { SceneMap, TabBar, type TabBarProps, TabView } from 'react-native-tab-view';
 import { StyleSheet, useUnistyles } from 'react-native-unistyles';
 import { useDateFormatting } from '@/hooks/useDateFormatting';
-import { useHomeTabContext } from '@/providers';
+import type { SportVenueTimeslot } from '@/types/sport';
 import { generateDateRange } from '@/utils/dateUtils';
 import { AnimatedTabItem } from './AnimatedTabItem';
 import DatePage from './DatePage';
@@ -30,6 +31,8 @@ interface DatePagerViewProps {
   initialPage?: number;
   /** Whether venue scrolling should be disabled (when FilterBar is still visible) */
   disableVenueScrolling?: boolean;
+  /** Sport venue time slots data grouped by date order */
+  sportVenueTimeSlotsListByDateOrder: SportVenueTimeslot[][];
 }
 
 interface TabRoute {
@@ -47,11 +50,16 @@ const DatePagerView: React.FC<DatePagerViewProps> = ({
   selectedDate,
   onDateChange,
   initialPage = 0,
+  sportVenueTimeSlotsListByDateOrder,
 }) => {
   const { formatDate } = useDateFormatting();
   const { theme } = useUnistyles();
   const layout = useWindowDimensions();
   const [index, setIndex] = useState(initialPage);
+
+  // State to control swipe gestures based on scroll activity
+  const [swipeEnabled, setSwipeEnabled] = useState(true);
+  const scrollTimeoutRef = useRef<NodeJS.Timeout | number | null>(null);
 
   // Animation for the entire component
   const slideInValue = useSharedValue(0);
@@ -62,6 +70,15 @@ const DatePagerView: React.FC<DatePagerViewProps> = ({
       stiffness: 100,
     });
   }, [slideInValue]);
+
+  // Cleanup timeout on unmount
+  useEffect(() => {
+    return () => {
+      if (scrollTimeoutRef.current) {
+        clearTimeout(scrollTimeoutRef.current);
+      }
+    };
+  }, []);
 
   const animatedContainerStyle = useAnimatedStyle(() => {
     return {
@@ -76,8 +93,6 @@ const DatePagerView: React.FC<DatePagerViewProps> = ({
       ],
     };
   });
-
-  const { sportVenueTimeSlotsListByDateOrder } = useHomeTabContext();
 
   // Generate date range starting from today
   const dateRange = generateDateRange(new Date(), days);
@@ -100,6 +115,45 @@ const DatePagerView: React.FC<DatePagerViewProps> = ({
     [dateRange, onDateChange]
   );
 
+  // Handle scroll activity from child components
+  const handleScrollStart = useCallback(() => {
+    // Disable swipe when scrolling starts
+    setSwipeEnabled(false);
+
+    // Clear any existing timeout
+    if (scrollTimeoutRef.current) {
+      clearTimeout(scrollTimeoutRef.current);
+    }
+  }, []);
+
+  const handleScrollEnd = useCallback(() => {
+    // Re-enable swipe after a short delay when scrolling stops
+    if (scrollTimeoutRef.current) {
+      clearTimeout(scrollTimeoutRef.current);
+    }
+
+    scrollTimeoutRef.current = setTimeout(() => {
+      setSwipeEnabled(true);
+    }, 150); // 150ms delay to prevent immediate re-enabling
+  }, []);
+
+  // Handle swipe start - ensure swipe is enabled
+  const handleSwipeStart = useCallback(() => {
+    // Only allow swipe if not currently scrolling
+    if (!swipeEnabled) {
+      return;
+    }
+  }, [swipeEnabled]);
+
+  // Handle swipe end - cleanup
+  const handleSwipeEnd = useCallback(() => {
+    // Cleanup any pending timeouts
+    if (scrollTimeoutRef.current) {
+      clearTimeout(scrollTimeoutRef.current);
+      scrollTimeoutRef.current = null;
+    }
+  }, []);
+
   // Create scene components for SceneMap
   const sceneComponents = dateRange.reduce(
     (scenes, date, idx) => {
@@ -115,6 +169,8 @@ const DatePagerView: React.FC<DatePagerViewProps> = ({
               date={date}
               data={sportVenueTimeSlotsListByDateOrder[idx]}
               isSelected={isSelected}
+              onScrollStart={handleScrollStart}
+              onScrollEnd={handleScrollEnd}
             />
           </View>
         );
@@ -137,7 +193,11 @@ const DatePagerView: React.FC<DatePagerViewProps> = ({
 
   // Optimized animated tab bar item renderer using existing AnimatedTabItem component
   const renderTabBarItem = useCallback(
-    (props: any) => {
+    (props: {
+      route: TabRoute;
+      navigationState: { index: number; routes: TabRoute[] };
+      onPress: () => void;
+    }) => {
       const { route, navigationState, onPress } = props;
       const focused = navigationState.index === navigationState.routes.indexOf(route);
 
@@ -165,13 +225,15 @@ const DatePagerView: React.FC<DatePagerViewProps> = ({
           scrollEnabled={true}
           bounces={true}
           pressColor="transparent"
-          pressOpacity={1}
+          pressOpacity={0.8}
           contentContainerStyle={styles.tabBarContentContainer}
           renderTabBarItem={renderTabBarItem}
+          activeColor={theme.colors.tint}
+          inactiveColor={theme.colors.icon}
         />
       </View>
     ),
-    [renderTabBarItem, theme.colors.tint]
+    [renderTabBarItem, theme.colors.tint, theme.colors.icon]
   );
 
   return (
@@ -183,8 +245,10 @@ const DatePagerView: React.FC<DatePagerViewProps> = ({
         onIndexChange={handleIndexChange}
         initialLayout={{ width: layout.width }}
         style={styles.tabView}
-        swipeEnabled={true}
+        swipeEnabled={swipeEnabled}
         animationEnabled={true}
+        onSwipeStart={handleSwipeStart}
+        onSwipeEnd={handleSwipeEnd}
       />
     </Animated.View>
   );
@@ -198,6 +262,7 @@ const styles = StyleSheet.create((theme) => ({
   container: {
     color: theme.colors.text,
     flex: 1,
+    marginVertical: 1,
   },
 
   tabView: {
@@ -210,7 +275,7 @@ const styles = StyleSheet.create((theme) => ({
     position: 'relative',
     backgroundColor: theme.colors.background,
     overflow: 'visible', // Ensure indicator is not clipped
-    marginVertical: 3,
+    marginBottom: 5,
     marginHorizontal: 20,
   },
 
@@ -237,6 +302,7 @@ const styles = StyleSheet.create((theme) => ({
     paddingHorizontal: 4, // Small padding for spacing
     paddingVertical: 0,
     marginHorizontal: 0,
+    backgroundColor: 'transparent',
   },
 
   tabLabelContainer: {

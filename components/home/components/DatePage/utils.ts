@@ -5,16 +5,14 @@
  */
 
 import { groupBy } from 'es-toolkit';
-import type { SportVenueTimeslot } from '@/types/sport';
+import type { AvailabilityLevel, TimeSlotData } from '@/components/ui/TimeSlotItem';
+import { DistrictHK } from '@/constants/Geo';
+import type { FacilityLocationData, SportVenueTimeslot, VenueData } from '@/types/sport';
 import type {
-  AvailabilityLevel,
   DistrictData,
-  FacilityLocationData,
   FlashListItem,
   SectionHeaderItem,
-  TimeSlotData,
   TransformedDatePageData,
-  VenueData,
 } from './types';
 
 // ============================================================================
@@ -33,6 +31,30 @@ const AVAILABILITY_THRESHOLDS = {
   LOW: 0.25, // 25-50% courts available
   // <25% is considered 'none'
 } as const;
+
+/** Area name mappings */
+const AREA_NAMES = {
+  HKI: { en: 'Hong Kong Island', 'zh-HK': '香港島' },
+  KLN: { en: 'Kowloon', 'zh-HK': '九龍' },
+  NT: { en: 'New Territories', 'zh-HK': '新界' },
+} as const;
+
+// ============================================================================
+// District Mapping Utility Functions
+// ============================================================================
+
+/**
+ * Get area code for a district name
+ * @param districtName - English district name
+ * @returns Area code or null if not found
+ */
+export function getDistrictAreaCode(districtNameEn: string): string | null {
+  const districtInfo = DistrictHK.find((d) => d.district.en === districtNameEn);
+  if (!districtInfo) {
+    return null;
+  }
+  return districtInfo?.areaCode || null;
+}
 
 // ============================================================================
 // Time Utility Functions
@@ -159,7 +181,6 @@ export function transformTimeSlot(slot: SportVenueTimeslot, maxCourts: number): 
     startTime,
     endTime,
     availableCourts,
-    isDay: isTimeSlotDay(startTime),
     availabilityLevel: calculateAvailabilityLevel(availableCourts, maxCourts),
     originalData: slot,
   };
@@ -284,7 +305,7 @@ export function transformVenue(venueSlots: SportVenueTimeslot[]): VenueData {
 
   return {
     type: 'venue',
-    id: `${firstSlot.district}-${firstSlot.venue}`,
+    id: `${firstSlot.originalData.District_Name_EN}-${firstSlot.originalData.Venue_Name_EN}`,
     name: firstSlot.venue,
     address: firstSlot.address,
     phoneNumber: firstSlot.phoneNumber,
@@ -309,6 +330,16 @@ export function transformVenue(venueSlots: SportVenueTimeslot[]): VenueData {
  */
 export function transformDistrict(districtName: string, venues: VenueData[]): DistrictData {
   const totalTimeSlots = venues.reduce((sum, venue) => sum + venue.timeSlots.length, 0);
+  const totalAvailableTimeSlots = venues.reduce((sum, venue) => {
+    return (
+      sum +
+      venue.facilityLocations.reduce((venueSum, location) => {
+        return (
+          venueSum + location.timeSlots.filter((timeSlot) => timeSlot.availableCourts >= 1).length
+        );
+      }, 0)
+    );
+  }, 0);
 
   return {
     id: districtName,
@@ -316,18 +347,19 @@ export function transformDistrict(districtName: string, venues: VenueData[]): Di
     venues,
     totalVenues: venues.length,
     totalTimeSlots,
+    totalAvailableTimeSlots,
   };
 }
 
 /**
  * Main transformation function: converts SportVenueTimeslot[] to hierarchical structure
- * @param sportVenueTimeslots - Array of time slots for a single date
+ * @param sportVenueTimeSlots - Array of time slots for a single date
  * @returns Transformed data ready for FlashList rendering
  */
 export function transformSportVenueData(
-  sportVenueTimeslots: SportVenueTimeslot[]
+  sportVenueTimeSlots: SportVenueTimeslot[]
 ): TransformedDatePageData {
-  if (sportVenueTimeslots.length === 0) {
+  if (sportVenueTimeSlots.length === 0) {
     return {
       flashListData: [],
       stickyHeaderIndices: [],
@@ -336,11 +368,12 @@ export function transformSportVenueData(
       totalDistricts: 0,
       totalVenues: 0,
       totalTimeSlots: 0,
+      totalAvailableTimeSlots: 0,
     };
   }
 
   // Group by district first
-  const slotsByDistrict = groupBy(sportVenueTimeslots, (slot) => slot.district);
+  const slotsByDistrict = groupBy(sportVenueTimeSlots, (slot) => slot.district);
 
   const flashListData: FlashListItem[] = [];
   const stickyHeaderIndices: number[] = [];
@@ -349,29 +382,71 @@ export function transformSportVenueData(
 
   let totalVenues = 0;
   let totalTimeSlots = 0;
+  let totalAvailableTimeSlots = 0;
 
-  // Process each district
+  // First pass: collect all district data with venues
+  const districtDataCollection: Array<{
+    districtName: string;
+    districtData: DistrictData;
+    venues: VenueData[];
+    areaCode: string;
+  }> = [];
+
   for (const [districtName, districtSlots] of Object.entries(slotsByDistrict)) {
     // Group district slots by venue
     const slotsByVenue = groupBy(districtSlots, (slot) => slot.venue);
 
-    // Transform venues
+    // Transform venues and filter out venues with no available time slots
     const venues: VenueData[] = [];
     for (const [, venueSlots] of Object.entries(slotsByVenue)) {
       const venueData = transformVenue(venueSlots);
-      venues.push(venueData);
-      venuesMap.set(venueData.id, venueData);
-      totalTimeSlots += venueData.timeSlots.length;
+
+      // Check if venue has any available time slots (courts >= 1)
+      const hasAvailableTimeSlots = venueData.facilityLocations.some((facilityLocation) =>
+        facilityLocation.timeSlots.some((timeSlot) => timeSlot.availableCourts >= 1)
+      );
+
+      // Only include venues that have at least one available time slot
+      if (hasAvailableTimeSlots) {
+        venues.push(venueData);
+        venuesMap.set(venueData.id, venueData);
+        totalTimeSlots += venueData.timeSlots.length;
+      }
     }
 
     // Sort venues by name
     venues.sort((a, b) => a.name.localeCompare(b.name));
 
-    // Create district data
-    const districtData = transformDistrict(districtName, venues);
-    districtsMap.set(districtName, districtData);
-    totalVenues += venues.length;
+    // Only add district to collection if it has venues with available time slots
+    if (venues.length > 0) {
+      // Create district data
+      const districtData = transformDistrict(districtName, venues);
+      districtsMap.set(districtName, districtData);
+      totalVenues += venues.length;
+      totalAvailableTimeSlots += districtData.totalAvailableTimeSlots;
 
+      // Get area information for the district
+      const areaCode = getDistrictAreaCode(districtSlots[0].originalData.District_Name_EN);
+
+      districtDataCollection.push({
+        districtName,
+        districtData,
+        venues,
+        areaCode: areaCode || 'ZZZ',
+      });
+    }
+  }
+
+  // Sort districts by areaCode, then by district name
+  districtDataCollection.sort((a, b) => {
+    if (a.areaCode !== b.areaCode) {
+      return a.areaCode.localeCompare(b.areaCode);
+    }
+    return a.districtName.localeCompare(b.districtName);
+  });
+
+  // Second pass: build FlashList data in sorted order
+  districtDataCollection.forEach(({ districtName, districtData, venues, areaCode }) => {
     // Add district header to FlashList data (section header)
     const headerIndex = flashListData.length;
     stickyHeaderIndices.push(headerIndex);
@@ -380,8 +455,10 @@ export function transformSportVenueData(
       type: 'sectionHeader',
       id: `header-${districtName}`,
       districtName,
+      areaCode,
       totalVenues: venues.length,
       totalTimeSlots: venues.reduce((sum, venue) => sum + venue.timeSlots.length, 0),
+      totalAvailableTimeSlots: districtData.totalAvailableTimeSlots,
     };
 
     flashListData.push(sectionHeader);
@@ -390,7 +467,7 @@ export function transformSportVenueData(
     venues.forEach((venue) => {
       flashListData.push(venue);
     });
-  }
+  });
 
   return {
     flashListData,
@@ -400,5 +477,6 @@ export function transformSportVenueData(
     totalDistricts: districtsMap.size,
     totalVenues,
     totalTimeSlots,
+    totalAvailableTimeSlots,
   };
 }

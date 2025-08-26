@@ -7,7 +7,6 @@ import type React from 'react';
 import { View } from 'react-native';
 import { StyleSheet } from 'react-native-unistyles';
 
-import { SearchBar } from '@/components/ui/SearchBar';
 import type { SportType } from '@/constants/Sport';
 
 import { SportTypeSelector } from './SportTypeSelector';
@@ -19,33 +18,40 @@ import { SportTypeSelector } from './SportTypeSelector';
 export interface FilterBarProps {
   selectedSportType: SportType;
   onSportTypeSelect: (sportType: SportType) => void;
-  searchQuery: string;
-  onSearchChange: (query: string) => void;
-  onSearchClear?: () => void;
+  onFilterPress: () => void;
+  hasActiveFilters?: boolean;
 }
 
 export const FilterBar: React.FC<FilterBarProps> = ({
   selectedSportType,
   onSportTypeSelect,
-  searchQuery,
-  onSearchChange,
-  onSearchClear,
+  onFilterPress,
+  hasActiveFilters = false,
 }) => {
   return (
     <View style={styles.container}>
-      <SportTypeSelector
-        selectedSportType={selectedSportType}
-        onSportTypeSelect={onSportTypeSelect}
-      />
+      <View style={styles.sportTypeSelectorContainer}>
+        <SportTypeSelector
+          selectedSportType={selectedSportType}
+          onSportTypeSelect={onSportTypeSelect}
+        />
+      </View>
 
-      <SearchBar
-        value={searchQuery}
-        onChangeText={onSearchChange}
-        onClear={onSearchClear}
-        size="sm"
-        variant="filled"
-        style={styles.searchBar}
-      />
+      {/* <TouchableOpacity
+        style={[styles.filterButton, hasActiveFilters && styles.filterButtonActive]}
+        onPress={onFilterPress}
+        accessibilityRole="button"
+        accessibilityLabel="Open filters"
+        accessibilityHint="Opens filter modal to search and filter venues"
+        testID="filter-button"
+      >
+        <AppIcon
+          name="filter"
+          size={20}
+          color={hasActiveFilters ? styles.filterIconActive.color : styles.filterIcon.color}
+        />
+        {hasActiveFilters && <View style={styles.activeIndicator} />}
+      </TouchableOpacity> */}
     </View>
   );
 };
@@ -56,15 +62,48 @@ export const FilterBar: React.FC<FilterBarProps> = ({
 
 const styles = StyleSheet.create((theme) => ({
   container: {
-    paddingVertical: 12,
+    flexDirection: 'row',
+    alignItems: 'center',
+    marginBottom: 2,
     paddingHorizontal: 16,
     backgroundColor: theme.colors.background,
-    borderBottomWidth: 1,
-    borderBottomColor: `${theme.colors.icon}20`, // 20% opacity
-    gap: 12,
   },
 
-  searchBar: {
-    // Additional search bar styles if needed
+  sportTypeSelectorContainer: {
+    flex: 1,
+  },
+
+  filterButton: {
+    width: 32,
+    height: 32,
+    borderRadius: 22,
+    backgroundColor: `${theme.colors.icon}15`,
+    alignItems: 'center',
+    justifyContent: 'center',
+    position: 'relative',
+  },
+
+  filterButtonActive: {
+    backgroundColor: `${theme.colors.tint}15`,
+    borderWidth: 1,
+    borderColor: `${theme.colors.tint}30`,
+  },
+
+  filterIcon: {
+    color: theme.colors.icon,
+  },
+
+  filterIconActive: {
+    color: theme.colors.tint,
+  },
+
+  activeIndicator: {
+    position: 'absolute',
+    top: 8,
+    right: 8,
+    width: 8,
+    height: 8,
+    borderRadius: 4,
+    backgroundColor: theme.colors.tint,
   },
 }));

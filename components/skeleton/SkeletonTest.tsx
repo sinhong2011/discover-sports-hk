@@ -6,12 +6,12 @@
 
 import type React from 'react';
 import { useState } from 'react';
-import { View, TouchableOpacity, Text } from 'react-native';
+import { Text, TouchableOpacity, View } from 'react-native';
 import { StyleSheet, useUnistyles } from 'react-native-unistyles';
-import { SkeletonWrapper } from './SkeletonWrapper';
 import { CustomSkeletonWrapper } from './CustomSkeletonWrapper';
-import { EnhancedDatePageSkeleton } from './EnhancedDatePageSkeleton';
 import { DatePageSkeleton } from './DatePageSkeleton';
+import { EnhancedDatePageSkeleton } from './EnhancedDatePageSkeleton';
+import { SkeletonWrapper } from './SkeletonWrapper';
 
 // ============================================================================
 // Component
@@ -27,9 +27,7 @@ export const SkeletonTest: React.FC = () => {
     <View style={styles.container}>
       {/* Control Button */}
       <TouchableOpacity style={styles.button} onPress={toggleLoading}>
-        <Text style={styles.buttonText}>
-          {isLoading ? 'Hide Skeleton' : 'Show Skeleton'}
-        </Text>
+        <Text style={styles.buttonText}>{isLoading ? 'Hide Skeleton' : 'Show Skeleton'}</Text>
       </TouchableOpacity>
 
       {/* Test Section 1: Original SkeletonWrapper */}
@@ -65,11 +63,7 @@ export const SkeletonTest: React.FC = () => {
         <Text style={[styles.sectionTitle, { color: theme.colors.text }]}>
           Enhanced DatePage Skeleton
         </Text>
-        <EnhancedDatePageSkeleton 
-          isLoading={isLoading} 
-          venueCount={2} 
-          timeSlotsPerVenue={4}
-        />
+        <EnhancedDatePageSkeleton isLoading={isLoading} venueCount={2} timeSlotsPerVenue={4} />
       </View>
 
       {/* Test Section 4: Original DatePage Skeleton */}
@@ -77,11 +71,7 @@ export const SkeletonTest: React.FC = () => {
         <Text style={[styles.sectionTitle, { color: theme.colors.text }]}>
           Original DatePage Skeleton
         </Text>
-        <DatePageSkeleton 
-          isLoading={isLoading} 
-          venueCount={2} 
-          timeSlotsPerVenue={4}
-        />
+        <DatePageSkeleton isLoading={isLoading} venueCount={2} timeSlotsPerVenue={4} />
       </View>
     </View>
   );
