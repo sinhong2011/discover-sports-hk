@@ -30,7 +30,8 @@
     "build:preview": "eas build --profile preview",
     "build:prod": "eas build --profile production",
     "submit:prod": "eas submit --profile production",
-    "setup-release": "node ./scripts/setup-release.js"
+    "setup-release": "node ./scripts/setup-release.js",
+    "analyze-bundle-size": "EXPO_ATLAS=true expo start --no-dev --minify"
   },
   "dependencies": {
     "@csark0812/zustand-expo-devtools": "^2.0.2",
@@ -103,9 +104,12 @@
     "@testing-library/react-native": "^13.2.2",
     "@types/react": "~19.0.10",
     "babel-plugin-macros": "^3.1.0",
+    "esbuild": "^0.25.9",
+    "expo-atlas": "^0.4.0",
     "jest": "^30.0.5",
     "jest-expo": "^53.0.9",
     "lefthook": "^1.12.2",
+    "metro-minify-esbuild": "^0.2.0",
     "patch-package": "^8.0.0",
     "standard-version": "^9.5.0",
     "typescript": "~5.8.3"
