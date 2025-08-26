@@ -1,0 +1,28 @@
+diff --git a/node_modules/immer/package.json b/node_modules/immer/package.json
+index 1234567..abcdefg 100644
+--- a/node_modules/immer/package.json
++++ b/node_modules/immer/package.json
+@@ -7,11 +7,19 @@
+   "exports": {
+     "./package.json": "./package.json",
+     ".": {
+-      "types": "./dist/immer.d.ts",
+-      "import": "./dist/immer.mjs",
+-      "require": "./dist/cjs/index.js"
++      "react-native": {
++        "types": "./dist/immer.d.ts",
++        "default": "./dist/immer.legacy-esm.js"
++      },
++      "import": {
++        "types": "./dist/immer.d.ts",
++        "default": "./dist/immer.mjs"
++      },
++      "require": {
++        "types": "./dist/immer.d.ts",
++        "default": "./dist/cjs/index.js"
++      }
+     }
+   },
+   "jsnext:main": "dist/immer.mjs",
+-  "react-native": "./dist/immer.legacy-esm.js",
+   "source": "src/immer.ts",

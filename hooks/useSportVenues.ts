@@ -7,8 +7,8 @@
 import { queryOptions, useQuery } from '@tanstack/react-query';
 import React from 'react';
 import type { SportType } from '@/constants/Sport';
-import { useAlert } from '@/providers/AlertProvider';
-import { useSportVenueStore } from '@/store';
+import { AppToast } from '@/providers/ToastProvider';
+import { useSportDataByType, useSportVenueStore } from '@/store';
 import type { SportVenueDataBySportType } from '@/store/types';
 import { getSportData } from '../services/sportsApiService';
 
@@ -150,13 +150,11 @@ export function useSportVenues(
 ): UseSportVenuesResult {
   const { showErrorAlerts = true } = options;
 
-  // Get alert handler and store methods
-  const { showError } = useAlert();
+  // Get store methods
   const setRawSportVenueData = useSportVenueStore((state) => state.setRawSportVenueData);
-  const getSportDataByType = useSportVenueStore((state) => state.getSportDataByType);
 
-  // Check if we have valid cached data
-  const cachedData = getSportDataByType(sportType);
+  // Use the proper selector to ensure reactivity when store data changes
+  const cachedData = useSportDataByType(sportType);
   const shouldFetchFromApi = React.useMemo(() => {
     if (!cachedData || !cachedData.lastUpdated) {
       // No cached data or missing timestamp, fetch from API
@@ -194,9 +192,9 @@ export function useSportVenues(
   React.useEffect(() => {
     if (showErrorAlerts && query.error && !query.isLoading && sportType) {
       const message = `Failed to load ${sportType} venues: ${query.error.message}`;
-      showError(message, 'Error', 5000);
+      AppToast.error(message, { title: 'Error', duration: 5000 });
     }
-  }, [showErrorAlerts, query.error, query.isLoading, sportType, showError]);
+  }, [showErrorAlerts, query.error, query.isLoading, sportType]);
 
   // Return enhanced query result with cache information
   return {

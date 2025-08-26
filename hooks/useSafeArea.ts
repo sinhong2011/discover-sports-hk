@@ -11,7 +11,7 @@ export function useSafeArea() {
      * Raw safe area insets
      */
     insets,
-    
+
     /**
      * Get safe area padding style for specific edges
      */

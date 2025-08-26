@@ -1,11 +1,11 @@
 /**
  * Custom hook for sports API alerts
- * Provides convenient methods for showing sports-related error alerts
+ * Provides convenient methods for showing sports-related error alerts using toast notifications
  */
 
-import { useAlert } from '@/providers/AlertProvider';
 import { msg } from '@lingui/core/macro';
 import { useLingui } from '@lingui/react/macro';
+import { AppToast } from '@/providers/ToastProvider';
 
 // Define translation messages
 const errorTitle = msg`Error`;
@@ -18,73 +18,112 @@ const genericError = msg`Something went wrong`;
 const refreshFailed = msg`Failed to refresh data`;
 
 export function useSportsAlerts() {
-  const { showError, showWarning, showSuccess, showInfo } = useAlert();
   const { t } = useLingui();
 
   return {
     // Sports API specific error alerts
     showSportsListError: () => {
-      return showError(
-        t(sportsListFailed),
-        t(errorTitle),
-        5000 // Auto dismiss after 5 seconds
-      );
+      AppToast.error(t(sportsListFailed), {
+        title: t(errorTitle),
+        duration: 5000,
+      });
     },
 
     showSportDataError: (sportType?: string) => {
       const message = sportType ? `${t(sportDataFailed)}: ${sportType}` : t(sportDataFailed);
-
-      return showError(message, t(errorTitle), 5000);
+      AppToast.error(message, {
+        title: t(errorTitle),
+        duration: 5000,
+      });
     },
 
     showVenueSearchError: () => {
-      return showError(t(venueSearchFailed), t(errorTitle), 5000);
+      AppToast.error(t(venueSearchFailed), {
+        title: t(errorTitle),
+        duration: 5000,
+      });
     },
 
     showNetworkError: () => {
-      return showError(t(networkError), t(errorTitle), 5000);
+      AppToast.error(t(networkError), {
+        title: t(errorTitle),
+        duration: 5000,
+      });
     },
 
     // Success messages
     showDataRefreshSuccess: () => {
-      return showSuccess(t(done), undefined, 3000);
+      AppToast.success(t(done), {
+        duration: 3000,
+      });
     },
 
-    // Generic alert methods (pass through)
-    showError,
-    showWarning,
-    showSuccess,
-    showInfo,
+    // Generic alert methods using AppToast
+    showError: (message: string, title?: string, duration?: number) => {
+      AppToast.error(message, { title, duration });
+    },
+    showWarning: (message: string, title?: string, duration?: number) => {
+      AppToast.warn(message, { title, duration });
+    },
+    showSuccess: (message: string, title?: string, duration?: number) => {
+      AppToast.success(message, { title, duration });
+    },
+    showInfo: (message: string, title?: string, duration?: number) => {
+      AppToast.info(message, { title, duration });
+    },
   };
 }
 
 /**
- * Hook for general app alerts with localization
+ * Hook for general app alerts with localization using toast notifications
  */
 export function useAppAlerts() {
-  const { showError, showWarning, showSuccess, showInfo } = useAlert();
   const { t } = useLingui();
 
   return {
-    showError: (message: string, title?: string, autoDismiss?: number) => {
-      return showError(message, title || t(errorTitle), autoDismiss);
+    showError: (message: string, title?: string, duration?: number) => {
+      AppToast.error(message, {
+        title: title || t(errorTitle),
+        duration,
+      });
     },
 
-    showWarning: (message: string, title?: string, autoDismiss?: number) => {
-      return showWarning(message, title, autoDismiss);
+    showWarning: (message: string, title?: string, duration?: number) => {
+      AppToast.warn(message, {
+        title,
+        duration,
+      });
     },
 
-    showSuccess: (message: string, title?: string, autoDismiss?: number) => {
-      return showSuccess(message, title, autoDismiss);
+    showSuccess: (message: string, title?: string, duration?: number) => {
+      AppToast.success(message, {
+        title,
+        duration,
+      });
     },
 
-    showInfo: (message: string, title?: string, autoDismiss?: number) => {
-      return showInfo(message, title, autoDismiss);
+    showInfo: (message: string, title?: string, duration?: number) => {
+      AppToast.info(message, {
+        title,
+        duration,
+      });
     },
 
     // Common error scenarios
-    showNetworkError: () => showError(t(networkError), t(errorTitle)),
-    showGenericError: () => showError(t(genericError), t(errorTitle)),
-    showRefreshError: () => showError(t(refreshFailed), t(errorTitle)),
+    showNetworkError: () => {
+      AppToast.error(t(networkError), {
+        title: t(errorTitle),
+      });
+    },
+    showGenericError: () => {
+      AppToast.error(t(genericError), {
+        title: t(errorTitle),
+      });
+    },
+    showRefreshError: () => {
+      AppToast.error(t(refreshFailed), {
+        title: t(errorTitle),
+      });
+    },
   };
 }

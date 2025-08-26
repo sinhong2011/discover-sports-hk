@@ -1,8 +1,8 @@
 import { devtools } from '@csark0812/zustand-expo-devtools';
-import AsyncStorage from '@react-native-async-storage/async-storage';
 import { create } from 'zustand';
 import { createJSONStorage, persist } from 'zustand/middleware';
 import { immer } from 'zustand/middleware/immer';
+import { mmkvStorage } from './mmkvStorage';
 import type { AppState, UserPreferences } from './types';
 
 interface AppStore extends AppState {
@@ -66,7 +66,7 @@ export const useAppStore = create<AppStore>()(
       })),
       {
         name: 'lcsd-app-storage',
-        storage: createJSONStorage(() => AsyncStorage),
+        storage: createJSONStorage(() => mmkvStorage),
         partialize: (state) => ({
           preferences: state.preferences,
           isFirstLaunch: state.isFirstLaunch,
