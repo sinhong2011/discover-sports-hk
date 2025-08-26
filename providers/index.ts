@@ -2,6 +2,6 @@
  * Providers index - exports all provider components
  */
 
-export * from './AlertProvider';
+export * from './BookmarksTabProvider';
 export * from './HomeTabProvider';
 export * from './QueryProvider';

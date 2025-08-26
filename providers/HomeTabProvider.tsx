@@ -13,12 +13,8 @@ import type { ScrollView } from 'react-native';
 
 import type { SportType } from '@/constants/Sport';
 import { useSportVenues } from '@/hooks/useSportVenues';
-import { useVenueSearch } from '@/hooks/useVenueSearch';
-import {
-  useSelectedSportType,
-  useSportVenueStore,
-  useSportVenueTimeSlots,
-} from '@/store/useSportVenueStore';
+import { useVenueFilters, type VenueFilters } from '@/hooks/useVenueFilters';
+import { useSportVenueTimeSlots } from '@/store/useSportVenueStore';
 import type { SportVenueTimeslot } from '@/types/sport';
 
 // ============================================================================
@@ -44,6 +40,12 @@ export interface HomeTabContextType {
   isSearchActive: boolean;
   filteredCount: number | null;
 
+  // Filter functionality
+  selectedDistrict: string | null;
+  setSelectedDistrict: (district: string | null) => void;
+  clearAllFilters: () => void;
+  hasActiveFilters: boolean;
+
   // Loading and error states from TanStack Query
   isLoading: boolean;
   error: Error | null;
@@ -66,6 +68,10 @@ export interface HomeTabContextType {
   // Scroll control for nested scroll handoff
   outerScrollViewRef: React.RefObject<ScrollView | null> | null;
   setOuterScrollViewRef: (ref: React.RefObject<ScrollView | null>) => void;
+
+  // FAB scroll direction tracking
+  fabScrollDirection: 'up' | 'down' | null;
+  setFabScrollDirection: (direction: 'up' | 'down' | null) => void;
 
   // Computed values (based on filtered data when search is active)
   totalTimeSlots: number;
@@ -94,15 +100,45 @@ interface HomeTabProviderProps {
 }
 
 export function HomeTabProvider({ children, showErrorAlerts = false }: HomeTabProviderProps) {
-  // Get selected sport type from Zustand store
-  const selectedSportType = useSelectedSportType();
+  // Manage selected sport type as local component state instead of persisting in Zustand
+  const [selectedSportType, setSelectedSportType] = useState<SportType>('badminton');
 
   // Get sport venue time slots data from Zustand store (derived from current sport venues)
-  const { sportVenueTimeSlots, sportVenueTimeSlotsGrpByDate } = useSportVenueTimeSlots();
+  const { sportVenueTimeSlots, sportVenueTimeSlotsGrpByDate } =
+    useSportVenueTimeSlots(selectedSportType);
 
-  // Search functionality
-  const { searchQuery, setSearchQuery, clearSearch, isSearchActive, filterVenues, filteredCount } =
-    useVenueSearch(sportVenueTimeSlots);
+  // Filter state management
+  const [searchQuery, setSearchQuery] = useState('');
+  const [selectedDistrict, setSelectedDistrict] = useState<string | null>(null);
+
+  // Clear search function
+  const clearSearch = useCallback(() => {
+    setSearchQuery('');
+  }, []);
+
+  // Clear all filters function
+  const clearAllFilters = useCallback(() => {
+    setSearchQuery('');
+    setSelectedDistrict(null);
+  }, []);
+
+  // Create filters object for the hook
+  const filters: VenueFilters = useMemo(
+    () => ({
+      searchQuery,
+      selectedDistrict,
+    }),
+    [searchQuery, selectedDistrict]
+  );
+
+  // Use comprehensive filtering hook
+  const { filterVenues, hasActiveFilters, filteredCount } = useVenueFilters(
+    sportVenueTimeSlots,
+    filters
+  );
+
+  // Check if search is active (for backward compatibility)
+  const isSearchActive = searchQuery.trim().length >= 2;
 
   // Fetch venue data using TanStack Query hook
   const { isLoading, error, isError, isFetching, isRefetching, refetch } = useSportVenues(
@@ -112,15 +148,15 @@ export function HomeTabProvider({ children, showErrorAlerts = false }: HomeTabPr
     }
   );
 
-  // Get setSelectedSportType function from store
-  const setSelectedSportType = useSportVenueStore((state) => state.setSelectedSportType);
-
   // Scroll state for nested scroll coordination
   const [isFilterBarScrolledOut, setIsFilterBarScrolledOut] = useState(false);
 
   // Outer ScrollView ref for scroll handoff
   const [outerScrollViewRef, setOuterScrollViewRef] =
     useState<React.RefObject<ScrollView | null> | null>(null);
+
+  // FAB scroll direction tracking
+  const [fabScrollDirection, setFabScrollDirection] = useState<'up' | 'down' | null>(null);
 
   // Apply search filter to get filtered data
   const filteredSportVenueTimeSlots = useMemo(() => {
@@ -132,11 +168,22 @@ export function HomeTabProvider({ children, showErrorAlerts = false }: HomeTabPr
     return groupBy(filteredSportVenueTimeSlots, (item) => item.availableDate);
   }, [filteredSportVenueTimeSlots]);
 
+  // Memoize the date-ordered arrays separately to prevent unnecessary re-renders and scroll position loss
+  const sportVenueTimeSlotsListByDateOrder = useMemo(() => {
+    const availableDates = Object.keys(sportVenueTimeSlotsGrpByDate).sort();
+    return availableDates.map((key) => sportVenueTimeSlotsGrpByDate[key] || []);
+  }, [sportVenueTimeSlotsGrpByDate]);
+
+  const filteredSportVenueTimeSlotsListByDateOrder = useMemo(() => {
+    const availableDates = Object.keys(filteredSportVenueTimeSlotsGrpByDate).sort();
+    return availableDates.map((key) => filteredSportVenueTimeSlotsGrpByDate[key] || []);
+  }, [filteredSportVenueTimeSlotsGrpByDate]);
+
   // Memoized computed values for better performance
   const computedValues = useMemo(() => {
-    // Use filtered data when search is active, otherwise use all data
-    const dataToUse = isSearchActive ? filteredSportVenueTimeSlots : sportVenueTimeSlots;
-    const groupedDataToUse = isSearchActive
+    // Use filtered data when any filters are active, otherwise use all data
+    const dataToUse = hasActiveFilters ? filteredSportVenueTimeSlots : sportVenueTimeSlots;
+    const groupedDataToUse = hasActiveFilters
       ? filteredSportVenueTimeSlotsGrpByDate
       : sportVenueTimeSlotsGrpByDate;
 
@@ -147,19 +194,13 @@ export function HomeTabProvider({ children, showErrorAlerts = false }: HomeTabPr
     // Extract unique available dates (sorted)
     const availableDates = Object.keys(groupedDataToUse).sort();
 
-    // Extract unique venues
+    // Extract unique venues from filtered data
     const uniqueVenues = Array.from(new Set(dataToUse.map((slot) => slot.venue))).sort();
 
-    // Extract unique districts
-    const uniqueDistricts = Array.from(new Set(dataToUse.map((slot) => slot.district))).sort();
-
-    const sportVenueTimeSlotsListByDateOrder = availableDates.map(
-      (key) => sportVenueTimeSlotsGrpByDate[key] || []
-    );
-
-    const filteredSportVenueTimeSlotsListByDateOrder = availableDates.map(
-      (key) => filteredSportVenueTimeSlotsGrpByDate[key] || []
-    );
+    // Extract unique districts from ORIGINAL data (not filtered) to ensure all districts are always available in FilterModal
+    const uniqueDistricts = Array.from(
+      new Set(sportVenueTimeSlots.map((slot) => slot.district))
+    ).sort();
 
     return {
       hasData,
@@ -173,10 +214,12 @@ export function HomeTabProvider({ children, showErrorAlerts = false }: HomeTabPr
     };
   }, [
     sportVenueTimeSlots,
-    sportVenueTimeSlotsGrpByDate,
     filteredSportVenueTimeSlots,
+    sportVenueTimeSlotsGrpByDate,
     filteredSportVenueTimeSlotsGrpByDate,
-    isSearchActive,
+    hasActiveFilters,
+    sportVenueTimeSlotsListByDateOrder,
+    filteredSportVenueTimeSlotsListByDateOrder,
   ]);
 
   // Memoized refetch function to prevent unnecessary re-renders
@@ -185,12 +228,9 @@ export function HomeTabProvider({ children, showErrorAlerts = false }: HomeTabPr
   }, [refetch]);
 
   // Memoized setSelectedSportType to prevent unnecessary re-renders
-  const memoizedSetSelectedSportType = useCallback(
-    (sportType: SportType) => {
-      setSelectedSportType(sportType);
-    },
-    [setSelectedSportType]
-  );
+  const memoizedSetSelectedSportType = useCallback((sportType: SportType) => {
+    setSelectedSportType(sportType);
+  }, []);
 
   // Memoized context value to prevent unnecessary re-renders of consumers
   const contextValue = useMemo<HomeTabContextType>(
@@ -208,6 +248,12 @@ export function HomeTabProvider({ children, showErrorAlerts = false }: HomeTabPr
       clearSearch,
       isSearchActive,
       filteredCount,
+
+      // Filter functionality
+      selectedDistrict,
+      setSelectedDistrict,
+      clearAllFilters,
+      hasActiveFilters,
 
       // Loading and error states
       isLoading,
@@ -228,6 +274,10 @@ export function HomeTabProvider({ children, showErrorAlerts = false }: HomeTabPr
       outerScrollViewRef,
       setOuterScrollViewRef,
 
+      // FAB scroll direction tracking
+      fabScrollDirection,
+      setFabScrollDirection,
+
       // Computed values
       ...computedValues,
     }),
@@ -238,10 +288,12 @@ export function HomeTabProvider({ children, showErrorAlerts = false }: HomeTabPr
       filteredSportVenueTimeSlotsGrpByDate,
       selectedSportType,
       searchQuery,
-      setSearchQuery,
       clearSearch,
       isSearchActive,
       filteredCount,
+      selectedDistrict,
+      clearAllFilters,
+      hasActiveFilters,
       isLoading,
       error,
       isError,
@@ -250,9 +302,8 @@ export function HomeTabProvider({ children, showErrorAlerts = false }: HomeTabPr
       memoizedRefetch,
       memoizedSetSelectedSportType,
       isFilterBarScrolledOut,
-      setIsFilterBarScrolledOut,
       outerScrollViewRef,
-      setOuterScrollViewRef,
+      fabScrollDirection,
       computedValues,
     ]
   );
