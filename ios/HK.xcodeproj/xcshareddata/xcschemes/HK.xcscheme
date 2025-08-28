@@ -15,9 +15,9 @@
             <BuildableReference
                BuildableIdentifier = "primary"
                BlueprintIdentifier = "13B07F861A680F5B00A75B9A"
-               BuildableName = "discoversportshk.app"
-               BlueprintName = "discoversportshk"
-               ReferencedContainer = "container:discoversportshk.xcodeproj">
+               BuildableName = "HK.app"
+               BlueprintName = "HK"
+               ReferencedContainer = "container:HK.xcodeproj">
             </BuildableReference>
          </BuildActionEntry>
       </BuildActionEntries>
@@ -33,9 +33,9 @@
             <BuildableReference
                BuildableIdentifier = "primary"
                BlueprintIdentifier = "00E356ED1AD99517003FC87E"
-               BuildableName = "discoversportshkTests.xctest"
-               BlueprintName = "discoversportshkTests"
-               ReferencedContainer = "container:discoversportshk.xcodeproj">
+               BuildableName = "HKTests.xctest"
+               BlueprintName = "HKTests"
+               ReferencedContainer = "container:HK.xcodeproj">
             </BuildableReference>
          </TestableReference>
       </Testables>
@@ -55,9 +55,9 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "13B07F861A680F5B00A75B9A"
-            BuildableName = "discoversportshk.app"
-            BlueprintName = "discoversportshk"
-            ReferencedContainer = "container:discoversportshk.xcodeproj">
+            BuildableName = "HK.app"
+            BlueprintName = "HK"
+            ReferencedContainer = "container:HK.xcodeproj">
          </BuildableReference>
       </BuildableProductRunnable>
    </LaunchAction>
@@ -72,9 +72,9 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "13B07F861A680F5B00A75B9A"
-            BuildableName = "discoversportshk.app"
-            BlueprintName = "discoversportshk"
-            ReferencedContainer = "container:discoversportshk.xcodeproj">
+            BuildableName = "HK.app"
+            BlueprintName = "HK"
+            ReferencedContainer = "container:HK.xcodeproj">
          </BuildableReference>
       </BuildableProductRunnable>
    </ProfileAction>
