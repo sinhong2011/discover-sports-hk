@@ -52,7 +52,6 @@ export default function RootLayout() {
 
   // Debug logging to confirm dev tools are initialized
   if (__DEV__) {
-    // eslint-disable-next-line no-console
     console.log('React Navigation DevTools initialized');
   }
 

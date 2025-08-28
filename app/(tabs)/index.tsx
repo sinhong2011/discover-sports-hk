@@ -4,7 +4,7 @@
  */
 
 import { useBottomTabBarHeight } from '@react-navigation/bottom-tabs';
-import React from 'react';
+import { memo, useCallback, useRef } from 'react';
 import { useWindowDimensions, View } from 'react-native';
 import { StyleSheet } from 'react-native-unistyles';
 // Import home screen components
@@ -49,7 +49,7 @@ function HomeScreenContent() {
   } = useHomeTabContext();
 
   // Filter modal ref
-  const filterModalRef = React.useRef<FilterModalRef>(null);
+  const filterModalRef = useRef<FilterModalRef>(null);
 
   // Handle sport type selection
   const handleSportTypeSelect = (sportType: SportType) => {
@@ -71,12 +71,12 @@ function HomeScreenContent() {
   };
 
   // Handle clearing all filters
-  const handleClearFilters = React.useCallback(() => {
+  const handleClearFilters = useCallback(() => {
     clearAllFilters();
   }, [clearAllFilters]);
 
   // Handle date change from DatePagerView
-  const handleDateChange = React.useCallback((_date: Date, _index: number) => {
+  const handleDateChange = useCallback((_date: Date, _index: number) => {
     // DatePagerView handles its own content, no need to manage state here
   }, []);
 
@@ -155,8 +155,8 @@ function HomeScreen() {
   );
 }
 
-// Export with React.memo to prevent unnecessary re-renders
-export default React.memo(HomeScreen);
+// Export with memo to prevent unnecessary re-renders
+export default memo(HomeScreen);
 
 // ============================================================================
 // Styles
