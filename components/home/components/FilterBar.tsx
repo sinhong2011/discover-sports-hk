@@ -22,12 +22,7 @@ export interface FilterBarProps {
   hasActiveFilters?: boolean;
 }
 
-export const FilterBar: React.FC<FilterBarProps> = ({
-  selectedSportType,
-  onSportTypeSelect,
-  onFilterPress,
-  hasActiveFilters = false,
-}) => {
+export const FilterBar: React.FC<FilterBarProps> = ({ selectedSportType, onSportTypeSelect }) => {
   return (
     <View style={styles.container}>
       <View style={styles.sportTypeSelectorContainer}>
@@ -36,22 +31,6 @@ export const FilterBar: React.FC<FilterBarProps> = ({
           onSportTypeSelect={onSportTypeSelect}
         />
       </View>
-
-      {/* <TouchableOpacity
-        style={[styles.filterButton, hasActiveFilters && styles.filterButtonActive]}
-        onPress={onFilterPress}
-        accessibilityRole="button"
-        accessibilityLabel="Open filters"
-        accessibilityHint="Opens filter modal to search and filter venues"
-        testID="filter-button"
-      >
-        <AppIcon
-          name="filter"
-          size={20}
-          color={hasActiveFilters ? styles.filterIconActive.color : styles.filterIcon.color}
-        />
-        {hasActiveFilters && <View style={styles.activeIndicator} />}
-      </TouchableOpacity> */}
     </View>
   );
 };
@@ -71,6 +50,7 @@ const styles = StyleSheet.create((theme) => ({
 
   sportTypeSelectorContainer: {
     flex: 1,
+    paddingTop: 12,
   },
 
   filterButton: {

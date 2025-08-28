@@ -15,7 +15,7 @@ import Animated, {
   withRepeat,
   withTiming,
 } from 'react-native-reanimated';
-import { StyleSheet, useUnistyles } from 'react-native-unistyles';
+import { StyleSheet } from 'react-native-unistyles';
 
 // ============================================================================
 // Types
@@ -42,7 +42,6 @@ export const CustomSkeletonWrapper: React.FC<CustomSkeletonWrapperProps> = ({
   duration = 1500,
   borderRadius = 8,
 }) => {
-  const { theme } = useUnistyles();
   const shimmerValue = useSharedValue(0);
 
   useEffect(() => {

@@ -9,7 +9,7 @@
  * - Automatic transition to main app after specified duration
  */
 
-import React, { useEffect, useRef } from 'react';
+import { memo, useEffect, useRef } from 'react';
 import { Dimensions, Image, Platform, StatusBar, useColorScheme, View } from 'react-native';
 import Animated, {
   Easing,
@@ -60,7 +60,7 @@ const LOADING_DELAY = 1000;
 // Component
 // ============================================================================
 
-export const SplashScreen: React.FC<SplashScreenProps> = React.memo(
+export const SplashScreen: React.FC<SplashScreenProps> = memo(
   ({ onAnimationComplete, duration = 2500, showLoadingIndicator = true }) => {
     const { theme } = useUnistyles();
     const insets = useSafeAreaInsets();
@@ -253,7 +253,7 @@ export const SplashScreen: React.FC<SplashScreenProps> = React.memo(
 // Loading Dot Component
 // ============================================================================
 
-const LoadingDot: React.FC<{ delay: number }> = React.memo(({ delay }) => {
+const LoadingDot: React.FC<{ delay: number }> = memo(({ delay }) => {
   const { theme } = useUnistyles();
   const scale = useSharedValue(0.8);
   const opacity = useSharedValue(0.3);

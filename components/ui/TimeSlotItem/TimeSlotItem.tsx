@@ -25,7 +25,6 @@ export const TimeSlotItem: React.FC<TimeSlotItemProps> = ({
   timeSlot,
   selected = false,
   disabled = false,
-  index = 0,
   onPress,
 }) => {
   // Compute day/night determination using useMemo for performance optimization

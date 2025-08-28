@@ -11,9 +11,10 @@ import {
 } from '@gorhom/bottom-sheet';
 import { msg } from '@lingui/core/macro';
 import { useLingui } from '@lingui/react/macro';
-import React, {
+import {
   forwardRef,
   useCallback,
+  useEffect,
   useImperativeHandle,
   useMemo,
   useRef,
@@ -80,7 +81,7 @@ const FilterModalComponent = forwardRef<FilterModalRef, FilterModalProps>(functi
   );
 
   // Update local state when props change
-  React.useEffect(() => {
+  useEffect(() => {
     setLocalFilterState(filterState);
   }, [filterState]);
 

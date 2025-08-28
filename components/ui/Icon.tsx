@@ -14,7 +14,8 @@ import {
   SimpleLineIcons,
   Zocial,
 } from '@expo/vector-icons';
-import React from 'react';
+import type { ComponentType } from 'react';
+import type { StyleProp, ViewStyle } from 'react-native';
 
 // Icon family types
 export type IconFamily =
@@ -57,12 +58,17 @@ interface BaseIconProps {
   name: string;
   size?: number;
   color?: string;
-  style?: any;
+  style?: StyleProp<ViewStyle>;
 }
 
 // Generic Icon component
 export function Icon({ family, name, size = 24, color, style, ...props }: BaseIconProps) {
-  const IconComponent = IconComponents[family] as any;
+  const IconComponent = IconComponents[family] as ComponentType<{
+    name: string;
+    size?: number;
+    color?: string;
+    style?: StyleProp<ViewStyle>;
+  }>;
 
   if (!IconComponent) {
     console.warn(`Icon family "${family}" not found`);
@@ -160,7 +166,7 @@ interface AppIconProps {
   name: AppIconName;
   size?: number;
   color?: string;
-  style?: any;
+  style?: StyleProp<ViewStyle>;
 }
 
 // App-specific icon component
@@ -185,7 +191,7 @@ export function AppIcon({ name, size = 24, color, style, ...props }: AppIconProp
 }
 
 // Utility function to get icon component for tab navigation
-export function getTabIcon(iconName: AppIconName, focused = false) {
+export function getTabIcon(iconName: AppIconName) {
   return ({ color, size }: { color: string; size: number }) => (
     <AppIcon name={iconName} color={color} size={size} />
   );

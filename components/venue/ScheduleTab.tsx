@@ -84,33 +84,36 @@ const VenueTimeSlotGrid: React.FC<VenueTimeSlotGridProps> = ({
   onTimeSlotPress,
 }) => {
   // Transform time slots data for FlashList (always call hooks)
+  // Helper function to map SportVenueTimeslot to TimeSlotData
+  const mapTimeSlotToData = useCallback(
+    (timeslot: SportVenueTimeslot, index: number): (TimeSlotData & { index: number }) | null => {
+      const availableCourts = parseInt(timeslot.availableCourts, 10) || 0;
+      if (availableCourts <= 0) return null;
+
+      const timeSlotData: TimeSlotData = {
+        id: `${timeslot.venue}-${timeslot.availableDate}-${timeslot.sessionStartTime}`,
+        startTime: timeslot.sessionStartTime,
+        endTime: timeslot.sessionEndTime,
+        availableCourts,
+        availabilityLevel:
+          availableCourts > 5
+            ? 'high'
+            : availableCourts > 2
+              ? 'medium'
+              : availableCourts > 0
+                ? 'low'
+                : 'none',
+        originalData: timeslot,
+      };
+
+      return { ...timeSlotData, index };
+    },
+    []
+  );
+
   const timeSlotData = useMemo(() => {
-    return timeSlots
-      .map((timeslot, index) => {
-        const availableCourts = parseInt(timeslot.availableCourts, 10) || 0;
-        if (availableCourts <= 0) return null;
-
-        // Create TimeSlotData from SportVenueTimeslot
-        const timeSlotData: TimeSlotData = {
-          id: `${timeslot.venue}-${timeslot.availableDate}-${timeslot.sessionStartTime}`,
-          startTime: timeslot.sessionStartTime,
-          endTime: timeslot.sessionEndTime,
-          availableCourts,
-          availabilityLevel:
-            availableCourts > 5
-              ? 'high'
-              : availableCourts > 2
-                ? 'medium'
-                : availableCourts > 0
-                  ? 'low'
-                  : 'none',
-          originalData: timeslot,
-        };
-
-        return { ...timeSlotData, index };
-      })
-      .filter(Boolean) as (TimeSlotData & { index: number })[];
-  }, [timeSlots]);
+    return timeSlots.map(mapTimeSlotToData).filter(Boolean) as (TimeSlotData & { index: number })[];
+  }, [timeSlots, mapTimeSlotToData]);
 
   // Render time slot item for FlashList
   const renderTimeSlotItem = useCallback(

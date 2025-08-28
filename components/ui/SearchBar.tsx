@@ -6,7 +6,7 @@
 
 import { msg } from '@lingui/core/macro';
 import { useLingui } from '@lingui/react/macro';
-import React, { useCallback, useRef } from 'react';
+import { useCallback, useRef } from 'react';
 import { Pressable, type TextInput } from 'react-native';
 import { StyleSheet } from 'react-native-unistyles';
 import { BaseTextInput, type BaseTextInputProps } from './BaseTextInput';

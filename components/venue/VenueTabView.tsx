@@ -72,7 +72,7 @@ export const VenueTabView: React.FC<VenueTabViewProps> = ({
         style={[styles.tabBar, { backgroundColor: theme.colors.background }]}
         activeColor={theme.colors.text}
         inactiveColor={theme.colors.icon}
-        indicatorStyle={[styles.indicator, { backgroundColor: theme.colors.tint }]}
+        indicatorStyle={[styles.indicator, { backgroundColor: theme.colors.progressivePrimary }]}
       />
     ),
     [theme]

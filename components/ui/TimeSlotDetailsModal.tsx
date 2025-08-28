@@ -12,7 +12,7 @@ import {
 } from '@gorhom/bottom-sheet';
 import { msg } from '@lingui/core/macro';
 import { useLingui } from '@lingui/react/macro';
-import React, { forwardRef, useCallback, useImperativeHandle, useMemo, useRef } from 'react';
+import { forwardRef, useCallback, useImperativeHandle, useMemo, useRef } from 'react';
 import { View } from 'react-native';
 import { StyleSheet } from 'react-native-unistyles';
 import { isTimeSlotDay } from '@/components/home/components/DatePage/utils';

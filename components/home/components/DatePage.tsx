@@ -24,7 +24,6 @@ import { VenueItem } from './DatePage/VenueItem';
 
 export interface DatePageProps {
   date: Date;
-  isSelected: boolean;
   data: SportVenueTimeslot[];
   onScrollStart?: () => void;
   onScrollEnd?: () => void;
@@ -36,7 +35,7 @@ export interface DatePageProps {
 
 const DatePage: React.FC<DatePageProps> = ({
   date: _date,
-  isSelected,
+
   data = [],
   onScrollStart: _onScrollStart,
   onScrollEnd: _onScrollEnd,
@@ -121,7 +120,7 @@ const DatePage: React.FC<DatePageProps> = ({
   );
 
   return (
-    <View style={[styles.container, isSelected && styles.containerSelected]}>
+    <View style={[styles.container]}>
       {shouldShowSkeleton ? (
         <EnhancedDatePageSkeleton isLoading={shouldShowSkeleton} />
       ) : (
@@ -149,19 +148,14 @@ const DatePage: React.FC<DatePageProps> = ({
 // Styles
 // ============================================================================
 
-const styles = StyleSheet.create(() => ({
+const styles = StyleSheet.create((theme) => ({
   container: {
     flex: 1,
-    backgroundColor: 'transparent',
-  },
-
-  containerSelected: {
-    backgroundColor: 'transparent',
+    backgroundColor: theme.colors.background,
   },
 
   flashListContent: {
-    // paddingBottom is now handled dynamically in the component
-    // to account for tab bar height
+    backgroundColor: theme.colors.background,
   },
 
   scrollViewWrapper: {

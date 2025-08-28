@@ -34,9 +34,6 @@ export const SportTypeSelector: React.FC<SportTypeSelectorProps> = ({
   selectedSportType,
   onSportTypeSelect,
   sectionTitle,
-  variant = 'light',
-  color = 'primary',
-  size = 'sm',
 }) => {
   const { t } = useLingui();
   const { theme } = useUnistyles();
@@ -88,11 +85,10 @@ export const SportTypeSelector: React.FC<SportTypeSelectorProps> = ({
 const styles = StyleSheet.create((theme) => ({
   segmentedControlContainer: {
     width: '100%',
-    marginBottom: 2,
   },
 
   segmentedControl: {
-    height: 34,
+    height: 32,
   },
 
   activeFontStyle: {

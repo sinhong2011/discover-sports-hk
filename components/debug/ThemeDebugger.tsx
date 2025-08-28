@@ -4,7 +4,6 @@
  * This component should only be used in development
  */
 
-import React from 'react';
 import { TouchableOpacity, View } from 'react-native';
 import { StyleSheet, UnistylesRuntime, useUnistyles } from 'react-native-unistyles';
 import { ThemedText } from '@/components/ThemedText';

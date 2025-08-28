@@ -32,6 +32,45 @@ export const ContactInfoTab: React.FC<ContactInfoTabProps> = ({ venue }) => {
   const { t } = useLingui();
   const { theme } = useUnistyles();
 
+  // Helper: Check if coordinates are valid
+  const hasValidCoordinates = (coordinates: VenueData['coordinates']) => {
+    return (
+      coordinates?.latitude &&
+      coordinates?.longitude &&
+      coordinates.latitude.trim() !== '' &&
+      coordinates.longitude.trim() !== ''
+    );
+  };
+
+  // Helper: Try to open map with coordinates
+  const tryOpenMapWithCoordinates = async (coordinates: VenueData['coordinates'], name: string) => {
+    const lat = parseFloat(coordinates.latitude);
+    const lng = parseFloat(coordinates.longitude);
+    if (!Number.isNaN(lat) && !Number.isNaN(lng)) {
+      await showLocation({
+        latitude: lat,
+        longitude: lng,
+        title: name,
+        alwaysIncludeGoogle: true,
+      });
+      return true;
+    }
+    return false;
+  };
+
+  // Helper: Try to open map with address
+  const tryOpenMapWithAddress = async (address: string, name: string) => {
+    if (address && address.trim() !== '') {
+      await showLocation({
+        title: name,
+        address,
+        alwaysIncludeGoogle: true,
+      });
+      return true;
+    }
+    return false;
+  };
+
   // Handle map navigation
   const handleMapNavigation = async () => {
     if (!venue?.address) {
@@ -42,42 +81,18 @@ export const ContactInfoTab: React.FC<ContactInfoTabProps> = ({ venue }) => {
     }
 
     try {
-      // Check if we have valid coordinates
-      const hasValidCoordinates =
-        venue.coordinates?.latitude &&
-        venue.coordinates?.longitude &&
-        venue.coordinates.latitude.trim() !== '' &&
-        venue.coordinates.longitude.trim() !== '';
-
-      if (hasValidCoordinates) {
-        // Use coordinates for precise location
-        const { latitude, longitude } = venue.coordinates;
-        const lat = parseFloat(latitude);
-        const lng = parseFloat(longitude);
-
-        // Validate coordinates
-        if (!Number.isNaN(lat) && !Number.isNaN(lng)) {
-          await showLocation({
-            latitude: lat,
-            longitude: lng,
-            title: venue.name,
-            alwaysIncludeGoogle: true,
-          });
-          return;
-        }
-      }
-
-      // Fallback to address-based navigation
-      if (venue.address && venue.address.trim() !== '') {
-        await showLocation({
-          title: venue.name,
-          address: venue.address,
-          alwaysIncludeGoogle: true,
-        });
+      if (
+        venue.coordinates &&
+        hasValidCoordinates(venue.coordinates) &&
+        (await tryOpenMapWithCoordinates(venue.coordinates, venue.name))
+      ) {
         return;
       }
 
-      // No valid location data
+      if (await tryOpenMapWithAddress(venue.address, venue.name)) {
+        return;
+      }
+
       AppToast.error(t(msg`Location information is not available for this venue.`), {
         title: t(msg`Location Not Available`),
       });

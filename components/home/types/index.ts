@@ -65,52 +65,6 @@ export interface EmptyStateProps {
 }
 
 // ============================================================================
-// Style Props and Theme Types
-// ============================================================================
-
-export interface HomeScreenStyles {
-  container: any;
-  header: any;
-  headerContent: any;
-  headerTitle: any;
-  headerSubtitle: any;
-  sportTypeContainer: any;
-  sectionTitle: any;
-  sportTypeList: any;
-  sportTypeChip: any;
-  sportTypeChipSelected: any;
-  sportTypeText: any;
-  sportTypeTextSelected: any;
-  statsContainer: any;
-  statItem: any;
-  statNumber: any;
-  statLabel: any;
-  venueList: any;
-  venueListContent: any;
-  venueCard: any;
-  venueHeader: any;
-  venueInfo: any;
-  venueName: any;
-  venueType: any;
-  venueLocation: any;
-  venueAddress: any;
-  facilitiesContainer: any;
-  facilityTag: any;
-  facilityText: any;
-  moreFacilities: any;
-  loadingContainer: any;
-  loadingText: any;
-  errorContainer: any;
-  errorTitle: any;
-  errorMessage: any;
-  retryButton: any;
-  retryButtonText: any;
-  emptyContainer: any;
-  emptyTitle: any;
-  emptyMessage: any;
-}
-
-// ============================================================================
 // Utility Types
 // ============================================================================
 

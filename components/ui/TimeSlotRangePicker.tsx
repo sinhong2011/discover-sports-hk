@@ -6,7 +6,7 @@
 
 import { msg } from '@lingui/core/macro';
 import { useLingui } from '@lingui/react/macro';
-import React, { useMemo } from 'react';
+import { useMemo } from 'react';
 import { ScrollView, TouchableOpacity, View } from 'react-native';
 import { StyleSheet } from 'react-native-unistyles';
 

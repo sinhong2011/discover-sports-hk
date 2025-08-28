@@ -32,13 +32,6 @@ const AVAILABILITY_THRESHOLDS = {
   // <25% is considered 'none'
 } as const;
 
-/** Area name mappings */
-const AREA_NAMES = {
-  HKI: { en: 'Hong Kong Island', 'zh-HK': '香港島' },
-  KLN: { en: 'Kowloon', 'zh-HK': '九龍' },
-  NT: { en: 'New Territories', 'zh-HK': '新界' },
-} as const;
-
 // ============================================================================
 // District Mapping Utility Functions
 // ============================================================================

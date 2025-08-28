@@ -6,7 +6,7 @@
 
 import type React from 'react';
 import { useEffect } from 'react';
-import { View } from 'react-native';
+import { type DimensionValue, type StyleProp, View, type ViewStyle } from 'react-native';
 import Animated, {
   interpolate,
   useAnimatedStyle,
@@ -34,10 +34,10 @@ export interface EnhancedDatePageSkeletonProps {
 // ============================================================================
 
 interface SkeletonItemProps {
-  width?: string | number;
+  width?: DimensionValue;
   height?: number;
   borderRadius?: number;
-  style?: any;
+  style?: StyleProp<ViewStyle>;
 }
 
 const SkeletonItem: React.FC<SkeletonItemProps> = ({

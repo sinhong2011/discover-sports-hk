@@ -25,7 +25,6 @@ export {
   calculateMaxCourtsForVenue,
   formatTimeString,
   getDistrictAreaCode,
-  getDistrictAreaInfo,
   isTimeSlotDay,
   parseAvailableCourts,
   transformSportVenueData,
