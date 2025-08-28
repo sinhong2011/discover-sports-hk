@@ -4,7 +4,6 @@
  */
 
 import { createMaterialTopTabNavigator } from '@react-navigation/material-top-tabs';
-import { useIsFocused } from '@react-navigation/native';
 import type React from 'react';
 import { memo, useMemo } from 'react';
 import { Text, View } from 'react-native';
