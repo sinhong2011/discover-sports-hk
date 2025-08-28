@@ -1,19 +1,17 @@
 /**
- * DatePagerView Component
- * Swipeable date picker using TabView for horizontal scrolling through dates
+ * DatePagerView Component (migrated to React Navigation Material Top Tabs)
+ * Simplified to use createMaterialTopTabNavigator with built-in tab bar
  */
 
+import { createMaterialTopTabNavigator } from '@react-navigation/material-top-tabs';
+import { useIsFocused } from '@react-navigation/native';
 import type React from 'react';
-import { memo, useCallback, useEffect, useRef, useState } from 'react';
-import { useWindowDimensions, View } from 'react-native';
-
-import Animated, { useAnimatedStyle, useSharedValue, withSpring } from 'react-native-reanimated';
-import { SceneMap, TabBar, type TabBarProps, TabView } from 'react-native-tab-view';
+import { memo, useMemo } from 'react';
+import { Text, View } from 'react-native';
 import { StyleSheet, useUnistyles } from 'react-native-unistyles';
 import { useDateFormatting } from '@/hooks/useDateFormatting';
 import type { SportVenueTimeslot } from '@/types/sport';
 import { generateDateRange } from '@/utils/dateUtils';
-import { AnimatedTabItem } from './AnimatedTabItem';
 import DatePage from './DatePage';
 
 // ============================================================================
@@ -21,7 +19,7 @@ import DatePage from './DatePage';
 // ============================================================================
 
 interface DatePagerViewProps {
-  /** Number of days to show (default: 9) */
+  /** Number of days to show (default: 8) */
   days?: number;
   /** Currently selected date */
   selectedDate?: Date;
@@ -29,17 +27,15 @@ interface DatePagerViewProps {
   onDateChange?: (date: Date, index: number) => void;
   /** Initial page index (default: 0 for today) */
   initialPage?: number;
-  /** Whether venue scrolling should be disabled (when FilterBar is still visible) */
-  disableVenueScrolling?: boolean;
   /** Sport venue time slots data grouped by date order */
   sportVenueTimeSlotsListByDateOrder: SportVenueTimeslot[][];
 }
 
-interface TabRoute {
-  key: string;
-  title: string;
-  date: Date;
-}
+// ============================================================================
+// Navigator
+// ============================================================================
+
+const Tab = createMaterialTopTabNavigator();
 
 // ============================================================================
 // Main DatePagerView Component
@@ -47,210 +43,100 @@ interface TabRoute {
 
 const DatePagerView: React.FC<DatePagerViewProps> = ({
   days = 8,
-  selectedDate,
   onDateChange,
   initialPage = 0,
   sportVenueTimeSlotsListByDateOrder,
 }) => {
   const { formatDate } = useDateFormatting();
   const { theme } = useUnistyles();
-  const layout = useWindowDimensions();
-  const [index, setIndex] = useState(initialPage);
-
-  // State to control swipe gestures based on scroll activity
-  const [swipeEnabled, setSwipeEnabled] = useState(true);
-  const scrollTimeoutRef = useRef<NodeJS.Timeout | number | null>(null);
-
-  // Animation for the entire component
-  const slideInValue = useSharedValue(0);
-
-  useEffect(() => {
-    slideInValue.value = withSpring(1, {
-      damping: 20,
-      stiffness: 100,
-    });
-  }, [slideInValue]);
-
-  // Cleanup timeout on unmount
-  useEffect(() => {
-    return () => {
-      if (scrollTimeoutRef.current) {
-        clearTimeout(scrollTimeoutRef.current);
-      }
-    };
-  }, []);
-
-  const animatedContainerStyle = useAnimatedStyle(() => {
-    return {
-      opacity: slideInValue.value,
-      transform: [
-        {
-          translateY: withSpring((1 - slideInValue.value) * 20, {
-            damping: 20,
-            stiffness: 100,
-          }),
-        },
-      ],
-    };
-  });
 
   // Generate date range starting from today
-  const dateRange = generateDateRange(new Date(), days);
+  const dateRange = useMemo(() => generateDateRange(new Date(), days), [days]);
 
-  // Create routes for TabView
-  const routes: TabRoute[] = dateRange.map((date, idx) => ({
-    key: `date-${idx}`,
-    title: formatDate(date, 'EEE'),
-    date,
-  }));
-
-  // Handle index change
-  const handleIndexChange = useCallback(
-    (newIndex: number) => {
-      setIndex(newIndex);
-      if (onDateChange) {
-        onDateChange(dateRange[newIndex], newIndex);
-      }
-    },
-    [dateRange, onDateChange]
-  );
-
-  // Handle scroll activity from child components
-  const handleScrollStart = useCallback(() => {
-    // Disable swipe when scrolling starts
-    setSwipeEnabled(false);
-
-    // Clear any existing timeout
-    if (scrollTimeoutRef.current) {
-      clearTimeout(scrollTimeoutRef.current);
-    }
-  }, []);
-
-  const handleScrollEnd = useCallback(() => {
-    // Re-enable swipe after a short delay when scrolling stops
-    if (scrollTimeoutRef.current) {
-      clearTimeout(scrollTimeoutRef.current);
-    }
-
-    scrollTimeoutRef.current = setTimeout(() => {
-      setSwipeEnabled(true);
-    }, 150); // 150ms delay to prevent immediate re-enabling
-  }, []);
-
-  // Handle swipe start - ensure swipe is enabled
-  const handleSwipeStart = useCallback(() => {
-    // Only allow swipe if not currently scrolling
-    if (!swipeEnabled) {
-      return;
-    }
-  }, [swipeEnabled]);
-
-  // Handle swipe end - cleanup
-  const handleSwipeEnd = useCallback(() => {
-    // Cleanup any pending timeouts
-    if (scrollTimeoutRef.current) {
-      clearTimeout(scrollTimeoutRef.current);
-      scrollTimeoutRef.current = null;
-    }
-  }, []);
-
-  // Create scene components for SceneMap
-  const sceneComponents = dateRange.reduce(
-    (scenes, date, idx) => {
-      const routeKey = `date-${idx}`;
-      scenes[routeKey] = () => {
-        const isSelected = selectedDate
-          ? date.toDateString() === selectedDate.toDateString()
-          : idx === index;
-
-        return (
-          <View style={styles.pageContainer}>
-            <DatePage
-              date={date}
-              data={sportVenueTimeSlotsListByDateOrder[idx]}
-              isSelected={isSelected}
-              onScrollStart={handleScrollStart}
-              onScrollEnd={handleScrollEnd}
-            />
-          </View>
-        );
-      };
-      return scenes;
-    },
-    {} as Record<string, () => React.JSX.Element>
-  );
-
-  // Create renderScene using SceneMap
-  const renderScene = SceneMap(sceneComponents);
-
-  // Create a wrapper function to match AnimatedTabItem's expected signature
-  const formatAvailabilityWrapper = useCallback(
-    (date: Date, options?: { format?: string }) => {
-      return formatDate(date, options?.format || 'MMMd');
-    },
-    [formatDate]
-  );
-
-  // Optimized animated tab bar item renderer using existing AnimatedTabItem component
-  const renderTabBarItem = useCallback(
-    (props: {
-      route: TabRoute;
-      navigationState: { index: number; routes: TabRoute[] };
-      onPress: () => void;
-    }) => {
-      const { route, navigationState, onPress } = props;
-      const focused = navigationState.index === navigationState.routes.indexOf(route);
-
+  // Create screen components for each date
+  const createDatePageScreen = (date: Date, index: number) => {
+    const DatePageScreen: React.FC = () => {
       return (
-        <AnimatedTabItem
-          route={route}
-          focused={focused}
-          onPress={onPress}
-          formatAvailability={formatAvailabilityWrapper}
-        />
+        <View style={styles.pageContainer}>
+          <DatePage date={date} data={sportVenueTimeSlotsListByDateOrder[index]} />
+        </View>
       );
-    },
-    [formatAvailabilityWrapper]
-  );
+    };
 
-  // Custom tab bar renderer with built-in sliding indicator
-  const renderTabBar = useCallback(
-    (props: TabBarProps<TabRoute>) => (
-      <View style={styles.tabBarContainer}>
-        <TabBar
-          {...props}
-          style={styles.tabBar}
-          indicatorStyle={styles.indicator}
-          tabStyle={styles.tab}
-          scrollEnabled={true}
-          bounces={true}
-          pressColor="transparent"
-          pressOpacity={0.8}
-          contentContainerStyle={styles.tabBarContentContainer}
-          renderTabBarItem={renderTabBarItem}
-          activeColor={theme.colors.tint}
-          inactiveColor={theme.colors.icon}
-        />
-      </View>
-    ),
-    [renderTabBarItem, theme.colors.tint, theme.colors.icon]
-  );
+    return DatePageScreen;
+  };
 
   return (
-    <Animated.View style={[styles.container, animatedContainerStyle]}>
-      <TabView
-        navigationState={{ index, routes }}
-        renderScene={renderScene}
-        renderTabBar={renderTabBar}
-        onIndexChange={handleIndexChange}
-        initialLayout={{ width: layout.width }}
-        style={styles.tabView}
-        swipeEnabled={swipeEnabled}
-        animationEnabled={true}
-        onSwipeStart={handleSwipeStart}
-        onSwipeEnd={handleSwipeEnd}
-      />
-    </Animated.View>
+    <View style={styles.container}>
+      <Tab.Navigator
+        initialRouteName={`date-${initialPage}`}
+        screenOptions={({ route }: { route: { name: string } }) => {
+          const idx = Number(route.name.replace('date-', '')) || 0;
+          const date = dateRange[idx];
+
+          return {
+            lazy: false,
+            swipeEnabled: true,
+            tabBarScrollEnabled: false,
+            tabBarStyle: {
+              backgroundColor: theme.colors.background,
+              elevation: 0,
+              shadowOpacity: 0,
+              marginVertical: 8,
+              marginHorizontal: 8,
+            },
+            tabBarIndicatorStyle: {
+              height: 2,
+              backgroundColor: theme.colors.progressivePrimary,
+            },
+            tabBarItemStyle: {
+              flex: 1,
+              minWidth: 0,
+              height: 44,
+              paddingHorizontal: 0,
+              marginHorizontal: 0,
+              backgroundColor: 'transparent',
+            },
+            tabBarActiveTintColor: theme.colors.progressivePrimary,
+            tabBarInactiveTintColor: theme.colors.icon,
+            tabBarLabel: ({ focused }: { focused: boolean; color: string }) => (
+              <View style={{ alignItems: 'center', justifyContent: 'center', paddingVertical: 4 }}>
+                <Text
+                  style={{
+                    color: focused ? theme.colors.progressivePrimary : theme.colors.text,
+                    fontSize: 12,
+                    fontWeight: '600',
+                  }}
+                >
+                  {formatDate(date, 'EEE')}
+                </Text>
+                <Text
+                  style={{
+                    color: focused ? theme.colors.progressivePrimary : theme.colors.icon,
+                    fontSize: 10,
+                    marginTop: 1,
+                  }}
+                >
+                  {formatDate(date, 'MMMd')}
+                </Text>
+              </View>
+            ),
+          };
+        }}
+      >
+        {dateRange.map((date, idx) => (
+          <Tab.Screen
+            key={`date-${idx}`}
+            name={`date-${idx}`}
+            component={createDatePageScreen(date, idx)}
+            initialParams={{ date, index: idx }}
+            listeners={{
+              focus: () => onDateChange?.(date, idx),
+            }}
+          />
+        ))}
+      </Tab.Navigator>
+    </View>
   );
 };
 
@@ -260,151 +146,12 @@ const DatePagerView: React.FC<DatePagerViewProps> = ({
 
 const styles = StyleSheet.create((theme) => ({
   container: {
-    color: theme.colors.text,
     flex: 1,
-    marginVertical: 1,
-  },
-
-  tabView: {
-    height: 'auto', // Adjust based on content needs
-    width: '100%',
-  },
-
-  // TabBar styles
-  tabBarContainer: {
-    position: 'relative',
     backgroundColor: theme.colors.background,
-    overflow: 'visible', // Ensure indicator is not clipped
-    marginBottom: 5,
-    marginHorizontal: 20,
   },
-
-  tabBar: {
-    backgroundColor: theme.colors.background,
-    elevation: 0,
-    shadowOpacity: 0,
-    borderBottomWidth: 0, // Remove border for cleaner look
-    paddingVertical: 2, // Reduced padding for slimmer look
-  },
-
-  // Built-in indicator styles
-  indicator: {
-    height: 1.2, // 1.2px height as requested for animated indicator
-    borderRadius: 1.5, // Half of height for rounded ends
-    bottom: 0,
-    width: 21, // Width that better matches tab content
-    backgroundColor: theme.colors.tint,
-    marginLeft: 20,
-  },
-
-  tab: {
-    width: 60, // Fixed width that should match typical content
-    paddingHorizontal: 4, // Small padding for spacing
-    paddingVertical: 0,
-    marginHorizontal: 0,
-    backgroundColor: 'transparent',
-  },
-
-  tabLabelContainer: {
-    alignItems: 'center',
-    paddingVertical: 1,
-    minHeight: 22,
-    justifyContent: 'center',
-  },
-
-  tabBarContentContainer: {
-    paddingHorizontal: 0, // Remove padding to allow gap control
-    paddingVertical: 2,
-    flexDirection: 'row',
-    alignItems: 'flex-start', // Left-align tabs
-  },
-
-  tabLabelTop: {
-    fontSize: 11,
-    fontWeight: '600',
-    color: theme.colors.text,
-    textAlign: 'center',
-  },
-
-  tabLabelTopFocused: {
-    color: theme.colors.tint,
-    fontWeight: '700',
-  },
-
-  tabLabelBottom: {
-    fontSize: 9,
-    color: theme.colors.icon,
-    marginTop: 1,
-    opacity: 0.8,
-    textAlign: 'center',
-    lineHeight: 10,
-  },
-
-  tabLabelBottomFocused: {
-    color: theme.colors.tint,
-    fontWeight: '500',
-    opacity: 0.9,
-    textAlign: 'center',
-  },
-
   pageContainer: {
     flex: 1,
-  },
-
-  dayName: {
-    fontSize: 14,
-    color: theme.colors.icon,
-    fontWeight: '500',
-  },
-
-  dayNameSelected: {
-    color: theme.colors.tint,
-    fontWeight: '600',
-  },
-
-  dayNumber: {
-    fontSize: 32,
-    fontWeight: 'bold',
-    color: theme.colors.text,
-    marginVertical: 4,
-  },
-
-  dayNumberSelected: {
-    color: theme.colors.tint,
-  },
-
-  monthName: {
-    fontSize: 16,
-    color: theme.colors.icon,
-    fontWeight: '500',
-  },
-
-  monthNameSelected: {
-    color: theme.colors.tint,
-    fontWeight: '600',
-  },
-
-  availabilityLabel: {
-    fontSize: 12,
-    color: theme.colors.icon,
-    marginTop: 4,
-    fontStyle: 'italic',
-  },
-
-  availabilityLabelSelected: {
-    color: theme.colors.tint,
-    fontWeight: '500',
-  },
-
-  venueDataPlaceholder: {
-    fontSize: 14,
-    color: theme.colors.icon,
-    textAlign: 'center',
-  },
-
-  venueDataPlaceholderSelected: {
-    color: theme.colors.tint,
-    fontWeight: '500',
+    backgroundColor: theme.colors.background,
   },
 }));
 
