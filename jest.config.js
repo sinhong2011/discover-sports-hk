@@ -7,7 +7,6 @@ module.exports = {
   ],
   moduleNameMapper: {
     '^@/(.*)$': '<rootDir>/$1',
-    '^expo/src/winter/runtime\\.native$': '<rootDir>/jest.setup.js',
   },
   testEnvironment: 'jsdom',
   collectCoverageFrom: [
