@@ -4,7 +4,7 @@
  */
 
 import ky, { type KyInstance, type Options } from 'ky';
-import type { ApiClientConfig } from '../types/api';
+import type { ApiClientConfig, RequestTiming } from '../types/api';
 import { ApiClientError, AuthenticationError, NetworkError } from '../types/api';
 import { clearAuthentication, getValidToken } from './authService';
 
@@ -33,13 +33,6 @@ interface KyRetryContext {
   request: Request;
   error: KyError;
   retryCount: number;
-}
-
-interface RequestTiming {
-  startTime: number;
-  endTime?: number;
-  duration?: number;
-  timeout: number;
 }
 
 interface DetailedErrorContext {
@@ -271,7 +264,7 @@ export class WorkerApiClient {
   /**
    * Log request details
    */
-  private logRequest(endpoint: string, options: Options, timing: RequestTiming): void {
+  private logRequest(endpoint: string, options: Options, _timing: RequestTiming): void {
     const timestamp = new Date().toISOString();
     const method = (options.method || 'GET').toUpperCase();
     // Clean endpoint for ky (remove leading slash)
@@ -603,7 +596,7 @@ export class WorkerApiClient {
   /**
    * POST request to Worker API
    */
-  post<T = unknown>(endpoint: string, data?: unknown): Promise<T> {
+  post<T = unknown>(endpoint: string, data?: Record<string, unknown>): Promise<T> {
     const options: Options = {
       method: 'POST',
     };
@@ -618,7 +611,7 @@ export class WorkerApiClient {
   /**
    * PUT request to Worker API
    */
-  put<T = unknown>(endpoint: string, data?: unknown): Promise<T> {
+  put<T = unknown>(endpoint: string, data?: Record<string, unknown>): Promise<T> {
     const options: Options = {
       method: 'PUT',
     };

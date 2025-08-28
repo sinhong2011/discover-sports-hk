@@ -4,7 +4,20 @@
  * Renders modals at the root level to ensure they appear above all content
  */
 
-import React, { createContext, type ReactNode, useContext, useRef } from 'react';
+/**
+ * TimeSlotModalProvider
+ * Global provider for managing detached time slot modals
+ * Renders modals at the root level to ensure they appear above all content
+ */
+
+import React, {
+  createContext,
+  type ReactNode,
+  useCallback,
+  useContext,
+  useMemo,
+  useRef,
+} from 'react';
 import {
   TimeSlotDetailsModal,
   type TimeSlotDetailsModalRef,
@@ -46,12 +59,12 @@ export const TimeSlotModalProvider: React.FC<TimeSlotModalProviderProps> = ({ ch
     }, 0);
   }, []);
 
-  const hideTimeSlotModal = React.useCallback(() => {
+  const hideTimeSlotModal = useCallback(() => {
     modalRef.current?.dismiss();
     setCurrentTimeSlot(null);
   }, []);
 
-  const contextValue = React.useMemo(
+  const contextValue = useMemo(
     () => ({
       showTimeSlotModal,
       hideTimeSlotModal,

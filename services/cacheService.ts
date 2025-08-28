@@ -11,7 +11,7 @@ import type { CacheEntry } from './types';
 // In-Memory Cache
 // ============================================================================
 
-const memoryCache = new Map<string, CacheEntry<any>>();
+const memoryCache: Map<string, CacheEntry<unknown>> = new Map();
 
 /**
  * Generate cache key
@@ -23,7 +23,7 @@ function generateCacheKey(prefix: string, ...parts: string[]): string {
 /**
  * Check if cache entry is expired
  */
-function isExpired(entry: CacheEntry<any>): boolean {
+function isExpired(entry: CacheEntry<unknown>): boolean {
   return Date.now() > entry.expiry;
 }
 
@@ -38,7 +38,7 @@ function getFromMemoryCache<T>(key: string): T | null {
     }
     return null;
   }
-  return entry.data;
+  return entry.data as T;
 }
 
 /**

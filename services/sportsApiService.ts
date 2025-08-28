@@ -18,13 +18,9 @@ export class SportsApiService {
    * Get detailed data for a specific sport type
    */
   async getSportData(sportType: SportType): Promise<SportDataResponse> {
-    try {
-      const endpoint = `/api/sports/${encodeURIComponent(sportType)}`;
+    const endpoint = `/api/sports/${encodeURIComponent(sportType)}`;
 
-      return await this.apiClient.get<SportDataResponse>(endpoint);
-    } catch (error) {
-      throw error;
-    }
+    return await this.apiClient.get<SportDataResponse>(endpoint);
   }
 }
 

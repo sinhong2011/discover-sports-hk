@@ -8,14 +8,19 @@ import '../immer-setup';
 
 import { devtools } from '@csark0812/zustand-expo-devtools';
 import { groupBy } from 'es-toolkit';
-import { useMemo } from 'react';
+import { useCallback, useMemo } from 'react';
 import { create } from 'zustand';
 import { createJSONStorage, persist } from 'zustand/middleware';
 import { immer } from 'zustand/middleware/immer';
 import { DistrictHK } from '@/constants/Geo';
 import type { SportType } from '@/constants/Sport';
 import { useAppStore } from '@/store/useAppStore';
-import type { FacilityLocationData, SportVenueTimeslot, VenueData } from '@/types/sport';
+import type {
+  FacilityLocationData,
+  SportVenueTimeslot,
+  SportVenueTimeslotTimeslotOrigin,
+  VenueData,
+} from '@/types/sport';
 import { mmkvSportVenueStorage } from './mmkvStorage';
 import type { SportVenueDataBySportType } from './types';
 
@@ -325,8 +330,9 @@ export const useSportVenueTimeSlots = (sportType: SportType) => {
   // Use the proper selector to ensure reactivity when store data changes
   const currentSportVenues = useSportDataByType(sportType);
 
-  const sportVenueTimeSlots = useMemo(() => {
-    const transformedData = (currentSportVenues?.data || []).map((item) => {
+  // Helper function to map raw data to SportVenueTimeslot
+  const mapToSportVenueTimeslot = useCallback(
+    (item: SportVenueTimeslotTimeslotOrigin, language: string): SportVenueTimeslot => {
       const venueName = language === 'en' ? item.Venue_Name_EN : item.Venue_Name_TC;
 
       // Find district code from DistrictHK based on English district name
@@ -350,10 +356,17 @@ export const useSportVenueTimeSlots = (sportType: SportType) => {
         availableCourts: item.Available_Courts,
         originalData: item,
       };
-    }) as SportVenueTimeslot[];
+    },
+    []
+  );
+
+  const sportVenueTimeSlots = useMemo(() => {
+    const transformedData = (currentSportVenues?.data || []).map((item) =>
+      mapToSportVenueTimeslot(item, language)
+    ) as SportVenueTimeslot[];
 
     return transformedData;
-  }, [currentSportVenues, language]);
+  }, [currentSportVenues, language, mapToSportVenueTimeslot]);
 
   const sportVenueTimeSlotsGrpByDate = useMemo(() => {
     return groupBy(sportVenueTimeSlots, (item) => item.availableDate);
@@ -368,96 +381,100 @@ export const useSportVenueTimeSlots = (sportType: SportType) => {
 export const useUniqueVenueMap = (sportType: SportType) => {
   const { sportVenueTimeSlots } = useSportVenueTimeSlots(sportType);
 
+  // Helper to process facility locations
+  const processFacilityLocations = useCallback(
+    (venueSlots: SportVenueTimeslot[]): FacilityLocationData[] => {
+      const slotsByFacilityLocation = groupBy(venueSlots, (slot) => slot.facilityLocation);
+      const facilityLocations: FacilityLocationData[] = [];
+
+      for (const [, facilityLocationSlots] of Object.entries(slotsByFacilityLocation)) {
+        if (facilityLocationSlots.length > 0) {
+          const firstFacilitySlot = facilityLocationSlots[0];
+
+          const totalAvailableCourts = facilityLocationSlots.reduce((sum, slot) => {
+            const courts = parseInt(slot.availableCourts, 10);
+            return sum + (Number.isNaN(courts) ? 0 : Math.max(0, courts));
+          }, 0);
+
+          const maxCourtsPerSlot = Math.max(
+            ...facilityLocationSlots.map((slot) => {
+              const courts = parseInt(slot.availableCourts, 10);
+              return Number.isNaN(courts) ? 0 : Math.max(0, courts);
+            })
+          );
+
+          facilityLocations.push({
+            name: firstFacilitySlot.facilityLocation,
+            totalAvailableCourts,
+            maxCourtsPerSlot,
+            timeSlots: [],
+          });
+        }
+      }
+
+      facilityLocations.sort((a, b) => a.name.localeCompare(b.name));
+      return facilityLocations;
+    },
+    []
+  );
+
+  // Helper to create VenueData
+  const createVenueData = useCallback(
+    (venueId: string, venueSlots: SportVenueTimeslot[]): VenueData | null => {
+      if (venueSlots.length === 0) return null;
+      const firstSlot = venueSlots[0];
+      const facilityLocations = processFacilityLocations(venueSlots);
+
+      const totalAvailableCourts = facilityLocations.reduce(
+        (sum, location) => sum + location.totalAvailableCourts,
+        0
+      );
+      const maxCourtsPerSlot = Math.max(
+        ...facilityLocations.map((location) => location.maxCourtsPerSlot)
+      );
+
+      return {
+        type: 'venue',
+        id: venueId,
+        name: firstSlot.venue,
+        address: firstSlot.address,
+        phoneNumber: firstSlot.phoneNumber,
+        district: firstSlot.district,
+        facilityType: firstSlot.facilityType,
+        facilityLocations,
+        coordinates: {
+          latitude: firstSlot.latitude || '',
+          longitude: firstSlot.longitude || '',
+        },
+        totalAvailableCourts,
+        maxCourtsPerSlot,
+        timeSlots: [],
+      };
+    },
+    [processFacilityLocations]
+  );
+
   const uniqueVenueMap = useMemo(() => {
     const venueMap = new Map<string, VenueData>();
-
-    // Group time slots by venue ID (same format as transformVenue)
     const slotsByVenue = new Map<string, SportVenueTimeslot[]>();
 
     sportVenueTimeSlots.forEach((timeslot) => {
       const venueId = `${timeslot.originalData.District_Name_EN}-${timeslot.originalData.Venue_Name_EN}`;
-
       if (!slotsByVenue.has(venueId)) {
         slotsByVenue.set(venueId, []);
       }
       slotsByVenue.get(venueId)?.push(timeslot);
     });
 
-    // Transform each venue with proper court calculations
     for (const [venueId, venueSlots] of slotsByVenue.entries()) {
-      if (venueSlots.length > 0) {
-        const firstSlot = venueSlots[0];
-
-        // Group venue slots by facility location
-        const slotsByFacilityLocation = groupBy(venueSlots, (slot) => slot.facilityLocation);
-
-        // Transform each facility location and calculate court counts
-        const facilityLocations: FacilityLocationData[] = [];
-        for (const [, facilityLocationSlots] of Object.entries(slotsByFacilityLocation)) {
-          if (facilityLocationSlots.length > 0) {
-            const firstFacilitySlot = facilityLocationSlots[0];
-
-            // Calculate total available courts for this facility location
-            const totalAvailableCourts = facilityLocationSlots.reduce((sum, slot) => {
-              const courts = parseInt(slot.availableCourts, 10);
-              return sum + (Number.isNaN(courts) ? 0 : Math.max(0, courts));
-            }, 0);
-
-            // Calculate max courts per slot for this facility location
-            const maxCourtsPerSlot = Math.max(
-              ...facilityLocationSlots.map((slot) => {
-                const courts = parseInt(slot.availableCourts, 10);
-                return Number.isNaN(courts) ? 0 : Math.max(0, courts);
-              })
-            );
-
-            const facilityLocationData: FacilityLocationData = {
-              name: firstFacilitySlot.facilityLocation,
-              totalAvailableCourts,
-              maxCourtsPerSlot,
-              timeSlots: [], // We don't need time slots for the unique venue map
-            };
-
-            facilityLocations.push(facilityLocationData);
-          }
-        }
-
-        // Sort facility locations by name for consistent ordering
-        facilityLocations.sort((a, b) => a.name.localeCompare(b.name));
-
-        // Calculate aggregated values across all facility locations
-        const totalAvailableCourts = facilityLocations.reduce(
-          (sum, location) => sum + location.totalAvailableCourts,
-          0
-        );
-        const maxCourtsPerSlot = Math.max(
-          ...facilityLocations.map((location) => location.maxCourtsPerSlot)
-        );
-
-        const venueData: VenueData = {
-          type: 'venue',
-          id: venueId,
-          name: firstSlot.venue,
-          address: firstSlot.address,
-          phoneNumber: firstSlot.phoneNumber,
-          district: firstSlot.district,
-          facilityType: firstSlot.facilityType,
-          facilityLocations,
-          coordinates: {
-            latitude: firstSlot.latitude || '',
-            longitude: firstSlot.longitude || '',
-          },
-          totalAvailableCourts,
-          maxCourtsPerSlot,
-          timeSlots: [], // Empty for unique venue map
-        };
-
+      const venueData = createVenueData(venueId, venueSlots);
+      if (venueData) {
         venueMap.set(venueId, venueData);
       }
     }
 
     return venueMap;
-  }, [sportVenueTimeSlots]);
+  }, [sportVenueTimeSlots, createVenueData]);
 
   const uniqueVenueSet = useMemo(() => {
     return new Set(Array.from(uniqueVenueMap.values()));

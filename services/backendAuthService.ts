@@ -14,6 +14,22 @@ import type {
 import { AuthenticationError, TokenExpiredError } from '../types/api';
 import { getDeviceInfo } from './authService'; // Reuse device info logic
 
+// Type guard for HTTP errors
+interface HTTPError extends Error {
+  response: {
+    status: number;
+  };
+}
+
+function isHTTPError(error: unknown): error is HTTPError {
+  return (
+    error instanceof Error &&
+    'response' in error &&
+    typeof (error as any).response === 'object' &&
+    typeof (error as any).response.status === 'number'
+  );
+}
+
 // ============================================================================
 // Constants
 // ============================================================================
@@ -178,18 +194,22 @@ async function loginToBackend(baseUrl: string): Promise<BackendTokenResponse> {
       .json<BackendTokenResponse>();
 
     return response;
-  } catch (error: any) {
+  } catch (error: unknown) {
     console.error('Failed to login to backend:', error);
 
-    if (error.response?.status === 401) {
-      throw new AuthenticationError('Backend login failed - invalid credentials');
+    // Check if it's an HTTP error with response property
+    if (isHTTPError(error)) {
+      if (error.response.status === 401) {
+        throw new AuthenticationError('Backend login failed - invalid credentials');
+      }
+
+      if (error.response.status === 400) {
+        throw new AuthenticationError('Backend login failed - invalid request');
+      }
     }
 
-    if (error.response?.status === 400) {
-      throw new AuthenticationError('Backend login failed - invalid request');
-    }
-
-    throw new Error(`Failed to login to backend: ${error.message}`);
+    const errorMessage = error instanceof Error ? error.message : 'Unknown error';
+    throw new Error(`Failed to login to backend: ${errorMessage}`);
   }
 }
 
@@ -215,14 +235,15 @@ async function refreshBackendToken(
       .json<BackendTokenResponse>();
 
     return response;
-  } catch (error: any) {
+  } catch (error: unknown) {
     console.error('Failed to refresh backend token:', error);
 
-    if (error.response?.status === 401) {
+    if (isHTTPError(error) && error.response.status === 401) {
       throw new TokenExpiredError('Backend refresh token is invalid or expired');
     }
 
-    throw new Error(`Failed to refresh backend token: ${error.message}`);
+    const errorMessage = error instanceof Error ? error.message : 'Unknown error';
+    throw new Error(`Failed to refresh backend token: ${errorMessage}`);
   }
 }
 
@@ -289,7 +310,8 @@ export class BackendAuthService {
     try {
       const token = await this.getValidToken();
       return !!token;
-    } catch (error) {
+    } catch (_error) {
+      console.warn('Failed to check backend authentication:', _error);
       return false;
     }
   }

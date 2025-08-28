@@ -126,7 +126,7 @@ export class MultiApiClient {
   /**
    * POST request (auto-routed)
    */
-  async post<T = unknown>(endpoint: string, data?: unknown): Promise<T> {
+  async post<T = unknown>(endpoint: string, data?: Record<string, unknown>): Promise<T> {
     const { client, type } = this.getClientForEndpoint(endpoint);
 
     if (__DEV__) {
@@ -139,7 +139,7 @@ export class MultiApiClient {
   /**
    * PUT request (auto-routed)
    */
-  async put<T = unknown>(endpoint: string, data?: unknown): Promise<T> {
+  async put<T = unknown>(endpoint: string, data?: Record<string, unknown>): Promise<T> {
     const { client, type } = this.getClientForEndpoint(endpoint);
 
     if (__DEV__) {
@@ -257,7 +257,10 @@ export async function apiGet<T = unknown>(
 /**
  * Make a POST request (auto-routed to appropriate API)
  */
-export async function apiPost<T = unknown>(endpoint: string, data?: unknown): Promise<T> {
+export async function apiPost<T = unknown>(
+  endpoint: string,
+  data?: Record<string, unknown>
+): Promise<T> {
   const client = getMultiApiClient();
   return await client.post<T>(endpoint, data);
 }
@@ -265,7 +268,10 @@ export async function apiPost<T = unknown>(endpoint: string, data?: unknown): Pr
 /**
  * Make a PUT request (auto-routed to appropriate API)
  */
-export async function apiPut<T = unknown>(endpoint: string, data?: unknown): Promise<T> {
+export async function apiPut<T = unknown>(
+  endpoint: string,
+  data?: Record<string, unknown>
+): Promise<T> {
   const client = getMultiApiClient();
   return await client.put<T>(endpoint, data);
 }

@@ -4,9 +4,35 @@
  */
 
 import ky, { type KyInstance, type Options } from 'ky';
-import type { ApiClientConfig } from '../types/api';
+import type {
+  ApiClientConfig,
+  ApiErrorContext,
+  ApiTimingContext,
+  RequestTiming,
+} from '../types/api';
 import { ApiClientError, AuthenticationError, NetworkError } from '../types/api';
 import { getBackendAuthService } from './backendAuthService';
+
+// ============================================================================
+// Error Type Definitions
+// ============================================================================
+
+interface BackendApiError extends Error {
+  name: string;
+  response?: {
+    status: number;
+    statusText: string;
+    headers: Headers;
+    url: string;
+    body?: unknown;
+  };
+  request?: {
+    method: string;
+    url: string;
+    headers: Headers;
+    body?: unknown;
+  };
+}
 
 // ============================================================================
 // Backend API Configuration
@@ -75,8 +101,11 @@ export class BackendApiClient {
               });
             }
 
+            // Define a type for errors with optional response
+            type ErrorWithResponse = Error & { response?: { status?: number } };
+
             // Handle 401 errors with backend-specific token refresh
-            if ((error as any).response?.status === 401) {
+            if ((error as ErrorWithResponse).response?.status === 401) {
               try {
                 await this.refreshBackendToken();
                 const newToken = await this.getBackendAuthToken();
@@ -98,7 +127,7 @@ export class BackendApiClient {
   /**
    * Log request details
    */
-  private logRequest(endpoint: string, options: Options, timing: any): void {
+  private logRequest(endpoint: string, options: Options): void {
     const timestamp = new Date().toISOString();
     const method = (options.method || 'GET').toUpperCase();
     // Clean endpoint for ky (remove leading slash)
@@ -151,7 +180,12 @@ export class BackendApiClient {
   /**
    * Log successful response details
    */
-  private logResponse(endpoint: string, options: Options, response: Response, timing: any): void {
+  private logResponse(
+    endpoint: string,
+    options: Options,
+    response: Response,
+    timing: RequestTiming
+  ): void {
     const timestamp = new Date().toISOString();
     const method = (options.method || 'GET').toUpperCase();
     const duration = timing.duration || 0;
@@ -172,7 +206,12 @@ export class BackendApiClient {
   /**
    * Log error details
    */
-  private logError(endpoint: string, options: Options, error: any, timing: any): void {
+  private logError(
+    endpoint: string,
+    options: Options,
+    error: ApiErrorContext,
+    timing: ApiTimingContext
+  ): void {
     const timestamp = new Date().toISOString();
     const method = (options.method || 'GET').toUpperCase();
     const duration = timing.duration || 0;
@@ -231,7 +270,7 @@ export class BackendApiClient {
   /**
    * Handle Backend API errors
    */
-  private handleError(error: any, endpoint: string): never {
+  private handleError(error: BackendApiError, endpoint: string): never {
     if (error.name === 'TimeoutError') {
       throw new NetworkError('Backend API timeout', { timeout: this.config.timeout });
     }
@@ -265,8 +304,8 @@ export class BackendApiClient {
   /**
    * Make Backend API request with comprehensive logging
    */
-  async request<T = any>(endpoint: string, options: Options = {}): Promise<T> {
-    const timing = {
+  async request<T = unknown>(endpoint: string, options: Options = {}): Promise<T> {
+    const timing: RequestTiming = {
       startTime: Date.now(),
       timeout: this.config.timeout,
       endTime: 0,
@@ -278,7 +317,7 @@ export class BackendApiClient {
 
     // Log request details
     if (__DEV__) {
-      this.logRequest(endpoint, options, timing);
+      this.logRequest(endpoint, options);
     }
 
     try {
@@ -298,17 +337,17 @@ export class BackendApiClient {
 
       // Log error details
       if (__DEV__) {
-        this.logError(endpoint, options, error as any, timing);
+        this.logError(endpoint, options, error as ApiErrorContext, timing);
       }
 
-      this.handleError(error, endpoint);
+      this.handleError(error as BackendApiError, endpoint);
     }
   }
 
   /**
    * GET request to Backend API
    */
-  async get<T = any>(
+  async get<T = unknown>(
     endpoint: string,
     params?: Record<string, string | number | boolean>
   ): Promise<T> {
@@ -321,7 +360,7 @@ export class BackendApiClient {
   /**
    * POST request to Backend API
    */
-  async post<T = any>(endpoint: string, data?: any): Promise<T> {
+  async post<T = unknown>(endpoint: string, data?: Record<string, unknown>): Promise<T> {
     return await this.request<T>(endpoint, {
       method: 'POST',
       ...(data && { json: data }),
@@ -331,7 +370,7 @@ export class BackendApiClient {
   /**
    * PUT request to Backend API
    */
-  async put<T = any>(endpoint: string, data?: any): Promise<T> {
+  async put<T = unknown>(endpoint: string, data?: Record<string, unknown>): Promise<T> {
     return await this.request<T>(endpoint, {
       method: 'PUT',
       ...(data && { json: data }),
@@ -341,7 +380,7 @@ export class BackendApiClient {
   /**
    * DELETE request to Backend API
    */
-  async delete<T = any>(endpoint: string): Promise<T> {
+  async delete<T = unknown>(endpoint: string): Promise<T> {
     return await this.request<T>(endpoint, {
       method: 'DELETE',
     });

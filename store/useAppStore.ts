@@ -34,7 +34,7 @@ const initialState: AppState = {
 export const useAppStore = create<AppStore>()(
   devtools(
     persist(
-      immer((set, get) => ({
+      immer((set, _get) => ({
         ...initialState,
         // App lifecycle
         setFirstLaunch: (isFirst) =>

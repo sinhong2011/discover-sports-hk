@@ -3,7 +3,7 @@
  * Integrates with unistyles theming and provides native toast functionality
  */
 
-import React from 'react';
+import { isValidElement, type ReactElement, type ReactNode } from 'react';
 import { View } from 'react-native';
 import { StyleSheet, useUnistyles } from 'react-native-unistyles';
 import { Toaster, toast } from 'sonner-native';
@@ -25,7 +25,7 @@ export interface ToastOptions {
   /** Duration in ms before the toast disappears */
   duration?: number;
   /** Custom icon to display - can be AppIcon name or React component */
-  icon?: AppIconName | React.ReactElement;
+  icon?: AppIconName | ReactElement;
   /** Color for the toast icon (only applies to AppIcon names, not React components) */
   iconColor?: string;
   /** Callback when toast is pressed */
@@ -41,11 +41,8 @@ export interface ToastOptions {
  * Supports both AppIcon names and React components
  * Icons are center-aligned within their container
  */
-function createToastIcon(
-  icon: AppIconName | React.ReactElement,
-  iconColor?: string
-): React.ReactElement {
-  const iconElement = React.isValidElement(icon) ? (
+function createToastIcon(icon: AppIconName | ReactElement, iconColor?: string): ReactElement {
+  const iconElement = isValidElement(icon) ? (
     icon
   ) : (
     <AppIcon name={icon as AppIconName} size={20} color={iconColor} />
@@ -60,7 +57,7 @@ function createToastIcon(
 // ============================================================================
 
 interface ToastProviderProps {
-  children: React.ReactNode;
+  children: ReactNode;
 }
 
 export function ToastProvider({ children }: ToastProviderProps) {

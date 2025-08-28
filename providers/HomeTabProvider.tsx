@@ -7,7 +7,7 @@
 
 import type { UseQueryResult } from '@tanstack/react-query';
 import { groupBy } from 'es-toolkit';
-import type React from 'react';
+import type { ReactNode, RefObject } from 'react';
 import { createContext, useCallback, useContext, useMemo, useState } from 'react';
 import type { ScrollView } from 'react-native';
 
@@ -66,8 +66,8 @@ export interface HomeTabContextType {
   setIsFilterBarScrolledOut: (scrolledOut: boolean) => void;
 
   // Scroll control for nested scroll handoff
-  outerScrollViewRef: React.RefObject<ScrollView | null> | null;
-  setOuterScrollViewRef: (ref: React.RefObject<ScrollView | null>) => void;
+  outerScrollViewRef: RefObject<ScrollView | null> | null;
+  setOuterScrollViewRef: (ref: RefObject<ScrollView | null>) => void;
 
   // FAB scroll direction tracking
   fabScrollDirection: 'up' | 'down' | null;
@@ -91,7 +91,7 @@ const HomeTabContext = createContext<HomeTabContextType | null>(null);
 // ============================================================================
 
 interface HomeTabProviderProps {
-  children: React.ReactNode;
+  children: ReactNode;
   /**
    * Whether to show error alerts from the useSportVenues hook
    * @default false - Let parent components handle error display
@@ -152,8 +152,9 @@ export function HomeTabProvider({ children, showErrorAlerts = false }: HomeTabPr
   const [isFilterBarScrolledOut, setIsFilterBarScrolledOut] = useState(false);
 
   // Outer ScrollView ref for scroll handoff
-  const [outerScrollViewRef, setOuterScrollViewRef] =
-    useState<React.RefObject<ScrollView | null> | null>(null);
+  const [outerScrollViewRef, setOuterScrollViewRef] = useState<RefObject<ScrollView | null> | null>(
+    null
+  );
 
   // FAB scroll direction tracking
   const [fabScrollDirection, setFabScrollDirection] = useState<'up' | 'down' | null>(null);

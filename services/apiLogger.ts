@@ -64,7 +64,7 @@ function truncateText(text: string, maxLength: number): string {
 /**
  * Format body content for logging
  */
-function formatBodyContent(body: unknown): string {
+export function formatBodyContent(body: unknown): string {
   if (!body) return '';
 
   try {
@@ -97,39 +97,53 @@ export function logApiRequest(
     console.log(`📤 ${timestampPrefix}${method} ${endpoint}${bodyInfo}`);
   }
 
-  // Detailed logging for detailed level and above
   if (isLoggingEnabled('detailed')) {
-    const logData: Record<string, unknown> = {
-      endpoint,
-      method,
-      fullUrl,
-    };
-
-    if (currentConfig.enableTimestamps) {
-      logData.timestamp = timestamp;
-    }
-
-    if (currentConfig.enableHeaders && Object.keys(headers).length > 0) {
-      logData.headers = headers;
-    }
-
-    if (currentConfig.enableRequestBody && body) {
-      logData.body = body;
-    }
-
-    console.log(`🚀 ${apiType} API Request [${method} ${endpoint}]:`, logData);
+    logApiRequestDetailed(apiType, method, endpoint, fullUrl, headers, body, timestamp);
   }
 
-  // Verbose logging includes additional metadata
   if (isLoggingEnabled('verbose')) {
-    console.log(`🔍 ${apiType} API Verbose Details:`, {
-      userAgent: navigator?.userAgent || 'Unknown',
-      timestamp: new Date().toISOString(),
-      requestId: Math.random().toString(36).substring(2, 15),
-      apiType,
-      config: currentConfig,
-    });
+    logApiRequestVerbose(apiType, timestamp);
   }
+}
+
+function logApiRequestDetailed(
+  apiType: 'Worker' | 'Backend',
+  method: string,
+  endpoint: string,
+  fullUrl: string,
+  headers: Record<string, string>,
+  body: unknown,
+  timestamp: string
+): void {
+  const logData: Record<string, unknown> = {
+    endpoint,
+    method,
+    fullUrl,
+  };
+
+  if (currentConfig.enableTimestamps) {
+    logData.timestamp = timestamp;
+  }
+
+  if (currentConfig.enableHeaders && Object.keys(headers).length > 0) {
+    logData.headers = headers;
+  }
+
+  if (currentConfig.enableRequestBody && body) {
+    logData.body = body;
+  }
+
+  console.log(`🚀 ${apiType} API Request [${method} ${endpoint}]:`, logData);
+}
+
+function logApiRequestVerbose(apiType: 'Worker' | 'Backend', _timestamp: string): void {
+  console.log(`🔍 ${apiType} API Verbose Details:`, {
+    userAgent: typeof navigator !== 'undefined' ? navigator?.userAgent || 'Unknown' : 'Unknown',
+    timestamp: new Date().toISOString(),
+    requestId: Math.random().toString(36).substring(2, 15),
+    apiType,
+    config: currentConfig,
+  });
 }
 
 /**
@@ -158,32 +172,56 @@ export function logApiResponse(
 
   // Detailed logging for detailed level and above
   if (isLoggingEnabled('detailed')) {
-    const logData: Record<string, unknown> = {
-      endpoint,
+    logApiResponseDetailed(
+      apiType,
       method,
+      endpoint,
       status,
       statusText,
-    };
-
-    if (currentConfig.enableTimestamps) {
-      logData.timestamp = timestamp;
-    }
-
-    if (duration) {
-      logData.duration = `${duration}ms`;
-    }
-
-    if (currentConfig.enableHeaders && Object.keys(headers).length > 0) {
-      logData.headers = headers;
-    }
-
-    if (currentConfig.enableResponseBody && body) {
-      logData.body =
-        typeof body === 'string' ? truncateText(body, currentConfig.maxBodyLength) : body;
-    }
-
-    console.log(`✅ ${apiType} API Response [${method} ${endpoint}]:`, logData);
+      headers,
+      body,
+      duration,
+      timestamp
+    );
   }
+}
+
+function logApiResponseDetailed(
+  apiType: 'Worker' | 'Backend',
+  method: string,
+  endpoint: string,
+  status: number,
+  statusText: string,
+  headers: Record<string, string>,
+  body: unknown,
+  duration: number | undefined,
+  timestamp: string
+): void {
+  const logData: Record<string, unknown> = {
+    endpoint,
+    method,
+    status,
+    statusText,
+  };
+
+  if (currentConfig.enableTimestamps) {
+    logData.timestamp = timestamp;
+  }
+
+  if (duration) {
+    logData.duration = `${duration}ms`;
+  }
+
+  if (currentConfig.enableHeaders && Object.keys(headers).length > 0) {
+    logData.headers = headers;
+  }
+
+  if (currentConfig.enableResponseBody && body) {
+    logData.body =
+      typeof body === 'string' ? truncateText(body, currentConfig.maxBodyLength) : body;
+  }
+
+  console.log(`✅ ${apiType} API Response [${method} ${endpoint}]:`, logData);
 }
 
 /**
