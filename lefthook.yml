@@ -50,9 +50,3 @@ commit-msg:
 skip_output:
   - meta
   - summary
-# Remote configuration (optional)
-# You can specify remote configs if needed
-# remote:
-#   git_url: https://github.com/your-org/lefthook-configs
-#   ref: main
-#   config: lefthook.yml

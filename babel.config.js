@@ -1,7 +1,14 @@
 module.exports = (api) => {
   api.cache(true);
   return {
-    presets: ['babel-preset-expo'],
+    presets: [
+      [
+        'babel-preset-expo',
+        {
+          jsxRuntime: 'automatic',
+        },
+      ],
+    ],
     plugins: [
       ['react-native-unistyles/plugin', { root: 'app' }],
       // Lingui macro plugin

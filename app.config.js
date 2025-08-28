@@ -7,13 +7,14 @@ module.exports = {
     version: packageJson.version,
     orientation: 'portrait',
     icon: './assets/images/icon.png',
-    scheme: 'discoversportshk',
+    scheme: 'HK',
     userInterfaceStyle: 'automatic',
     newArchEnabled: true,
     ios: {
       supportsTablet: true,
       bundleIdentifier: 'com.openpandata.discoversportshk',
       buildNumber: process.env.EAS_BUILD_NUMBER || '1',
+      xcodeProjectPath: './ios/HK.xcworkspace',
     },
     android: {
       adaptiveIcon: {

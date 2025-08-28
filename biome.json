@@ -98,8 +98,8 @@
       },
       "suspicious": {
         "recommended": true,
-        "noArrayIndexKey": "warn",
-        "noConsole": "warn",
+        "noArrayIndexKey": "off",
+        "noConsole": "off",
         "noDebugger": "error",
         "noDoubleEquals": "error",
         "noExplicitAny": "warn",
