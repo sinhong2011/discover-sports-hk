@@ -3,7 +3,7 @@
  * This demonstrates how to use the new debounceMs prop
  */
 
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { Text, View } from 'react-native';
 import { BaseTextInput } from '@/components/ui/BaseTextInput';
 import { SearchBar } from '@/components/ui/SearchBar';

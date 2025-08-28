@@ -17,7 +17,7 @@
     "gopls": "/Users/niskan516/.local/share/mise/shims/gopls"
   },
   "prettier.enable": false,
-  "cSpell.words": ["lcsd"],
+  "cSpell.words": ["lcsd", "MMKV"],
   "[typescript]": {
     "editor.defaultFormatter": "biomejs.biome"
   },

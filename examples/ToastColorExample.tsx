@@ -2,7 +2,6 @@
  * Example demonstrating how to use the new iconColor prop in ToastProvider
  */
 
-import React from 'react';
 import { Button, View } from 'react-native';
 import { AppToast } from '@/providers/ToastProvider';
 

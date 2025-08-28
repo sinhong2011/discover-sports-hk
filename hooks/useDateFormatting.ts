@@ -187,7 +187,6 @@ export function useDateFormatting() {
    * Get formatted week days for calendar
    */
   const getWeekDays = useCallback(() => {
-    const locale = getDateLocale(language);
     const days = [];
 
     // Start from Sunday (0) to Saturday (6)

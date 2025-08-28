@@ -79,13 +79,13 @@ export type AuthRequest = AppTokenRequest | BackendLoginRequest;
 // API Response Types
 // ============================================================================
 
-export interface ApiResponse<T = any> {
+export interface ApiResponse<T = unknown> {
   success: boolean;
   data?: T;
   error?: {
     code: string;
     message: string;
-    details?: any;
+    details?: unknown;
   };
   timestamp: string;
 }
@@ -93,7 +93,7 @@ export interface ApiResponse<T = any> {
 export interface ApiError {
   code: string;
   message: string;
-  details?: any;
+  details?: unknown;
   statusCode?: number;
 }
 
@@ -144,7 +144,7 @@ export interface CachedToken {
   createdAt: string;
 }
 
-export interface CachedApiData<T = any> {
+export interface CachedApiData<T = unknown> {
   data: T;
   timestamp: string;
   expiresAt: string;
@@ -160,7 +160,7 @@ export class ApiClientError extends Error {
     message: string,
     public statusCode?: number,
     public code?: string,
-    public details?: any
+    public details?: unknown
   ) {
     super(message);
     this.name = 'ApiClientError';
@@ -168,7 +168,7 @@ export class ApiClientError extends Error {
 }
 
 export class AuthenticationError extends ApiClientError {
-  constructor(message: string, details?: any) {
+  constructor(message: string, details?: unknown) {
     super(message, 401, 'AUTHENTICATION_ERROR', details);
     this.name = 'AuthenticationError';
   }
@@ -182,10 +182,41 @@ export class TokenExpiredError extends AuthenticationError {
 }
 
 export class NetworkError extends ApiClientError {
-  constructor(message: string, details?: any) {
+  constructor(message: string, details?: unknown) {
     super(message, 0, 'NETWORK_ERROR', details);
     this.name = 'NetworkError';
   }
+}
+
+// ============================================================================
+// Logging and Error Context Types
+// ============================================================================
+
+/**
+ * Reusable error structure for API logging
+ */
+export interface ApiErrorContext {
+  message: string;
+  response?: {
+    status?: number;
+    statusText?: string;
+  };
+}
+
+/**
+ * Reusable timing structure for API logging
+ */
+export interface ApiTimingContext {
+  duration?: number;
+  timeout?: number;
+}
+
+/**
+ * Extended timing context with additional timing information
+ */
+export interface RequestTiming extends ApiTimingContext {
+  startTime: number;
+  endTime?: number;
 }
 
 // ============================================================================
@@ -201,12 +232,12 @@ export type ApiEndpoint =
 
 export type HttpMethod = 'GET' | 'POST' | 'PUT' | 'DELETE' | 'PATCH';
 
-export interface RequestConfig {
+export type RequestConfig<T = unknown> = {
   method: HttpMethod;
   endpoint: ApiEndpoint;
-  data?: any;
+  data?: T;
   params?: Record<string, string | number | boolean>;
   headers?: Record<string, string>;
   timeout?: number;
   retries?: number;
-}
+};

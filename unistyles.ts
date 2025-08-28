@@ -8,6 +8,7 @@ export const lightTheme = {
     pageBackground: '#f2f2f7', // Light gray page background
     border: '#e5e5ea', // Subtle border color
     tint: '#f36805ff',
+    progressivePrimary: '#FF7A00', // Vibrant orange for active tabs and indicators
     icon: '#687076',
     tabIconDefault: '#687076',
     tabIconSelected: '#0a7ea4',
@@ -40,6 +41,7 @@ export const darkTheme = {
     pageBackground: '#1e1f2e', // Dark gray page background
     border: '#38383a', // Subtle border color for dark theme
     tint: '#e5660bff',
+    progressivePrimary: '#FF8F1F', // Bright orange for active tabs and indicators in dark mode
     icon: '#9BA1A6',
     tabIconDefault: '#9BA1A6',
     tabIconSelected: '#ffffff',

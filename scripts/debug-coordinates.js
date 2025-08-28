@@ -86,10 +86,7 @@ const sampleVenueData = [
 function simulateDataTransformation(apiData, language = 'en') {
   mockConsole.log('🔄 Starting data transformation simulation...');
 
-  const transformedData = apiData.map((item) => {
-    const venueName = language === 'en' ? item.Venue_Name_EN : item.Venue_Name_TC;
-
-    // Debug coordinate data (simulating the store logic)
+  function warnIfMissingCoordinates(item, venueName, language) {
     if (!item.Venue_Latitude || !item.Venue_Longitude) {
       mockConsole.warn('🗺️ Missing coordinates in API data:', {
         venue: venueName,
@@ -98,6 +95,13 @@ function simulateDataTransformation(apiData, language = 'en') {
         longitude: item.Venue_Longitude || 'empty',
       });
     }
+  }
+
+  const transformedData = apiData.map((item) => {
+    const venueName = language === 'en' ? item.Venue_Name_EN : item.Venue_Name_TC;
+
+    // Debug coordinate data (simulating the store logic)
+    warnIfMissingCoordinates(item, venueName, language);
 
     return {
       district: language === 'en' ? item.District_Name_EN : item.District_Name_TC,
