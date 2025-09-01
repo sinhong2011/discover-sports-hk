@@ -344,6 +344,7 @@ const styles = StyleSheet.create((theme) => ({
     shadowOpacity: 0.2,
     shadowRadius: 16,
     elevation: 12,
+    borderRadius: LOGO_SIZE / 2,
   },
 
   titleContainer: {

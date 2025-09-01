@@ -5,6 +5,7 @@
 
 import { msg } from '@lingui/core/macro';
 import { useLingui } from '@lingui/react/macro';
+import { useBottomTabBarHeight } from '@react-navigation/bottom-tabs';
 import { FlashList } from '@shopify/flash-list';
 import { groupBy } from 'es-toolkit';
 import { useRouter } from 'expo-router';
@@ -183,6 +184,7 @@ export default function BookmarksScreen() {
   const { theme } = useUnistyles();
 
   const router = useRouter();
+  const tabBarHeight = useBottomTabBarHeight();
 
   // State for sport type filter
   const { selectedSportType, setSelectedSportType } = useBookmarksTabContext();
@@ -338,8 +340,6 @@ export default function BookmarksScreen() {
 
   return (
     <SafeAreaView style={styles.container}>
-      {/* Header */}
-
       {/* Sport Type Selector */}
       <View style={styles.sportTypeSelectorContainer}>
         <SportTypeSelector
@@ -358,6 +358,7 @@ export default function BookmarksScreen() {
         showsVerticalScrollIndicator={false}
         refreshControl={refreshControl}
         ListEmptyComponent={<EmptyState />}
+        contentContainerStyle={{ paddingBottom: tabBarHeight }}
       />
     </SafeAreaView>
   );
@@ -374,12 +375,6 @@ const styles = StyleSheet.create((theme) => ({
     display: 'flex',
     flexDirection: 'column',
     gap: 12,
-  },
-
-  header: {
-    paddingHorizontal: 16,
-    paddingTop: 16,
-    paddingBottom: 12,
   },
 
   venueHeader: {
@@ -428,7 +423,8 @@ const styles = StyleSheet.create((theme) => ({
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
-    paddingHorizontal: 32,
+    paddingVertical: '35%',
+    paddingHorizontal: '18%',
   },
 
   emptyTitle: {

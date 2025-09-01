@@ -10,6 +10,11 @@ module.exports = {
     scheme: 'HK',
     userInterfaceStyle: 'automatic',
     newArchEnabled: true,
+    splash: {
+      image: './assets/images/splash-icon.png',
+      resizeMode: 'contain',
+      backgroundColor: '#282a36',
+    },
     ios: {
       supportsTablet: true,
       bundleIdentifier: 'com.openpandata.discoversportshk',

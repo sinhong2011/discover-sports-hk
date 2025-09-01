@@ -126,6 +126,7 @@ function HomeScreenContent() {
         testID="clear-filters-fab"
         size={42}
         showEntranceAnimation={false}
+        right={10}
       />
 
       {/* Filter FAB */}
@@ -141,6 +142,7 @@ function HomeScreenContent() {
         scrollDirection={fabScrollDirection}
         size={42}
         iconSize={18}
+        right={10}
       />
     </SafeAreaView>
   );
