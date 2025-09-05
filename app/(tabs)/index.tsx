@@ -4,9 +4,10 @@
  */
 
 import { useBottomTabBarHeight } from '@react-navigation/bottom-tabs';
-import { memo, useCallback, useRef } from 'react';
+import { memo, useCallback, useEffect, useRef, useState } from 'react';
 import { useWindowDimensions, View } from 'react-native';
 import { StyleSheet } from 'react-native-unistyles';
+import { DebugPanel } from '@/components/debug/DebugPanel';
 // Import home screen components
 import { DatePagerView, FilterBar, FilterModal } from '@/components/home/components';
 import type { FilterModalRef, FilterState } from '@/components/home/components/FilterModal';
@@ -16,6 +17,7 @@ import { SafeAreaView } from '@/components/ui/SafeAreaView';
 // Import local sport types constant
 import type { SportType } from '@/constants/Sport';
 import { HomeTabProvider, useHomeTabContext } from '@/providers/HomeTabProvider';
+import { debugLog } from '@/utils/debugLogger';
 
 // ============================================================================
 // Component Debug Logging
@@ -25,6 +27,14 @@ import { HomeTabProvider, useHomeTabContext } from '@/providers/HomeTabProvider'
 function HomeScreenContent() {
   // Get device dimensions
   const { height: screenHeight } = useWindowDimensions();
+
+  // Log when home screen mounts
+  useEffect(() => {
+    debugLog('HomeScreen', 'Home screen mounted', {
+      screenHeight,
+      timestamp: new Date().toISOString(),
+    });
+  }, [screenHeight]);
 
   // Get dynamic tab bar height from React Navigation
   const tabBarHeight = useBottomTabBarHeight();
@@ -50,6 +60,10 @@ function HomeScreenContent() {
 
   // Filter modal ref
   const filterModalRef = useRef<FilterModalRef>(null);
+
+  // Debug panel state
+  const [debugPanelVisible, setDebugPanelVisible] = useState(false);
+  const [debugTapCount, setDebugTapCount] = useState(0);
 
   // Handle sport type selection
   const handleSportTypeSelect = (sportType: SportType) => {
@@ -80,6 +94,22 @@ function HomeScreenContent() {
     // DatePagerView handles its own content, no need to manage state here
   }, []);
 
+  // Debug panel functionality - tap 5 times on the filter bar to open
+  const handleDebugTap = useCallback(() => {
+    const newCount = debugTapCount + 1;
+    setDebugTapCount(newCount);
+
+    if (newCount >= 5) {
+      setDebugPanelVisible(true);
+      setDebugTapCount(0);
+    }
+
+    // Reset count after 3 seconds of inactivity
+    setTimeout(() => {
+      setDebugTapCount(0);
+    }, 3000);
+  }, [debugTapCount]);
+
   // Note: VenueCard component is available for rendering venue items when needed
 
   return (
@@ -91,6 +121,7 @@ function HomeScreenContent() {
           onSportTypeSelect={handleSportTypeSelect}
           onFilterPress={handleFilterPress}
           hasActiveFilters={hasActiveFilters}
+          onDebugTap={handleDebugTap}
         />
       </View>
 
@@ -144,6 +175,9 @@ function HomeScreenContent() {
         iconSize={18}
         right={10}
       />
+
+      {/* Debug Panel - Hidden, accessible by tapping FilterBar 5 times */}
+      <DebugPanel visible={debugPanelVisible} onClose={() => setDebugPanelVisible(false)} />
     </SafeAreaView>
   );
 }

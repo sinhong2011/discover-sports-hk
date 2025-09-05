@@ -1,6 +1,8 @@
 {
   "cli": {
-    "version": ">= 12.0.0"
+    "version": ">= 12.0.0",
+    "requireCommit": false,
+    "appVersionSource": "remote"
   },
   "build": {
     "development": {
@@ -18,14 +20,38 @@
         "NODE_ENV": "staging"
       },
       "ios": {
-        "simulator": true
+        "simulator": true,
+        "buildConfiguration": "Release"
+      },
+      "android": {
+        "buildType": "apk"
+      }
+    },
+    "test": {
+      "distribution": "internal",
+      "channel": "test",
+      "env": {
+        "NODE_ENV": "staging"
+      },
+      "ios": {
+        "buildConfiguration": "Release"
+      },
+      "android": {
+        "buildType": "apk"
       }
     },
     "production": {
       "channel": "production",
+      "distribution": "store",
       "autoIncrement": true,
       "env": {
         "NODE_ENV": "production"
+      },
+      "ios": {
+        "buildConfiguration": "Release"
+      },
+      "android": {
+        "buildType": "app-bundle"
       }
     },
     "production-ios": {
@@ -37,20 +63,48 @@
     "production-android": {
       "extends": "production",
       "android": {
-        "buildType": "apk"
+        "buildType": "app-bundle"
+      }
+    },
+    "testflight": {
+      "extends": "production",
+      "distribution": "store",
+      "channel": "testflight",
+      "env": {
+        "NODE_ENV": "production"
+      },
+      "ios": {
+        "buildConfiguration": "Release"
       }
     }
   },
   "submit": {
     "production": {
       "ios": {
-        "appleId": "your-apple-id@example.com",
-        "ascAppId": "your-app-store-connect-app-id",
-        "appleTeamId": "your-team-id"
+        "ascAppId": "${EXPO_ASC_APP_ID}",
+        "appleTeamId": "${EXPO_APPLE_TEAM_ID}",
+        "ascApiKeyPath": "${EXPO_ASC_API_KEY_PATH}",
+        "ascApiKeyId": "${EXPO_ASC_API_KEY_ID}",
+        "ascApiKeyIssuerId": "${EXPO_ASC_API_KEY_ISSUER_ID}"
       },
       "android": {
-        "serviceAccountKeyPath": "./android/service-account-key.json",
-        "track": "internal"
+        "serviceAccountKeyPath": "${EXPO_GOOGLE_SERVICE_ACCOUNT_KEY_PATH}",
+        "track": "production",
+        "changesNotSentForReview": true
+      }
+    },
+    "testflight": {
+      "ios": {
+        "ascAppId": "6751938181",
+        "appleTeamId": "FX3VR69P5K",
+        "ascApiKeyPath": "/Users/niskan516/Downloads/AuthKey_ZJR3L8SJA5.p8",
+        "ascApiKeyId": "ZJR3L8SJA5",
+        "ascApiKeyIssuerId": "da0a1ab4-ef77-4d5b-8a4d-ca467102e69f"
+      },
+      "android": {
+        "serviceAccountKeyPath": "${EXPO_GOOGLE_SERVICE_ACCOUNT_KEY_PATH}",
+        "track": "internal",
+        "changesNotSentForReview": false
       }
     }
   }

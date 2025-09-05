@@ -1,0 +1,45 @@
+{
+  "release-type": "node",
+  "packages": {
+    ".": {
+      "changelog-sections": [
+        { "type": "feat", "section": "🚀 Features", "hidden": false },
+        { "type": "fix", "section": "🐛 Bug Fixes", "hidden": false },
+        { "type": "perf", "section": "⚡ Performance Improvements", "hidden": false },
+        { "type": "revert", "section": "⏪ Reverts", "hidden": false },
+        { "type": "docs", "section": "📚 Documentation", "hidden": false },
+        { "type": "style", "section": "💄 Styles", "hidden": true },
+        { "type": "chore", "section": "🔧 Miscellaneous Chores", "hidden": true },
+        { "type": "refactor", "section": "♻️ Code Refactoring", "hidden": false },
+        { "type": "test", "section": "🧪 Tests", "hidden": true },
+        { "type": "build", "section": "🏗️ Build System", "hidden": true },
+        { "type": "ci", "section": "👷 Continuous Integration", "hidden": true }
+      ],
+      "release-as": "0.1.0",
+      "bump-minor-pre-major": true,
+      "bump-patch-for-minor-pre-major": false,
+      "draft": false,
+      "prerelease": false,
+      "include-component-in-tag": false,
+      "include-v-in-tag": true,
+      "tag-separator": "-",
+      "separate-pull-requests": false,
+      "pull-request-title-pattern": "chore: release ${version}",
+      "pull-request-header": "## 📱 Release Notes\n\nThis PR was generated automatically by [release-please](https://github.com/googleapis/release-please) for the Discover Sports HK app.\n\n### 🔍 Review Checklist\n- [ ] Verify changelog entries are accurate\n- [ ] Check version bump is appropriate\n- [ ] Ensure breaking changes are documented\n- [ ] Confirm app store metadata is ready\n- [ ] Test latest develop builds work correctly\n\n**Merging this PR will create a GitHub release and trigger production deployment to TestFlight and Google Play.**",
+      "extra-files": [
+        {
+          "type": "json",
+          "path": "app.config.ts",
+          "jsonpath": "$.version"
+        }
+      ]
+    }
+  },
+  "bootstrap-sha": "main",
+  "always-link-local": false,
+  "separate-pull-requests": false,
+  "group-pull-request-title-pattern": "chore: release ${version}",
+  "sequential-calls": true,
+  "skip-github-release": false,
+  "draft-pull-request": false
+}

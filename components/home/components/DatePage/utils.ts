@@ -353,6 +353,9 @@ export function transformSportVenueData(
   sportVenueTimeSlots: SportVenueTimeslot[]
 ): TransformedDatePageData {
   if (sportVenueTimeSlots.length === 0) {
+    if (__DEV__) {
+      console.log('transformSportVenueData: No input data provided');
+    }
     return {
       flashListData: [],
       stickyHeaderIndices: [],
@@ -391,6 +394,8 @@ export function transformSportVenueData(
 
     // Transform venues and filter out venues with no available time slots
     const venues: VenueData[] = [];
+    let filteredOutCount = 0;
+
     for (const [, venueSlots] of Object.entries(slotsByVenue)) {
       const venueData = transformVenue(venueSlots);
 
@@ -404,7 +409,18 @@ export function transformSportVenueData(
         venues.push(venueData);
         venuesMap.set(venueData.id, venueData);
         totalTimeSlots += venueData.timeSlots.length;
+      } else {
+        filteredOutCount++;
+        if (__DEV__) {
+          console.log(`Filtered out venue: ${venueData.name} (no available courts)`);
+        }
       }
+    }
+
+    if (__DEV__ && filteredOutCount > 0) {
+      console.log(
+        `District ${districtName}: ${filteredOutCount} venues filtered out, ${venues.length} venues kept`
+      );
     }
 
     // Sort venues by name

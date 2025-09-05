@@ -4,7 +4,7 @@
  */
 
 import type React from 'react';
-import { View } from 'react-native';
+import { TouchableOpacity, View } from 'react-native';
 import { StyleSheet } from 'react-native-unistyles';
 
 import type { SportType } from '@/constants/Sport';
@@ -20,18 +20,23 @@ export interface FilterBarProps {
   onSportTypeSelect: (sportType: SportType) => void;
   onFilterPress: () => void;
   hasActiveFilters?: boolean;
+  onDebugTap?: () => void;
 }
 
-export const FilterBar: React.FC<FilterBarProps> = ({ selectedSportType, onSportTypeSelect }) => {
+export const FilterBar: React.FC<FilterBarProps> = ({
+  selectedSportType,
+  onSportTypeSelect,
+  onDebugTap,
+}) => {
   return (
-    <View style={styles.container}>
+    <TouchableOpacity style={styles.container} onPress={onDebugTap} activeOpacity={1}>
       <View style={styles.sportTypeSelectorContainer}>
         <SportTypeSelector
           selectedSportType={selectedSportType}
           onSportTypeSelect={onSportTypeSelect}
         />
       </View>
-    </View>
+    </TouchableOpacity>
   );
 };
 

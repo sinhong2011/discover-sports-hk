@@ -1,0 +1,91 @@
+name: 🏷️ Release Please
+
+on:
+  push:
+    branches:
+      - main
+  workflow_dispatch:
+
+permissions:
+  contents: write
+  pull-requests: write
+
+jobs:
+  release-please:
+    name: 🏷️ Create Release PR or Release
+    runs-on: ubuntu-latest
+    outputs:
+      release_created: ${{ steps.release.outputs.release_created }}
+      tag_name: ${{ steps.release.outputs.tag_name }}
+      version: ${{ steps.release.outputs.version }}
+      pr_created: ${{ steps.release.outputs.pr_created }}
+      pr_number: ${{ steps.release.outputs.pr_number }}
+      upload_url: ${{ steps.release.outputs.upload_url }}
+    
+    steps:
+      - name: 🏗 Setup repo
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: 🏷️ Run Release Please
+        id: release
+        uses: google-github-actions/release-please-action@v4
+        with:
+          release-type: node
+          config-file: .release-please-config.json
+          manifest-file: .release-please-manifest.json
+          token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: 📊 Release Summary
+        if: steps.release.outputs.release_created
+        run: |
+          echo "## 🎉 Release Created!" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "- **Version**: ${{ steps.release.outputs.version }}" >> $GITHUB_STEP_SUMMARY
+          echo "- **Tag**: ${{ steps.release.outputs.tag_name }}" >> $GITHUB_STEP_SUMMARY
+          echo "- **Release URL**: ${{ steps.release.outputs.html_url }}" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "### 🚀 Next Steps" >> $GITHUB_STEP_SUMMARY
+          echo "- Production build will be triggered automatically" >> $GITHUB_STEP_SUMMARY
+          echo "- App will be submitted to TestFlight and Google Play" >> $GITHUB_STEP_SUMMARY
+          echo "- Monitor the deployment in the Actions tab" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "### 📱 App Store Links" >> $GITHUB_STEP_SUMMARY
+          echo "- [EAS Build Dashboard](https://expo.dev/accounts/sinhong2011/projects/discover-sports-hk/builds)" >> $GITHUB_STEP_SUMMARY
+          echo "- [TestFlight (App Store Connect)](https://appstoreconnect.apple.com)" >> $GITHUB_STEP_SUMMARY
+          echo "- [Google Play Console](https://play.google.com/console)" >> $GITHUB_STEP_SUMMARY
+
+      - name: 📊 PR Summary
+        if: steps.release.outputs.pr_created
+        run: |
+          echo "## 📝 Release PR Created!" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "- **PR Number**: #${{ steps.release.outputs.pr_number }}" >> $GITHUB_STEP_SUMMARY
+          echo "- **Version**: ${{ steps.release.outputs.version }}" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "### 📋 Review Checklist" >> $GITHUB_STEP_SUMMARY
+          echo "- [ ] Review changelog entries for accuracy" >> $GITHUB_STEP_SUMMARY
+          echo "- [ ] Verify version bump is appropriate (major/minor/patch)" >> $GITHUB_STEP_SUMMARY
+          echo "- [ ] Check that all features are properly documented" >> $GITHUB_STEP_SUMMARY
+          echo "- [ ] Ensure breaking changes are clearly highlighted" >> $GITHUB_STEP_SUMMARY
+          echo "- [ ] Confirm app store metadata is ready (if needed)" >> $GITHUB_STEP_SUMMARY
+          echo "- [ ] Test latest develop builds work correctly" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "### 🚀 What Happens After Merge" >> $GITHUB_STEP_SUMMARY
+          echo "1. GitHub release will be created automatically" >> $GITHUB_STEP_SUMMARY
+          echo "2. Production EAS build will be triggered" >> $GITHUB_STEP_SUMMARY
+          echo "3. iOS build will be submitted to TestFlight" >> $GITHUB_STEP_SUMMARY
+          echo "4. Android build will be submitted to Google Play Internal Testing" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "**⚠️ Merge this PR only when ready for production deployment!**" >> $GITHUB_STEP_SUMMARY
+
+  trigger-production-build:
+    name: 🚀 Trigger Production Build
+    needs: release-please
+    if: needs.release-please.outputs.release_created == 'true'
+    uses: ./.github/workflows/publish-production-build.yml
+    with:
+      release_version: ${{ needs.release-please.outputs.version }}
+      release_tag: ${{ needs.release-please.outputs.tag_name }}
+    secrets: inherit

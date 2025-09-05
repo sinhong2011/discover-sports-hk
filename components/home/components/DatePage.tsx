@@ -7,16 +7,18 @@
 import { useBottomTabBarHeight } from '@react-navigation/bottom-tabs';
 import { FlashList } from '@shopify/flash-list';
 import type React from 'react';
-import { memo, useCallback, useMemo } from 'react';
+import { memo, useCallback, useEffect, useMemo } from 'react';
 import { RefreshControl, View } from 'react-native';
 import { StyleSheet, useUnistyles } from 'react-native-unistyles';
 import { EnhancedDatePageSkeleton } from '@/components/skeleton';
 import { useHomeTabContext } from '@/providers';
 import type { SportVenueTimeslot, VenueData } from '@/types/sport';
+import { debugLog } from '@/utils/debugLogger';
 import { DistrictSectionHeader } from './DatePage/DistrictSectionHeader';
 import type { FlashListItem, SectionHeaderItem } from './DatePage/types';
 import { transformSportVenueData } from './DatePage/utils';
 import { VenueItem } from './DatePage/VenueItem';
+import { EmptyState } from './states/EmptyState';
 
 // ============================================================================
 // Types
@@ -41,7 +43,18 @@ const DatePage: React.FC<DatePageProps> = ({
   onScrollEnd: _onScrollEnd,
 }) => {
   // Get loading states, refresh functionality from HomeTabContext
-  const { isLoading, isFetching, isEmpty, isRefetching, refetch } = useHomeTabContext();
+  const { isLoading, isFetching, isEmpty, isRefetching, refetch, isError } = useHomeTabContext();
+
+  // Log component mount for debugging
+  useEffect(() => {
+    debugLog('DatePage', 'Component mounted', {
+      dataLength: data?.length || 0,
+      isLoading,
+      isFetching,
+      isEmpty,
+      isError,
+    });
+  }, [data?.length, isLoading, isFetching, isEmpty, isError]);
 
   // Get tab bar height for proper bottom padding
   const tabBarHeight = useBottomTabBarHeight();
@@ -51,11 +64,31 @@ const DatePage: React.FC<DatePageProps> = ({
 
   // Transform data for FlashList
   const transformedData = useMemo(() => {
-    return transformSportVenueData(data || []);
-  }, [data]);
+    const result = transformSportVenueData(data || []);
+
+    // Debug logging for TestFlight issues (works in production too)
+    debugLog('DatePage', 'Data transformation completed', {
+      inputDataLength: data?.length || 0,
+      outputDataLength: result.flashListData.length,
+      totalVenues: result.totalVenues,
+      totalAvailableTimeSlots: result.totalAvailableTimeSlots,
+      hasInputData: (data?.length || 0) > 0,
+      hasOutputData: result.flashListData.length > 0,
+      isLoading,
+      isFetching,
+      isEmpty,
+      isError,
+    });
+
+    return result;
+  }, [data, isLoading, isFetching, isEmpty, isError]);
 
   // Determine if we should show skeleton loading
   const shouldShowSkeleton = isLoading || (isFetching && isEmpty);
+
+  // Determine if we should show empty state
+  const shouldShowEmptyState =
+    !shouldShowSkeleton && !isError && transformedData.flashListData.length === 0;
 
   // Render FlashList item
   const renderItem = useCallback(({ item }: { item: FlashListItem }) => {
@@ -123,6 +156,11 @@ const DatePage: React.FC<DatePageProps> = ({
     <View style={[styles.container]}>
       {shouldShowSkeleton ? (
         <EnhancedDatePageSkeleton isLoading={shouldShowSkeleton} />
+      ) : shouldShowEmptyState ? (
+        <EmptyState
+          title="No venues available"
+          message="There are no sports venues with available time slots for this date. Try selecting a different date or sport."
+        />
       ) : (
         // Single FlashList that persists across state changes to prevent blank content
         <FlashList

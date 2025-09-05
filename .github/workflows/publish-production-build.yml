@@ -1,0 +1,197 @@
+name: 🚀 Build & Deploy (Branch-based)
+
+on:
+  push:
+    branches:
+      - main      # Production App Store deployment
+      - preview   # TestFlight beta deployment
+    tags:
+      - 'v*'
+  workflow_call:
+    inputs:
+      release_version:
+        description: 'Release version'
+        required: false
+        type: string
+      release_tag:
+        description: 'Release tag'
+        required: false
+        type: string
+      platform:
+        description: 'Platform to build'
+        required: false
+        default: 'all'
+        type: string
+  workflow_dispatch:
+    inputs:
+      platform:
+        description: 'Platform to build'
+        required: true
+        default: 'all'
+        type: choice
+        options:
+          - all
+          - ios
+          - android
+      release_version:
+        description: 'Release version (optional)'
+        required: false
+        type: string
+
+jobs:
+  build-and-deploy:
+    name: 🚀 Build & Deploy to Stores
+    runs-on: ubuntu-latest
+
+    env:
+      # Set deployment target based on branch
+      DEPLOYMENT_TARGET: ${{ github.ref == 'refs/heads/main' && 'production' || 'testflight' }}
+      BUILD_PROFILE: ${{ github.ref == 'refs/heads/main' && 'production' || 'testflight' }}
+      SUBMIT_PROFILE: ${{ github.ref == 'refs/heads/main' && 'production' || 'testflight' }}
+
+    steps:
+      - name: 📋 Display Deployment Strategy
+        run: |
+          BRANCH_NAME="${{ github.ref_name }}"
+          echo "🚀 Branch-based Deployment Strategy"
+          echo "=================================="
+          echo "Branch: $BRANCH_NAME"
+          echo "Deployment Target: $DEPLOYMENT_TARGET"
+          echo "Build Profile: $BUILD_PROFILE"
+          echo "Submit Profile: $SUBMIT_PROFILE"
+          echo ""
+          if [ "$DEPLOYMENT_TARGET" = "production" ]; then
+            echo "🏪 PRODUCTION DEPLOYMENT"
+            echo "- iOS: App Store (Production)"
+            echo "- Android: Google Play Store (Production)"
+          else
+            echo "🧪 BETA DEPLOYMENT"
+            echo "- iOS: TestFlight (Beta Testing)"
+            echo "- Android: Google Play Internal Testing"
+          fi
+          echo "=================================="
+
+      - name: 🏗 Setup repo
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: 🏗 Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 18.x
+          cache: 'npm'
+
+      - name: 🏗 Setup Bun
+        uses: oven-sh/setup-bun@v1
+        with:
+          bun-version: 1.2.18
+
+      - name: 🏗 Setup EAS
+        uses: expo/expo-github-action@v8
+        with:
+          eas-version: latest
+          token: ${{ secrets.EXPO_TOKEN }}
+
+      - name: 📦 Install dependencies
+        run: bun install --frozen-lockfile
+
+      - name: 🔍 Run type check
+        run: bun run type-check
+
+      - name: 🧹 Run linter
+        run: bun run lint
+
+      - name: 🧪 Run tests
+        run: bun run test
+
+      - name: 🚀 Build for Deployment
+        run: |
+          PLATFORM="${{ github.event.inputs.platform || 'all' }}"
+          echo "Building with profile: $BUILD_PROFILE for deployment target: $DEPLOYMENT_TARGET"
+          eas build --profile $BUILD_PROFILE --platform $PLATFORM --non-interactive --wait
+        env:
+          NODE_ENV: ${{ github.ref == 'refs/heads/main' && 'production' || 'production' }}
+
+      - name: 📱 Submit iOS App
+        if: (contains(github.event.inputs.platform, 'ios') || github.event.inputs.platform == 'all' || github.event_name == 'push') && (github.event.inputs.platform != 'android')
+        run: |
+          if [ "$DEPLOYMENT_TARGET" = "production" ]; then
+            echo "🏪 Submitting to App Store (Production)"
+            eas submit --profile production --platform ios --latest --non-interactive
+          else
+            echo "🧪 Submitting to TestFlight (Beta)"
+            eas submit --profile testflight --platform ios --latest --non-interactive
+          fi
+        env:
+          EXPO_APPLE_APP_SPECIFIC_PASSWORD: ${{ secrets.EXPO_APPLE_APP_SPECIFIC_PASSWORD }}
+
+      - name: 🤖 Submit Android App
+        if: (contains(github.event.inputs.platform, 'android') || github.event.inputs.platform == 'all' || github.event_name == 'push') && (github.event.inputs.platform != 'ios')
+        run: |
+          if [ "$DEPLOYMENT_TARGET" = "production" ]; then
+            echo "🏪 Submitting to Google Play Store (Production)"
+            eas submit --profile production --platform android --latest --non-interactive
+          else
+            echo "🧪 Submitting to Google Play Internal Testing (Beta)"
+            eas submit --profile testflight --platform android --latest --non-interactive
+          fi
+
+      - name: 📊 Deployment Summary
+        run: |
+          BRANCH_NAME="${{ github.ref_name }}"
+
+          if [ "$DEPLOYMENT_TARGET" = "production" ]; then
+            echo "## 🏪 Production Deployment Completed" >> $GITHUB_STEP_SUMMARY
+            DEPLOYMENT_TYPE="Production Release"
+            IOS_TARGET="App Store"
+            ANDROID_TARGET="Google Play Store"
+          else
+            echo "## 🧪 Beta Deployment Completed" >> $GITHUB_STEP_SUMMARY
+            DEPLOYMENT_TYPE="Beta Release"
+            IOS_TARGET="TestFlight"
+            ANDROID_TARGET="Google Play Internal Testing"
+          fi
+
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "- **Branch**: $BRANCH_NAME" >> $GITHUB_STEP_SUMMARY
+          echo "- **Deployment Type**: $DEPLOYMENT_TYPE" >> $GITHUB_STEP_SUMMARY
+          echo "- **Build Profile**: $BUILD_PROFILE" >> $GITHUB_STEP_SUMMARY
+          echo "- **Submit Profile**: $SUBMIT_PROFILE" >> $GITHUB_STEP_SUMMARY
+          echo "- **Commit**: ${{ github.sha }}" >> $GITHUB_STEP_SUMMARY
+          echo "- **Platform**: ${{ inputs.platform || github.event.inputs.platform || 'all' }}" >> $GITHUB_STEP_SUMMARY
+          if [ -n "${{ inputs.release_version }}" ]; then
+            echo "- **Release Version**: ${{ inputs.release_version }}" >> $GITHUB_STEP_SUMMARY
+            echo "- **Release Tag**: ${{ inputs.release_tag }}" >> $GITHUB_STEP_SUMMARY
+          fi
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "### 📱 App Store Status" >> $GITHUB_STEP_SUMMARY
+          echo "- **iOS**: Submitted to $IOS_TARGET ✅" >> $GITHUB_STEP_SUMMARY
+          echo "- **Android**: Submitted to $ANDROID_TARGET ✅" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "### 🔗 Links" >> $GITHUB_STEP_SUMMARY
+          echo "- [EAS Build Dashboard](https://expo.dev/accounts/sinhong2011/projects/discover-sports-hk/builds)" >> $GITHUB_STEP_SUMMARY
+          echo "- [App Store Connect](https://appstoreconnect.apple.com)" >> $GITHUB_STEP_SUMMARY
+          echo "- [Google Play Console](https://play.google.com/console)" >> $GITHUB_STEP_SUMMARY
+
+      - name: 🎉 Success Notification
+        if: success()
+        run: |
+          BRANCH_NAME="${{ github.ref_name }}"
+          if [ "$DEPLOYMENT_TARGET" = "production" ]; then
+            echo "🎉 Production build and deployment completed successfully!"
+            echo "🏪 Your app has been submitted to the App Store and Google Play Store."
+            echo "📱 Check App Store Connect and Google Play Console for the new builds."
+          else
+            echo "🎉 Beta build and deployment completed successfully!"
+            echo "🧪 Your app has been submitted to TestFlight and Google Play Internal Testing."
+            echo "📱 Check TestFlight and Google Play Console for the new builds."
+          fi
+
+      - name: ❌ Failure Notification
+        if: failure()
+        run: |
+          BRANCH_NAME="${{ github.ref_name }}"
+          echo "❌ Build or deployment failed for branch: $BRANCH_NAME"
+          echo "🔍 Check the logs above for details."
+          echo "💡 Deployment target was: $DEPLOYMENT_TARGET"
