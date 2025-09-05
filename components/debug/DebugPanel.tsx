@@ -145,16 +145,16 @@ Instructions for Developer:
 
           <TouchableOpacity
             onPress={handleClearLogs}
-            style={[styles.button, { backgroundColor: theme.colors.primary }]}
+            style={[styles.button, { backgroundColor: '#FF3B30' }]}
           >
-            <Text style={[styles.buttonText, { color: theme.colors.background }]}>Clear</Text>
+            <Text style={[styles.buttonText, { color: 'white' }]}>Clear</Text>
           </TouchableOpacity>
 
           <TouchableOpacity
             onPress={handleExportLogs}
-            style={[styles.button, { backgroundColor: theme.colors.secondary }]}
+            style={[styles.button, { backgroundColor: '#8E8E93' }]}
           >
-            <Text style={[styles.buttonText, { color: theme.colors.background }]}>Export</Text>
+            <Text style={[styles.buttonText, { color: 'white' }]}>Export</Text>
           </TouchableOpacity>
         </View>
 
