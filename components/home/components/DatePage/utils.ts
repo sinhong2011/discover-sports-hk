@@ -8,6 +8,7 @@ import { groupBy } from 'es-toolkit';
 import type { AvailabilityLevel, TimeSlotData } from '@/components/ui/TimeSlotItem';
 import { DistrictHK } from '@/constants/Geo';
 import type { FacilityLocationData, SportVenueTimeslot, VenueData } from '@/types/sport';
+import { findDistrictByFuzzyMatch } from '@/utils/districtMatching';
 import type {
   DistrictData,
   FlashListItem,
@@ -42,10 +43,14 @@ const AVAILABILITY_THRESHOLDS = {
  * @returns Area code or null if not found
  */
 export function getDistrictAreaCode(districtNameEn: string): string | null {
-  const districtInfo = DistrictHK.find((d) => d.district.en === districtNameEn);
+  // First try exact match
+  let districtInfo = DistrictHK.find((d) => d.district.en === districtNameEn);
+
+  // If no exact match, try robust fuzzy matching
   if (!districtInfo) {
-    return null;
+    districtInfo = findDistrictByFuzzyMatch(districtNameEn);
   }
+
   return districtInfo?.areaCode || null;
 }
 

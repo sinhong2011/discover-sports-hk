@@ -21,6 +21,7 @@ import type {
   SportVenueTimeslotTimeslotOrigin,
   VenueData,
 } from '@/types/sport';
+import { findDistrictByFuzzyMatch } from '@/utils/districtMatching';
 import { mmkvSportVenueStorage } from './mmkvStorage';
 import type { SportVenueDataBySportType } from './types';
 
@@ -336,7 +337,14 @@ export const useSportVenueTimeSlots = (sportType: SportType) => {
       const venueName = language === 'en' ? item.Venue_Name_EN : item.Venue_Name_TC;
 
       // Find district code from DistrictHK based on English district name
-      const districtInfo = DistrictHK.find((d) => d.district.en === item.District_Name_EN);
+      // First try exact match
+      let districtInfo = DistrictHK.find((d) => d.district.en === item.District_Name_EN);
+
+      // If no exact match, try robust fuzzy matching
+      if (!districtInfo) {
+        districtInfo = findDistrictByFuzzyMatch(item.District_Name_EN);
+      }
+
       const districtCode = districtInfo?.code || 'UNKNOWN';
 
       return {
