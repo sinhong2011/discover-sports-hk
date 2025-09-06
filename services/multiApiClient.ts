@@ -124,6 +124,53 @@ export class MultiApiClient {
   }
 
   /**
+   * Check if an error is an authentication error
+   */
+  private isAuthenticationError(error: unknown): boolean {
+    return (
+      error instanceof Error &&
+      (error.message.includes('Unauthorized') ||
+        error.message.includes('401') ||
+        error.message.includes('Authentication'))
+    );
+  }
+
+  /**
+   * GET request with fallback mechanism
+   * Tries worker API first, falls back to backend API on authentication failure
+   */
+  async getWithFallback<T = unknown>(
+    endpoint: string,
+    params?: Record<string, string | number | boolean>
+  ): Promise<T> {
+    // Always try worker API first for sports data
+    try {
+      if (__DEV__) {
+        console.log(`GET ${endpoint} -> worker API (with fallback)`);
+      }
+      return await this.workerClient.get<T>(endpoint, params);
+    } catch (error: unknown) {
+      if (this.isAuthenticationError(error)) {
+        if (__DEV__) {
+          console.log(`Worker API auth failed, falling back to backend API for ${endpoint}`);
+        }
+        try {
+          return await this.backendClient.get<T>(endpoint, params);
+        } catch {
+          if (__DEV__) {
+            console.log(`Backend API also failed for ${endpoint}, throwing original worker error`);
+          }
+          // If backend also fails, throw the original worker error
+          throw error;
+        }
+      }
+
+      // If it's not an auth error, throw the original error
+      throw error;
+    }
+  }
+
+  /**
    * POST request (auto-routed)
    */
   async post<T = unknown>(endpoint: string, data?: Record<string, unknown>): Promise<T> {
@@ -252,6 +299,18 @@ export async function apiGet<T = unknown>(
 ): Promise<T> {
   const client = getMultiApiClient();
   return await client.get<T>(endpoint, params);
+}
+
+/**
+ * Make a GET request with fallback mechanism
+ * Tries worker API first, falls back to backend API on authentication failure
+ */
+export async function apiGetWithFallback<T = unknown>(
+  endpoint: string,
+  params?: Record<string, string | number | boolean>
+): Promise<T> {
+  const client = getMultiApiClient();
+  return await client.getWithFallback<T>(endpoint, params);
 }
 
 /**

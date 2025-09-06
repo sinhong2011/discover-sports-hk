@@ -185,7 +185,7 @@ function HomeScreenContent() {
 // Main HomeScreen component that wraps HomeScreenContent with HomeTabProvider
 function HomeScreen() {
   return (
-    <HomeTabProvider showErrorAlerts={false}>
+    <HomeTabProvider showErrorAlerts={true}>
       <HomeScreenContent />
     </HomeTabProvider>
   );

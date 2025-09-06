@@ -4,6 +4,7 @@
  */
 
 import * as Application from 'expo-application';
+import Constants from 'expo-constants';
 import * as Device from 'expo-device';
 import * as SecureStore from 'expo-secure-store';
 import ky, { HTTPError } from 'ky';
@@ -94,11 +95,13 @@ export function getDeviceInfo(): DeviceInfo {
  * Get app credentials for authentication
  */
 function getAppCredentials(): AppCredentials {
-  // These should come from environment variables or secure config
+  // Get credentials from Expo Constants (set in app.config.ts)
+  const constants = Constants.expoConfig?.extra;
+
   return {
-    apiKey: process.env.EXPO_PUBLIC_API_KEY || '',
+    apiKey: constants?.WORKER_API_KEY || '',
     bundleId: Application.applicationId || 'com.openpandata.discoversportshk',
-    appSignature: process.env.EXPO_PUBLIC_APP_SIGNATURE || '',
+    appSignature: constants?.APP_SIGNATURE || '',
   };
 }
 
@@ -422,9 +425,10 @@ function logAppTokenRequest(
   console.log(`🔑 ${timestamp} | POST /auth/app-token`);
 
   // Log environment variables status
+  const constants = Constants.expoConfig?.extra;
   console.log(`🔧 Environment Variables Check:`, {
-    EXPO_PUBLIC_API_KEY: process.env.EXPO_PUBLIC_API_KEY ? 'SET' : 'MISSING',
-    EXPO_PUBLIC_APP_SIGNATURE: process.env.EXPO_PUBLIC_APP_SIGNATURE ? 'SET' : 'MISSING',
+    WORKER_API_KEY: constants?.WORKER_API_KEY ? 'SET' : 'MISSING',
+    APP_SIGNATURE: constants?.APP_SIGNATURE ? 'SET' : 'MISSING',
     NODE_ENV: process.env.NODE_ENV,
   });
 }
@@ -746,4 +750,11 @@ export async function isAuthenticated(baseUrl: string): Promise<boolean> {
  */
 export async function getTokenInfo(): Promise<CachedToken | null> {
   return await getStoredToken();
+}
+
+/**
+ * Get app credentials (for testing)
+ */
+export function getAppCredentialsForTesting(): AppCredentials {
+  return getAppCredentials();
 }

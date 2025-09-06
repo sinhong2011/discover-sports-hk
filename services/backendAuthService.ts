@@ -182,7 +182,7 @@ async function loginToBackend(baseUrl: string): Promise<BackendTokenResponse> {
     const requestData: BackendLoginRequest = {
       deviceId: deviceInfo.deviceId,
       // Add other required fields based on backend API design
-      clientId: process.env.EXPO_PUBLIC_BACKEND_CLIENT_ID,
+      clientId: process.env.BACKEND_CLIENT_ID,
     };
 
     const response = await ky
@@ -223,7 +223,7 @@ async function refreshBackendToken(
   try {
     const requestData: BackendRefreshRequest = {
       refreshToken,
-      clientId: process.env.EXPO_PUBLIC_BACKEND_CLIENT_ID,
+      clientId: process.env.BACKEND_CLIENT_ID,
     };
 
     const response = await ky
