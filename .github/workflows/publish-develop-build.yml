@@ -44,7 +44,7 @@ jobs:
         run: bun run test
 
       - name: 🚀 Build Test Version
-        run: eas build --profile test --platform all --non-interactive --wait
+        run: eas build --profile test --platform ios --non-interactive --wait
         env:
           NODE_ENV: staging
 

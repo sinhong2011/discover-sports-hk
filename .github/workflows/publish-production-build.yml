@@ -20,19 +20,17 @@ on:
       platform:
         description: 'Platform to build'
         required: false
-        default: 'all'
+        default: 'ios'
         type: string
   workflow_dispatch:
     inputs:
       platform:
         description: 'Platform to build'
         required: true
-        default: 'all'
+        default: 'ios'
         type: choice
         options:
-          - all
           - ios
-          - android
       release_version:
         description: 'Release version (optional)'
         required: false
@@ -106,14 +104,14 @@ jobs:
 
       - name: 🚀 Build for Deployment
         run: |
-          PLATFORM="${{ github.event.inputs.platform || 'all' }}"
+          PLATFORM="${{ github.event.inputs.platform || 'ios' }}"
           echo "Building with profile: $BUILD_PROFILE for deployment target: $DEPLOYMENT_TARGET"
           eas build --profile $BUILD_PROFILE --platform $PLATFORM --non-interactive --wait
         env:
           NODE_ENV: ${{ github.ref == 'refs/heads/main' && 'production' || 'production' }}
 
       - name: 📱 Submit iOS App
-        if: (contains(github.event.inputs.platform, 'ios') || github.event.inputs.platform == 'all' || github.event_name == 'push') && (github.event.inputs.platform != 'android')
+        if: github.event_name == 'push' || github.event.inputs.platform == 'ios'
         run: |
           if [ "$DEPLOYMENT_TARGET" = "production" ]; then
             echo "🏪 Submitting to App Store (Production)"
@@ -125,16 +123,7 @@ jobs:
         env:
           EXPO_APPLE_APP_SPECIFIC_PASSWORD: ${{ secrets.EXPO_APPLE_APP_SPECIFIC_PASSWORD }}
 
-      - name: 🤖 Submit Android App
-        if: (contains(github.event.inputs.platform, 'android') || github.event.inputs.platform == 'all' || github.event_name == 'push') && (github.event.inputs.platform != 'ios')
-        run: |
-          if [ "$DEPLOYMENT_TARGET" = "production" ]; then
-            echo "🏪 Submitting to Google Play Store (Production)"
-            eas submit --profile production --platform android --latest --non-interactive
-          else
-            echo "🧪 Submitting to Google Play Internal Testing (Beta)"
-            eas submit --profile testflight --platform android --latest --non-interactive
-          fi
+
 
       - name: 📊 Deployment Summary
         run: |
@@ -158,7 +147,7 @@ jobs:
           echo "- **Build Profile**: $BUILD_PROFILE" >> $GITHUB_STEP_SUMMARY
           echo "- **Submit Profile**: $SUBMIT_PROFILE" >> $GITHUB_STEP_SUMMARY
           echo "- **Commit**: ${{ github.sha }}" >> $GITHUB_STEP_SUMMARY
-          echo "- **Platform**: ${{ inputs.platform || github.event.inputs.platform || 'all' }}" >> $GITHUB_STEP_SUMMARY
+          echo "- **Platform**: ${{ inputs.platform || github.event.inputs.platform || 'ios' }}" >> $GITHUB_STEP_SUMMARY
           if [ -n "${{ inputs.release_version }}" ]; then
             echo "- **Release Version**: ${{ inputs.release_version }}" >> $GITHUB_STEP_SUMMARY
             echo "- **Release Tag**: ${{ inputs.release_tag }}" >> $GITHUB_STEP_SUMMARY
