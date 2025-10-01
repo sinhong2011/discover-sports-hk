@@ -31,7 +31,7 @@ extensions.configure(com.facebook.react.ReactSettingsExtension) { ex ->
 }
 expoAutolinking.useExpoModules()
 
-rootProject.name = '睇場易HK'
+rootProject.name = 'DiscoverSports HK'
 
 expoAutolinking.useExpoVersionCatalog()
 

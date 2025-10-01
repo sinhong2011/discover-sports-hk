@@ -4,11 +4,11 @@
  * and sticky headers
  */
 
-import { useBottomTabBarHeight } from '@react-navigation/bottom-tabs';
 import { FlashList } from '@shopify/flash-list';
 import type React from 'react';
 import { memo, useCallback, useEffect, useMemo } from 'react';
 import { RefreshControl, View } from 'react-native';
+import { useBottomTabBarHeight } from 'react-native-bottom-tabs';
 import { StyleSheet, useUnistyles } from 'react-native-unistyles';
 import { EnhancedDatePageSkeleton } from '@/components/skeleton';
 import { useHomeTabContext } from '@/providers';

@@ -5,12 +5,12 @@
 
 import { msg } from '@lingui/core/macro';
 import { useLingui } from '@lingui/react/macro';
-import { useBottomTabBarHeight } from '@react-navigation/bottom-tabs';
 import { FlashList } from '@shopify/flash-list';
 import { groupBy } from 'es-toolkit';
 import { useRouter } from 'expo-router';
 import { useCallback, useMemo } from 'react';
 import { RefreshControl, View } from 'react-native';
+import { useBottomTabBarHeight } from 'react-native-bottom-tabs';
 import { StyleSheet, useUnistyles } from 'react-native-unistyles';
 import { getDistrictAreaCode } from '@/components/home/components/DatePage/utils';
 import { SportTypeSelector } from '@/components/home/components/SportTypeSelector';

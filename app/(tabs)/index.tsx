@@ -3,9 +3,9 @@
  * Main dashboard showing sports venues with real-time data from OpenPanData API
  */
 
-import { useBottomTabBarHeight } from '@react-navigation/bottom-tabs';
 import { memo, useCallback, useEffect, useRef, useState } from 'react';
 import { useWindowDimensions, View } from 'react-native';
+import { useBottomTabBarHeight } from 'react-native-bottom-tabs';
 import { StyleSheet } from 'react-native-unistyles';
 import { DebugPanel } from '@/components/debug/DebugPanel';
 // Import home screen components

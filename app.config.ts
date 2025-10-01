@@ -55,6 +55,7 @@ export default ({ config }: ConfigContext): ExpoConfig => ({
         launchMode: 'most-recent',
       },
     ],
+    'react-native-bottom-tabs',
   ],
   experiments: {
     typedRoutes: true,
