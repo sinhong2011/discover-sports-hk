@@ -55,7 +55,6 @@ export default ({ config }: ConfigContext): ExpoConfig => ({
         launchMode: 'most-recent',
       },
     ],
-    'react-native-bottom-tabs',
     'expo-secure-store',
     'expo-web-browser',
   ],
