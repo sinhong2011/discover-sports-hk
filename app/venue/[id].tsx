@@ -6,9 +6,9 @@
 
 import { msg } from '@lingui/core/macro';
 import { useLingui } from '@lingui/react/macro';
+import { HeaderButton } from '@react-navigation/elements';
 import { useLocalSearchParams, useNavigation, useRouter } from 'expo-router';
 import { useCallback, useEffect } from 'react';
-import { TouchableOpacity } from 'react-native';
 import { StyleSheet, useUnistyles } from 'react-native-unistyles';
 import { ThemedText } from '@/components/ThemedText';
 import { AppIcon } from '@/components/ui/Icon';
@@ -116,19 +116,13 @@ export default function SharedVenueDetailsScreen() {
       title: venue?.name || t(venueDetailsTitle),
       headerRight: venue
         ? () => (
-            <TouchableOpacity
-              onPress={handleBookmarkPress}
-              style={{ marginRight: 4 }}
-              activeOpacity={0.7}
-              accessibilityLabel={isBookmarked ? 'Remove from bookmarks' : 'Add to bookmarks'}
-              accessibilityRole="button"
-            >
+            <HeaderButton onPress={handleBookmarkPress}>
               <AppIcon
                 name={isBookmarked ? 'heartFilled' : 'heart'}
                 size={24}
                 color={isBookmarked ? '#EF4444' : theme.colors.text}
               />
-            </TouchableOpacity>
+            </HeaderButton>
           )
         : undefined,
     });
