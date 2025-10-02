@@ -5,7 +5,6 @@
 
 import { memo, useCallback, useEffect, useRef, useState } from 'react';
 import { useWindowDimensions, View } from 'react-native';
-import { useBottomTabBarHeight } from 'react-native-bottom-tabs';
 import { StyleSheet } from 'react-native-unistyles';
 import { DebugPanel } from '@/components/debug/DebugPanel';
 // Import home screen components
@@ -16,6 +15,7 @@ import { FloatingActionButton } from '@/components/ui/FloatingActionButton';
 import { SafeAreaView } from '@/components/ui/SafeAreaView';
 // Import local sport types constant
 import type { SportType } from '@/constants/Sport';
+import { useNativeTabBarHeight } from '@/hooks/useNativeTabBarHeight';
 import { HomeTabProvider, useHomeTabContext } from '@/providers/HomeTabProvider';
 import { debugLog } from '@/utils/debugLogger';
 
@@ -36,8 +36,8 @@ function HomeScreenContent() {
     });
   }, [screenHeight]);
 
-  // Get dynamic tab bar height from React Navigation
-  const tabBarHeight = useBottomTabBarHeight();
+  // Get dynamic tab bar height from native tabs
+  const tabBarHeight = useNativeTabBarHeight();
 
   // Calculate available height for sticky section
   // Account for: screen height - top safe area - bottom safe area - bottom navigation bar
@@ -115,15 +115,13 @@ function HomeScreenContent() {
   return (
     <SafeAreaView style={[homeScreenStyles.container]} bottom={false}>
       {/* FilterBar section */}
-      <View style={styles.filterBarSection}>
-        <FilterBar
-          selectedSportType={selectedSportType}
-          onSportTypeSelect={handleSportTypeSelect}
-          onFilterPress={handleFilterPress}
-          hasActiveFilters={hasActiveFilters}
-          onDebugTap={handleDebugTap}
-        />
-      </View>
+      <FilterBar
+        selectedSportType={selectedSportType}
+        onSportTypeSelect={handleSportTypeSelect}
+        onFilterPress={handleFilterPress}
+        hasActiveFilters={hasActiveFilters}
+        onDebugTap={handleDebugTap}
+      />
 
       {/* DatePagerView section - takes remaining space */}
       <View style={[styles.datePagerSection, { height: availableHeight }]}>

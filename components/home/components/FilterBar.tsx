@@ -55,7 +55,7 @@ const styles = StyleSheet.create((theme) => ({
 
   sportTypeSelectorContainer: {
     flex: 1,
-    paddingTop: 12,
+    // paddingTop: 12,
   },
 
   filterButton: {

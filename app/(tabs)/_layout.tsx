@@ -1,40 +1,24 @@
 import { msg } from '@lingui/core/macro';
 import { useLingui } from '@lingui/react/macro';
-import { useUnistyles } from 'react-native-unistyles';
-import { Tabs } from '@/components/NativeBottomTabs';
+import { Icon, Label, NativeTabs } from 'expo-router/unstable-native-tabs';
 
 export default function TabLayout() {
   const { t } = useLingui();
-  const { theme } = useUnistyles();
 
   return (
-    <Tabs
-      hapticFeedbackEnabled={true}
-      screenOptions={{
-        tabBarActiveTintColor: theme.colors.tint,
-      }}
-    >
-      <Tabs.Screen
-        name="index"
-        options={{
-          title: t(msg`Home`),
-          tabBarIcon: () => ({ sfSymbol: 'house.fill' }),
-        }}
-      />
-      <Tabs.Screen
-        name="bookmarks"
-        options={{
-          title: t(msg`Bookmarks`),
-          tabBarIcon: () => ({ sfSymbol: 'bookmark.fill' }),
-        }}
-      />
-      <Tabs.Screen
-        name="settings"
-        options={{
-          title: t(msg`Settings`),
-          tabBarIcon: () => ({ sfSymbol: 'gearshape.fill' }),
-        }}
-      />
-    </Tabs>
+    <NativeTabs>
+      <NativeTabs.Trigger name="index">
+        <Label>{t(msg`Home`)}</Label>
+        <Icon sf="house.fill" />
+      </NativeTabs.Trigger>
+      <NativeTabs.Trigger name="bookmarks">
+        <Label>{t(msg`Bookmarks`)}</Label>
+        <Icon sf="bookmark.fill" />
+      </NativeTabs.Trigger>
+      <NativeTabs.Trigger name="settings">
+        <Label>{t(msg`Settings`)}</Label>
+        <Icon sf="gearshape.fill" />
+      </NativeTabs.Trigger>
+    </NativeTabs>
   );
 }

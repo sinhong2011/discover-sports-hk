@@ -10,7 +10,6 @@ import { groupBy } from 'es-toolkit';
 import { useRouter } from 'expo-router';
 import { useCallback, useMemo } from 'react';
 import { RefreshControl, View } from 'react-native';
-import { useBottomTabBarHeight } from 'react-native-bottom-tabs';
 import { StyleSheet, useUnistyles } from 'react-native-unistyles';
 import { getDistrictAreaCode } from '@/components/home/components/DatePage/utils';
 import { SportTypeSelector } from '@/components/home/components/SportTypeSelector';
@@ -21,6 +20,7 @@ import { AppIcon } from '@/components/ui/Icon';
 import { SafeAreaView } from '@/components/ui/SafeAreaView';
 import { DistrictHK } from '@/constants/Geo';
 import type { SportType } from '@/constants/Sport';
+import { useNativeTabBarHeight } from '@/hooks/useNativeTabBarHeight';
 import { useBookmarksTabContext } from '@/providers/BookmarksTabProvider';
 import type { BookmarkedVenue } from '@/store/useSportVenueStore';
 import { useBookmarkedVenuesWithData } from '@/store/useSportVenueStore';
@@ -184,7 +184,7 @@ export default function BookmarksScreen() {
   const { theme } = useUnistyles();
 
   const router = useRouter();
-  const tabBarHeight = useBottomTabBarHeight();
+  const tabBarHeight = useNativeTabBarHeight();
 
   // State for sport type filter
   const { selectedSportType, setSelectedSportType } = useBookmarksTabContext();

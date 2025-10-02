@@ -201,7 +201,7 @@ export const VenueItem: React.FC<VenueItemProps> = ({ venue, selectedTimeSlotId 
       </View>
 
       {/* Facility Locations */}
-      {venue.facilityLocations.map((facilityLocation, index) => (
+      {venue.facilityLocations.map((facilityLocation: FacilityLocationData, index: number) => (
         <View key={`facility-wrapper-${facilityLocation.name}-${index}`}>
           {/* Separator between facility locations (not before first one) */}
           {index > 0 && hasMultipleFacilityLocations(venue) && (

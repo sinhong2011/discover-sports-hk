@@ -8,9 +8,9 @@ import { FlashList } from '@shopify/flash-list';
 import type React from 'react';
 import { memo, useCallback, useEffect, useMemo } from 'react';
 import { RefreshControl, View } from 'react-native';
-import { useBottomTabBarHeight } from 'react-native-bottom-tabs';
 import { StyleSheet, useUnistyles } from 'react-native-unistyles';
 import { EnhancedDatePageSkeleton } from '@/components/skeleton';
+import { useNativeTabBarHeight } from '@/hooks/useNativeTabBarHeight';
 import { useHomeTabContext } from '@/providers';
 import type { SportVenueTimeslot, VenueData } from '@/types/sport';
 import { debugLog } from '@/utils/debugLogger';
@@ -57,7 +57,7 @@ const DatePage: React.FC<DatePageProps> = ({
   }, [data?.length, isLoading, isFetching, isEmpty, isError]);
 
   // Get tab bar height for proper bottom padding
-  const tabBarHeight = useBottomTabBarHeight();
+  const tabBarHeight = useNativeTabBarHeight();
 
   // Get theme for refresh control styling
   const { theme } = useUnistyles();
