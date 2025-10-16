@@ -6,7 +6,7 @@ export default function TabLayout() {
   const { t } = useLingui();
 
   return (
-    <NativeTabs>
+    <NativeTabs disableTransparentOnScrollEdge>
       <NativeTabs.Trigger name="index">
         <Label>{t(msg`Home`)}</Label>
         <Icon sf="house.fill" />

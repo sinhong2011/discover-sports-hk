@@ -149,7 +149,7 @@ function HomeScreenContent() {
       <FloatingActionButton
         iconName="close"
         onPress={handleClearFilters}
-        bottom={tabBarHeight * 1.85}
+        bottom={tabBarHeight * 3}
         visible={hasActiveFilters}
         accessibilityLabel="Clear all filters"
         testID="clear-filters-fab"
@@ -164,7 +164,7 @@ function HomeScreenContent() {
         activeIconName="filterActive"
         isActive={hasActiveFilters}
         onPress={handleFilterPress}
-        bottom={tabBarHeight + 18}
+        bottom={tabBarHeight + 42}
         accessibilityLabel="Open filter options"
         testID="filter-fab"
         hideOnScroll={true}
