@@ -1,0 +1,55 @@
+# Changelog
+
+## 1.0.0 (2025-10-21)
+
+
+### Features
+
+* add comprehensive app configuration ([9b5eec0](https://github.com/sinhong2011/discover-sports-hk/commit/9b5eec04c89bd43ea9b4124f84bfda93ebdf2638))
+* add comprehensive localization support ([a8a9c29](https://github.com/sinhong2011/discover-sports-hk/commit/a8a9c290b9bf71e8606cb489cc6938ab979a0612))
+* add comprehensive TypeScript API type definitions ([4e86309](https://github.com/sinhong2011/discover-sports-hk/commit/4e8630911cd53f529273c2d301abfa14e9a0f8c9))
+* add core configuration files ([f0bcb3f](https://github.com/sinhong2011/discover-sports-hk/commit/f0bcb3f1a8683e2e164cea70c2f5ecfb642c95c2))
+* add documentation and update project settings ([ff3e773](https://github.com/sinhong2011/discover-sports-hk/commit/ff3e773001411261cb3a3f27f3ddb2a5533717c1))
+* add examples and environment configuration ([7470ca5](https://github.com/sinhong2011/discover-sports-hk/commit/7470ca5fe6a3bd1924f4b1c50026ec79e23bcd41))
+* add hidden venue list functionality ([99df793](https://github.com/sinhong2011/discover-sports-hk/commit/99df79349b6e44c3e3e677ebe449f0bcc8c0e71a))
+* add iOS and Android native platform folders ([aa961d7](https://github.com/sinhong2011/discover-sports-hk/commit/aa961d75ef9f49c083542b7c2fbe79d45d06f47b))
+* add React context providers for app-wide functionality ([ba8ee37](https://github.com/sinhong2011/discover-sports-hk/commit/ba8ee377e2d8eef5229dde116d2f9980d78b597a))
+* add reusable UI components ([88bad0f](https://github.com/sinhong2011/discover-sports-hk/commit/88bad0f491c2704b4b135ef7c9b862cb439bd7ae))
+* add TanStack Query hooks for sports API integration ([77b6503](https://github.com/sinhong2011/discover-sports-hk/commit/77b65035558d59b7c96a0aa8f2df42333657158d))
+* add utility hooks and app constants ([7dd2ea2](https://github.com/sinhong2011/discover-sports-hk/commit/7dd2ea2395df7af6d1afc16e042c3b9ca37da272))
+* add Zustand store for app state management ([d784830](https://github.com/sinhong2011/discover-sports-hk/commit/d784830363560bddd29342fbeb98999e12f56d26))
+* **android:** update Android configuration and assets ([dbe0acb](https://github.com/sinhong2011/discover-sports-hk/commit/dbe0acb26ad4ae9dc855cfd0f2c87b19823622b6))
+* **app:** add bookmarks tab and venue details screen ([71dd046](https://github.com/sinhong2011/discover-sports-hk/commit/71dd046a3c7a4e2273656f367454694c46e5c0f2))
+* **app:** configure app and providers ([46f82f4](https://github.com/sinhong2011/discover-sports-hk/commit/46f82f4633907db6711be4b01b6cd90d0c5485b9))
+* **app:** update app layout and routing structure ([726a940](https://github.com/sinhong2011/discover-sports-hk/commit/726a9408415839ea7b822ee4715c327d28e6404e))
+* **components:** comprehensive component updates and improvements ([d73aa95](https://github.com/sinhong2011/discover-sports-hk/commit/d73aa95769490dc7b3e2ee0283700b5dae01dbf0))
+* convert app.config to TypeScript and clean up unused assets ([269017c](https://github.com/sinhong2011/discover-sports-hk/commit/269017cb1565a343490425e775df342f2d71351f))
+* **core:** update constants, services, and types; adjust entrypoints ([6a62dfd](https://github.com/sinhong2011/discover-sports-hk/commit/6a62dfdfea1157dc73dbfe8f6616c030fcc995e4))
+* finalize remaining updates and improvements ([f400fb9](https://github.com/sinhong2011/discover-sports-hk/commit/f400fb9f0d117ea3ef0e4a2d4311338dc528dc1c))
+* **i18n:** integrate Lingui and new locales ([812cb79](https://github.com/sinhong2011/discover-sports-hk/commit/812cb7923104690ca2eafc97a37a9719f653ff58))
+* **ios:** restructure iOS project and update Metro config ([397dc26](https://github.com/sinhong2011/discover-sports-hk/commit/397dc26e2acbef291b451e0fb6087bc87ae79dc3))
+* migrate from ESLint to Biome and update project configuration ([61cde2b](https://github.com/sinhong2011/discover-sports-hk/commit/61cde2b21a769c78597074869a3e9d0795ba2c42))
+* **package:** set type to module in package.json ([8ff9ef3](https://github.com/sinhong2011/discover-sports-hk/commit/8ff9ef376e14a28d39a05c0fee604a96269c6dc7))
+* **services:** update services, store, and providers ([2cd0a56](https://github.com/sinhong2011/discover-sports-hk/commit/2cd0a5622efcf3c39c0820e06d5a86d12eedc526))
+* **state:** add mmkv storage; update app/sport venue stores and hooks; add immer setup and patch ([cb2beab](https://github.com/sinhong2011/discover-sports-hk/commit/cb2beabf4191a507778d41c8a6b6ef17d9105c1a))
+* **theme:** update ThemedView/Text and add ThemeDebugger; wire into Home tab providers ([21f9a7d](https://github.com/sinhong2011/discover-sports-hk/commit/21f9a7debed61612a3e27517a623211b956ca433))
+* **ui:** add Badge and Card components ([f371719](https://github.com/sinhong2011/discover-sports-hk/commit/f3717190331277951f513a478805b3b5fb7d96a9))
+* **ui:** add home UI components and styling ([93c74ab](https://github.com/sinhong2011/discover-sports-hk/commit/93c74ab8e8b8415b4013855ca76fae6a7fd7a7a6))
+* update app configuration and UI components ([c9b743e](https://github.com/sinhong2011/discover-sports-hk/commit/c9b743ed13b8915b4757b919b9999c8921978cc3))
+* update app structure and components ([a3d5d24](https://github.com/sinhong2011/discover-sports-hk/commit/a3d5d2415b67649703ce097857a885c4c138cd87))
+* update tab navigation and venue components ([54ebacb](https://github.com/sinhong2011/discover-sports-hk/commit/54ebacb331c9db17c28a0b28796342db674755bb))
+* update venue page, header back button, and package dependencies ([78eb555](https://github.com/sinhong2011/discover-sports-hk/commit/78eb5556af34d14a3d9070ff91e0d9d56f37f8c8))
+
+
+### Bug Fixes
+
+* **DatePagerView:** remove unused useIsFocused import ([644de5b](https://github.com/sinhong2011/discover-sports-hk/commit/644de5b701ad9f0e27b4d745f069396db73e63f6))
+* **DatePagerView:** replace 'any' type with proper React Navigation types ([22c7a31](https://github.com/sinhong2011/discover-sports-hk/commit/22c7a3190a46693625f201699500e87477f96c45))
+* **home:** nested scroll handoff and prevent blank DatePage\n\n- Keep single persistent FlashList to avoid remount/blanking\n- Immediate y=0 upward gesture restores FilterBar (smooth handoff)\n- Use pointerEvents to disable list interaction when FilterBar visible\n- Context: expose outer ScrollView ref for programmatic scroll\n- Fix parse/lint: remove console, template literals, tighten types ([d671190](https://github.com/sinhong2011/discover-sports-hk/commit/d6711900447836a94560c3b0fb52f36c280c6588))
+* improve sportsApiService logging and error handling ([2912369](https://github.com/sinhong2011/discover-sports-hk/commit/291236924547a696fecb518926c8c32130f8dcee))
+* remove legacy EXPO_PUBLIC environment variables and improve authentication ([924c4cd](https://github.com/sinhong2011/discover-sports-hk/commit/924c4cd73e1919cc45af886b4a5df83e381af692))
+* remove npm cache from GitHub Actions workflow ([401ee7e](https://github.com/sinhong2011/discover-sports-hk/commit/401ee7e9d853045dca1bbc13fbefc9f66ca6e9c2))
+* remove unused 'react-native-bottom-tabs' dependency from app configuration ([523aa8c](https://github.com/sinhong2011/discover-sports-hk/commit/523aa8c2bcf731667c1febe271c57625847cf2f2))
+* resolve TestFlight empty home tab issue and add debug tools ([5c26fb2](https://github.com/sinhong2011/discover-sports-hk/commit/5c26fb2ff2e898b2307ca261dfbb1d7d80fecfbf))
+* resolve TypeScript errors in DebugPanel theme colors ([7793c05](https://github.com/sinhong2011/discover-sports-hk/commit/7793c05c349bbde3ea1dee893e72fa45631b6416))
+* update expo-router version to ^6.0.10 and add expo-server package ([46041c7](https://github.com/sinhong2011/discover-sports-hk/commit/46041c7643f81cb355c2234e29dea7db18fe4459))
