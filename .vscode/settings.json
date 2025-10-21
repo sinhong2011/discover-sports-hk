@@ -40,5 +40,6 @@
     "editor.defaultFormatter": "biomejs.biome"
   },
   "typescript.preferences.organizeImportsCollation": "unicode",
-  "typescript.preferences.organizeImportsNumericCollation": true
+  "typescript.preferences.organizeImportsNumericCollation": true,
+  "bun.runtime": "/Users/niskan516/.local/share/mise/shims/bun"
 }

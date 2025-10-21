@@ -86,9 +86,29 @@ export function useVenueFilters(
 
       // Apply district filter using district code for consistency
       if (filters.selectedDistrict !== null) {
+        const beforeFilterCount = filteredVenues.length;
         filteredVenues = filteredVenues.filter(
           (venue) => venue.districtCode === filters.selectedDistrict
         );
+        const afterFilterCount = filteredVenues.length;
+
+        // Debug logging for district filtering
+        if (filters.selectedDistrict === 'WTS') {
+          console.log(`🔍 Wong Tai Sin district filtering:`, {
+            selectedDistrict: filters.selectedDistrict,
+            beforeFilter: beforeFilterCount,
+            afterFilter: afterFilterCount,
+            availableDistrictCodes: [...new Set(venuesToFilter.map((v) => v.districtCode))],
+            wongTaiSinVenues: venuesToFilter
+              .filter(
+                (v) =>
+                  v.districtCode === 'WTS' ||
+                  v.district.includes('Wong Tai Sin') ||
+                  v.district.includes('黃大仙')
+              )
+              .map((v) => ({ venue: v.venue, district: v.district, districtCode: v.districtCode })),
+          });
+        }
       }
 
       return filteredVenues;

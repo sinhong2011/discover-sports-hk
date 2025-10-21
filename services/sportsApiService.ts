@@ -16,11 +16,12 @@ export class SportsApiService {
 
   /**
    * Get detailed data for a specific sport type
+   * Uses fallback mechanism to try backend API if worker API authentication fails
    */
   async getSportData(sportType: SportType): Promise<SportDataResponse> {
     const endpoint = `/api/sports/${encodeURIComponent(sportType)}`;
 
-    return await this.apiClient.get<SportDataResponse>(endpoint);
+    return await this.apiClient.getWithFallback<SportDataResponse>(endpoint);
   }
 }
 

@@ -3,10 +3,10 @@
  * Main dashboard showing sports venues with real-time data from OpenPanData API
  */
 
-import { useBottomTabBarHeight } from '@react-navigation/bottom-tabs';
-import { memo, useCallback, useRef } from 'react';
+import { memo, useCallback, useEffect, useRef, useState } from 'react';
 import { useWindowDimensions, View } from 'react-native';
 import { StyleSheet } from 'react-native-unistyles';
+import { DebugPanel } from '@/components/debug/DebugPanel';
 // Import home screen components
 import { DatePagerView, FilterBar, FilterModal } from '@/components/home/components';
 import type { FilterModalRef, FilterState } from '@/components/home/components/FilterModal';
@@ -15,7 +15,9 @@ import { FloatingActionButton } from '@/components/ui/FloatingActionButton';
 import { SafeAreaView } from '@/components/ui/SafeAreaView';
 // Import local sport types constant
 import type { SportType } from '@/constants/Sport';
+import { useNativeTabBarHeight } from '@/hooks/useNativeTabBarHeight';
 import { HomeTabProvider, useHomeTabContext } from '@/providers/HomeTabProvider';
+import { debugLog } from '@/utils/debugLogger';
 
 // ============================================================================
 // Component Debug Logging
@@ -26,8 +28,16 @@ function HomeScreenContent() {
   // Get device dimensions
   const { height: screenHeight } = useWindowDimensions();
 
-  // Get dynamic tab bar height from React Navigation
-  const tabBarHeight = useBottomTabBarHeight();
+  // Log when home screen mounts
+  useEffect(() => {
+    debugLog('HomeScreen', 'Home screen mounted', {
+      screenHeight,
+      timestamp: new Date().toISOString(),
+    });
+  }, [screenHeight]);
+
+  // Get dynamic tab bar height from native tabs
+  const tabBarHeight = useNativeTabBarHeight();
 
   // Calculate available height for sticky section
   // Account for: screen height - top safe area - bottom safe area - bottom navigation bar
@@ -50,6 +60,10 @@ function HomeScreenContent() {
 
   // Filter modal ref
   const filterModalRef = useRef<FilterModalRef>(null);
+
+  // Debug panel state
+  const [debugPanelVisible, setDebugPanelVisible] = useState(false);
+  const [debugTapCount, setDebugTapCount] = useState(0);
 
   // Handle sport type selection
   const handleSportTypeSelect = (sportType: SportType) => {
@@ -80,19 +94,34 @@ function HomeScreenContent() {
     // DatePagerView handles its own content, no need to manage state here
   }, []);
 
+  // Debug panel functionality - tap 5 times on the filter bar to open
+  const handleDebugTap = useCallback(() => {
+    const newCount = debugTapCount + 1;
+    setDebugTapCount(newCount);
+
+    if (newCount >= 5) {
+      setDebugPanelVisible(true);
+      setDebugTapCount(0);
+    }
+
+    // Reset count after 3 seconds of inactivity
+    setTimeout(() => {
+      setDebugTapCount(0);
+    }, 3000);
+  }, [debugTapCount]);
+
   // Note: VenueCard component is available for rendering venue items when needed
 
   return (
     <SafeAreaView style={[homeScreenStyles.container]} bottom={false}>
       {/* FilterBar section */}
-      <View style={styles.filterBarSection}>
-        <FilterBar
-          selectedSportType={selectedSportType}
-          onSportTypeSelect={handleSportTypeSelect}
-          onFilterPress={handleFilterPress}
-          hasActiveFilters={hasActiveFilters}
-        />
-      </View>
+      <FilterBar
+        selectedSportType={selectedSportType}
+        onSportTypeSelect={handleSportTypeSelect}
+        onFilterPress={handleFilterPress}
+        hasActiveFilters={hasActiveFilters}
+        onDebugTap={handleDebugTap}
+      />
 
       {/* DatePagerView section - takes remaining space */}
       <View style={[styles.datePagerSection, { height: availableHeight }]}>
@@ -120,7 +149,7 @@ function HomeScreenContent() {
       <FloatingActionButton
         iconName="close"
         onPress={handleClearFilters}
-        bottom={tabBarHeight * 1.85}
+        bottom={tabBarHeight * 3}
         visible={hasActiveFilters}
         accessibilityLabel="Clear all filters"
         testID="clear-filters-fab"
@@ -135,7 +164,7 @@ function HomeScreenContent() {
         activeIconName="filterActive"
         isActive={hasActiveFilters}
         onPress={handleFilterPress}
-        bottom={tabBarHeight + 18}
+        bottom={tabBarHeight + 42}
         accessibilityLabel="Open filter options"
         testID="filter-fab"
         hideOnScroll={true}
@@ -144,6 +173,9 @@ function HomeScreenContent() {
         iconSize={18}
         right={10}
       />
+
+      {/* Debug Panel - Hidden, accessible by tapping FilterBar 5 times */}
+      <DebugPanel visible={debugPanelVisible} onClose={() => setDebugPanelVisible(false)} />
     </SafeAreaView>
   );
 }
@@ -151,7 +183,7 @@ function HomeScreenContent() {
 // Main HomeScreen component that wraps HomeScreenContent with HomeTabProvider
 function HomeScreen() {
   return (
-    <HomeTabProvider showErrorAlerts={false}>
+    <HomeTabProvider showErrorAlerts={true}>
       <HomeScreenContent />
     </HomeTabProvider>
   );

@@ -6,14 +6,16 @@
 
 import { msg } from '@lingui/core/macro';
 import { useLingui } from '@lingui/react/macro';
+import { HeaderButton } from '@react-navigation/elements';
+import { useFocusEffect } from '@react-navigation/native';
 import { useLocalSearchParams, useNavigation, useRouter } from 'expo-router';
-import { useCallback, useEffect } from 'react';
-import { TouchableOpacity } from 'react-native';
+import { lazy, Suspense, useCallback, useEffect } from 'react';
+import { ActivityIndicator, View } from 'react-native';
 import { StyleSheet, useUnistyles } from 'react-native-unistyles';
 import { ThemedText } from '@/components/ThemedText';
 import { AppIcon } from '@/components/ui/Icon';
 import { SafeAreaView } from '@/components/ui/SafeAreaView';
-import { VenueTabView } from '@/components/venue/VenueTabView';
+import type { TimeSlotData } from '@/components/ui/TimeSlotItem';
 import type { SportType } from '@/constants/Sport';
 import { AppToast } from '@/providers/ToastProvider';
 import {
@@ -21,6 +23,25 @@ import {
   useSportVenueStore,
   useUniqueVenueMap,
 } from '@/store/useSportVenueStore';
+import type { VenueData } from '@/types/sport';
+
+// Lazy load the VenueTabView component
+interface VenueTabViewProps {
+  venue: VenueData;
+  sportType: SportType;
+  onTimeSlotPress?: (timeSlot: TimeSlotData, venue: VenueData) => void;
+}
+
+const LazyVenueTabView = lazy(async () => {
+  const module = await import('@/components/venue/VenueTabView');
+  return { default: module.VenueTabView };
+}) as React.LazyExoticComponent<React.ComponentType<VenueTabViewProps>>;
+
+// Preload the component for better performance
+if (typeof window !== 'undefined') {
+  // Only preload in browser environment (not during SSR)
+  import('@/components/venue/VenueTabView');
+}
 
 // ============================================================================
 // Translation Messages
@@ -40,6 +61,30 @@ interface VenueDetailsParams {
   id: string; // Venue ID from dynamic route parameter
   sportType: SportType; // Sport type from route parameter
 }
+
+// ============================================================================
+// Loading Fallback Component
+// ============================================================================
+
+const VenueDetailsLoadingFallback = () => {
+  const { theme } = useUnistyles();
+
+  return (
+    <View style={styles.loadingFallbackContainer}>
+      {/* Tab Bar Skeleton */}
+      <View style={styles.tabBarSkeleton}>
+        <View style={[styles.tabSkeleton, { backgroundColor: theme.colors.skeletonElement }]} />
+        <View style={[styles.tabSkeleton, { backgroundColor: theme.colors.skeletonElement }]} />
+      </View>
+
+      {/* Content Loading */}
+      <View style={styles.contentLoadingContainer}>
+        <ActivityIndicator size="large" color={theme.colors.tint} />
+        <ThemedText style={styles.loadingText}>Loading venue details...</ThemedText>
+      </View>
+    </View>
+  );
+};
 
 // ============================================================================
 // VenueDetails Component
@@ -64,7 +109,11 @@ function VenueDetails({ venueId, sportType }: VenueDetailsProps) {
   }
 
   // Don't pass onTimeSlotPress so it uses the default modal behavior
-  return <VenueTabView venue={venue} sportType={sportType} />;
+  return (
+    <Suspense fallback={<VenueDetailsLoadingFallback />}>
+      <LazyVenueTabView venue={venue} sportType={sportType} />
+    </Suspense>
+  );
 }
 
 // ============================================================================
@@ -111,28 +160,36 @@ export default function SharedVenueDetailsScreen() {
   }, [venue, params.sportType, toggleBookmark, isBookmarked, t, theme.colors.icon]);
 
   // Update navigation title and header right button based on venue data
-  useEffect(() => {
-    navigation.setOptions({
-      title: venue?.name || t(venueDetailsTitle),
-      headerRight: venue
-        ? () => (
-            <TouchableOpacity
-              onPress={handleBookmarkPress}
-              style={{ marginRight: 4 }}
-              activeOpacity={0.7}
-              accessibilityLabel={isBookmarked ? 'Remove from bookmarks' : 'Add to bookmarks'}
-              accessibilityRole="button"
-            >
-              <AppIcon
-                name={isBookmarked ? 'heartFilled' : 'heart'}
-                size={24}
-                color={isBookmarked ? '#EF4444' : theme.colors.text}
-              />
-            </TouchableOpacity>
-          )
-        : undefined,
-    });
-  }, [navigation, venue?.name, venue, isBookmarked, handleBookmarkPress, theme.colors.text, t]);
+  useFocusEffect(
+    useCallback(() => {
+      // Check if navigation is ready and not in a placeholder state
+      if (!navigation || !navigation.setOptions) {
+        return;
+      }
+
+      try {
+        navigation.setOptions({
+          title: venue?.name || t(venueDetailsTitle),
+          headerRight: venue
+            ? () => (
+                <HeaderButton onPress={handleBookmarkPress}>
+                  <AppIcon
+                    name={isBookmarked ? 'heartFilled' : 'heart'}
+                    size={24}
+                    color={isBookmarked ? '#EF4444' : theme.colors.text}
+                  />
+                </HeaderButton>
+              )
+            : undefined,
+        });
+      } catch (error) {
+        // Silently handle navigation options error
+        if (__DEV__) {
+          console.warn('Failed to set navigation options:', error);
+        }
+      }
+    }, [navigation, venue?.name, venue, isBookmarked, handleBookmarkPress, theme.colors.text, t])
+  );
 
   // Show error if required parameters not provided
   useEffect(() => {
@@ -171,5 +228,39 @@ const styles = StyleSheet.create((theme) => ({
     fontSize: 16,
     color: theme.colors.text,
     textAlign: 'center',
+  },
+  loadingContainer: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+    gap: 16,
+  },
+  loadingText: {
+    fontSize: 16,
+    color: theme.colors.text,
+    textAlign: 'center',
+  },
+  loadingFallbackContainer: {
+    flex: 1,
+    backgroundColor: theme.colors.background,
+  },
+  tabBarSkeleton: {
+    flexDirection: 'row',
+    paddingHorizontal: 16,
+    paddingVertical: 12,
+    borderBottomWidth: 1,
+    borderBottomColor: theme.colors.border,
+    gap: 24,
+  },
+  tabSkeleton: {
+    height: 20,
+    width: 80,
+    borderRadius: 4,
+  },
+  contentLoadingContainer: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+    gap: 16,
   },
 }));

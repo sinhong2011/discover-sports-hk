@@ -191,8 +191,29 @@ export function useSportVenues(
   // Handle error alerts in a more declarative way
   React.useEffect(() => {
     if (showErrorAlerts && query.error && !query.isLoading && sportType) {
-      const message = `Failed to load ${sportType} venues: ${query.error.message}`;
-      AppToast.error(message, { title: 'Error', duration: 5000 });
+      let message = `Failed to load ${sportType} venues: ${query.error.message}`;
+      let title = 'Error';
+
+      // Provide more specific error messages for common issues
+      if (query.error.message.includes('Unauthorized') || query.error.message.includes('401')) {
+        title = 'Authentication Error';
+        message = `Unable to authenticate with the sports data service. Please check your internet connection and try again.`;
+      } else if (
+        query.error.message.includes('Network') ||
+        query.error.message.includes('timeout')
+      ) {
+        title = 'Connection Error';
+        message = `Unable to connect to the sports data service. Please check your internet connection and try again.`;
+      } else if (
+        query.error.message.includes('500') ||
+        query.error.message.includes('502') ||
+        query.error.message.includes('503')
+      ) {
+        title = 'Service Error';
+        message = `The sports data service is temporarily unavailable. Please try again later.`;
+      }
+
+      AppToast.error(message, { title, duration: 8000 });
     }
   }, [showErrorAlerts, query.error, query.isLoading, sportType]);
 

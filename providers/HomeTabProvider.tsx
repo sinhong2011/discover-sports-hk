@@ -8,7 +8,7 @@
 import type { UseQueryResult } from '@tanstack/react-query';
 import { groupBy } from 'es-toolkit';
 import type { ReactNode, RefObject } from 'react';
-import { createContext, useCallback, useContext, useMemo, useState } from 'react';
+import { createContext, useCallback, useContext, useEffect, useMemo, useState } from 'react';
 import type { ScrollView } from 'react-native';
 
 import type { SportType } from '@/constants/Sport';
@@ -16,6 +16,7 @@ import { useSportVenues } from '@/hooks/useSportVenues';
 import { useVenueFilters, type VenueFilters } from '@/hooks/useVenueFilters';
 import { useSportVenueTimeSlots } from '@/store/useSportVenueStore';
 import type { SportVenueTimeslot } from '@/types/sport';
+import { debugLog } from '@/utils/debugLogger';
 
 // ============================================================================
 // Types
@@ -147,6 +148,25 @@ export function HomeTabProvider({ children, showErrorAlerts = false }: HomeTabPr
       showErrorAlerts,
     }
   );
+
+  // Debug log when sport venue data changes
+  useEffect(() => {
+    debugLog('HomeTabProvider', 'Sport venue data updated', {
+      selectedSportType,
+      sportVenueTimeSlotsCount: sportVenueTimeSlots.length,
+      groupedDatesCount: Object.keys(sportVenueTimeSlotsGrpByDate).length,
+      isLoading,
+      isFetching,
+      isError: !!error,
+    });
+  }, [
+    selectedSportType,
+    sportVenueTimeSlots.length,
+    sportVenueTimeSlotsGrpByDate,
+    isLoading,
+    isFetching,
+    error,
+  ]);
 
   // Scroll state for nested scroll coordination
   const [isFilterBarScrolledOut, setIsFilterBarScrolledOut] = useState(false);

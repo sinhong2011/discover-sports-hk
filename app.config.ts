@@ -5,12 +5,12 @@ const easBuildNumber = process.env.EAS_BUILD_NUMBER || '1';
 
 export default ({ config }: ConfigContext): ExpoConfig => ({
   ...config,
-  name: '睇場易HK',
+  name: 'DiscoverSports HK',
   slug: 'discover-sports-hk',
   version: packageJson.version,
   orientation: 'portrait',
   icon: './assets/images/icon.png',
-  scheme: 'HK',
+  scheme: 'discoversportshk',
   userInterfaceStyle: 'automatic',
   newArchEnabled: true,
   splash: {
@@ -55,6 +55,8 @@ export default ({ config }: ConfigContext): ExpoConfig => ({
         launchMode: 'most-recent',
       },
     ],
+    'expo-secure-store',
+    'expo-web-browser',
   ],
   experiments: {
     typedRoutes: true,
@@ -62,7 +64,7 @@ export default ({ config }: ConfigContext): ExpoConfig => ({
   extra: {
     router: {},
     eas: {
-      projectId: 'c3064d08-3e1b-4645-8c4e-5258bd32144c',
+      projectId: '38b14981-55ee-4984-9f73-d8fdd9bfe941',
     },
     // OpenPanData Multi-API Configuration
     // Cloudflare Worker API
@@ -86,5 +88,9 @@ export default ({ config }: ConfigContext): ExpoConfig => ({
     DEFAULT_API: process.env.DEFAULT_API || 'worker',
     DATA_CACHE_TTL: process.env.DATA_CACHE_TTL || '1800000', // 30 minutes
   },
-  owner: 'sinhong2011',
+  owner: 'niskan516.dev',
+  updates: {
+    url: 'https://u.expo.dev/38b14981-55ee-4984-9f73-d8fdd9bfe941',
+  },
+  runtimeVersion: '1.0.0',
 });

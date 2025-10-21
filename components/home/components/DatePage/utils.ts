@@ -8,6 +8,7 @@ import { groupBy } from 'es-toolkit';
 import type { AvailabilityLevel, TimeSlotData } from '@/components/ui/TimeSlotItem';
 import { DistrictHK } from '@/constants/Geo';
 import type { FacilityLocationData, SportVenueTimeslot, VenueData } from '@/types/sport';
+import { findDistrictByFuzzyMatch } from '@/utils/districtMatching';
 import type {
   DistrictData,
   FlashListItem,
@@ -42,10 +43,14 @@ const AVAILABILITY_THRESHOLDS = {
  * @returns Area code or null if not found
  */
 export function getDistrictAreaCode(districtNameEn: string): string | null {
-  const districtInfo = DistrictHK.find((d) => d.district.en === districtNameEn);
+  // First try exact match
+  let districtInfo = DistrictHK.find((d) => d.district.en === districtNameEn);
+
+  // If no exact match, try robust fuzzy matching
   if (!districtInfo) {
-    return null;
+    districtInfo = findDistrictByFuzzyMatch(districtNameEn);
   }
+
   return districtInfo?.areaCode || null;
 }
 
@@ -353,6 +358,9 @@ export function transformSportVenueData(
   sportVenueTimeSlots: SportVenueTimeslot[]
 ): TransformedDatePageData {
   if (sportVenueTimeSlots.length === 0) {
+    if (__DEV__) {
+      console.log('transformSportVenueData: No input data provided');
+    }
     return {
       flashListData: [],
       stickyHeaderIndices: [],
@@ -391,6 +399,8 @@ export function transformSportVenueData(
 
     // Transform venues and filter out venues with no available time slots
     const venues: VenueData[] = [];
+    let filteredOutCount = 0;
+
     for (const [, venueSlots] of Object.entries(slotsByVenue)) {
       const venueData = transformVenue(venueSlots);
 
@@ -404,7 +414,18 @@ export function transformSportVenueData(
         venues.push(venueData);
         venuesMap.set(venueData.id, venueData);
         totalTimeSlots += venueData.timeSlots.length;
+      } else {
+        filteredOutCount++;
+        if (__DEV__) {
+          console.log(`Filtered out venue: ${venueData.name} (no available courts)`);
+        }
       }
+    }
+
+    if (__DEV__ && filteredOutCount > 0) {
+      console.log(
+        `District ${districtName}: ${filteredOutCount} venues filtered out, ${venues.length} venues kept`
+      );
     }
 
     // Sort venues by name

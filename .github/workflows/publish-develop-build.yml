@@ -1,0 +1,67 @@
+name: 🧪 Build Test Version (Develop)
+
+on:
+  push:
+    branches:
+      - develop
+
+jobs:
+  build-test:
+    name: 📱 Build Test App
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: 🏗 Setup repo
+        uses: actions/checkout@v4
+
+      - name: 🏗 Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 18.x
+          cache: 'npm'
+
+      - name: 🏗 Setup Bun
+        uses: oven-sh/setup-bun@v1
+        with:
+          bun-version: 1.2.18
+
+      - name: 🏗 Setup EAS
+        uses: expo/expo-github-action@v8
+        with:
+          eas-version: latest
+          token: ${{ secrets.EXPO_TOKEN }}
+
+      - name: 📦 Install dependencies
+        run: bun install --frozen-lockfile
+
+      - name: 🔍 Run type check
+        run: bun run type-check
+
+      - name: 🧹 Run linter
+        run: bun run lint
+
+      - name: 🧪 Run tests
+        run: bun run test
+
+      - name: 🚀 Build Test Version
+        run: eas build --profile test --platform ios --non-interactive --wait
+        env:
+          NODE_ENV: staging
+
+      - name: 📊 Build Summary
+        run: |
+          echo "## 🧪 Test Build Completed" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "- **Branch**: develop" >> $GITHUB_STEP_SUMMARY
+          echo "- **Profile**: test" >> $GITHUB_STEP_SUMMARY
+          echo "- **Environment**: staging" >> $GITHUB_STEP_SUMMARY
+          echo "- **Commit**: ${{ github.sha }}" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "### 📲 Download" >> $GITHUB_STEP_SUMMARY
+          echo "Visit the [EAS Build Dashboard](https://expo.dev/accounts/sinhong2011/projects/discover-sports-hk/builds) to download the test build." >> $GITHUB_STEP_SUMMARY
+
+      - name: 📱 Notify on Slack (Optional)
+        if: always()
+        run: |
+          echo "Add Slack notification here if needed"
+          echo "Build status: ${{ job.status }}"

@@ -4,9 +4,9 @@
  * Follows the app's design patterns with unistyles theming and proper accessibility
  */
 
+import { HeaderButton } from '@react-navigation/elements';
 import { useRouter } from 'expo-router';
 import type React from 'react';
-import { TouchableOpacity } from 'react-native';
 import { StyleSheet } from 'react-native-unistyles';
 import { AppIcon } from './Icon';
 
@@ -62,31 +62,19 @@ export const HeaderBackButton: React.FC<HeaderBackButtonProps> = ({
   };
 
   return (
-    <TouchableOpacity
+    <HeaderButton
       testID="header-back-button"
-      style={[styles.button, disabled && styles.disabled]}
+      style={[disabled && styles.disabled]}
       onPress={handlePress}
-      activeOpacity={0.7}
       disabled={disabled}
-      accessibilityRole="button"
       accessibilityLabel={accessibilityLabel}
-      accessibilityHint="Navigates to the previous screen"
-      hitSlop={{ top: 10, bottom: 10, left: 10, right: 10 }}
     >
       <AppIcon name="back" size={size} color={color || styles.icon.color} />
-    </TouchableOpacity>
+    </HeaderButton>
   );
 };
 
 const styles = StyleSheet.create((theme) => ({
-  button: {
-    padding: 8,
-    marginLeft: -8, // Align with screen edge following iOS design guidelines
-    justifyContent: 'center',
-    alignItems: 'center',
-    minWidth: 44, // Minimum touch target size for accessibility
-    minHeight: 44,
-  },
   disabled: {
     opacity: 0.5,
   },

@@ -35,6 +35,53 @@ npm run reset-project
 
 This command will move the starter code to the **app-example** directory and create a blank **app** directory where you can start developing.
 
+## Deployment Strategy
+
+This project uses a **branch-based deployment strategy** with automated CI/CD through GitHub Actions:
+
+### 🏪 Production Deployment (`main` branch)
+- **Trigger**: Push to `main` branch
+- **Build Profile**: `production`
+- **iOS**: Deployed to **App Store** (Production)
+- **Android**: Deployed to **Google Play Store** (Production)
+- **Environment**: `production`
+
+### 🧪 Beta Deployment (`preview` branch)
+- **Trigger**: Push to `preview` branch
+- **Build Profile**: `testflight`
+- **iOS**: Deployed to **TestFlight** (Beta Testing)
+- **Android**: Deployed to **Google Play Internal Testing**
+- **Environment**: `production` (with beta distribution)
+
+### How to Deploy
+
+1. **For Beta Testing**:
+   ```bash
+   git checkout preview
+   git merge your-feature-branch
+   git push origin preview
+   ```
+
+2. **For Production Release**:
+   ```bash
+   git checkout main
+   git merge preview  # or your-feature-branch
+   git push origin main
+   ```
+
+### Manual Deployment
+You can also trigger deployments manually via GitHub Actions:
+- Go to **Actions** → **🚀 Build & Deploy (Branch-based)**
+- Click **Run workflow**
+- Select platform (`all`, `ios`, or `android`)
+- Optionally specify a release version
+
+### Build Profiles
+The project uses different EAS build profiles:
+- `production`: Store-ready builds for production release
+- `testflight`: Beta builds for TestFlight distribution
+- `preview`: Internal preview builds for testing
+
 ## Learn more
 
 To learn more about developing your project with Expo, look at the following resources:
